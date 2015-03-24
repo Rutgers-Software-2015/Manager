@@ -1,3 +1,5 @@
+package Manager;
+
 import java.sql.*;
 
 //This class will handle the database for the finances

@@ -1,11 +1,18 @@
+package Manager;
+
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+
 import javax.swing.border.*;
 import javax.swing.ImageIcon;
+
+import Login.LoginWindow;
 
 public class ManagerRootWindow extends JFrame implements ActionListener{
 
@@ -25,27 +32,36 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 	GridLayout rootLayout = new GridLayout(1, 1);
 	BorderLayout suboptLayout = new BorderLayout();
 	
-
+	/*
 	public static void main(String[] args)
 	{
 		new ManagerRootWindow();
 		return;
 	}	
+	*/
 
 	public ManagerRootWindow()
 	{
 		super();
 		init();
+		addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                new LoginWindow();
+                dispose();
+            }
+        });
+		
 	}
 
 
 	public void init()
 	{
-		this.setTitle("Manger");
+		this.setTitle("Manager");
 		this.setResizable(true);
 		this.setSize(1000,750);
 		this.frameManipulation();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.add(rootPanel);
 		this.setVisible(true);
 	}
