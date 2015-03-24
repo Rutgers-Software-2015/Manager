@@ -22,7 +22,6 @@ import java.awt.event.WindowEvent;
 
 public class EmployeeWindow extends JFrame implements ActionListener
 {
-
 	
 //Components
 	/*rootFrame*/
