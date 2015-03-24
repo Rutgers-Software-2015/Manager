@@ -126,7 +126,7 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 			}
 		if(a == B_Menu)
 			{
-				
+                gen_Menu();
 			}
 	}
 
@@ -141,6 +141,12 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 		Win_Financials = new FinancialWindow();
 		Win_Financials.setVisible(true);
 	}
+    
+    public void gen_Menu()
+    {
+        Win_Menu = new MenuWindow();
+        Win_Menu.setVisible(true);
+    }
 	
 
 }
