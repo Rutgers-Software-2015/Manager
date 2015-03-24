@@ -37,12 +37,6 @@ public class FinancialWindow extends JFrame implements ActionListener
 	String[] PPI_Profit;
 	
 	
-	public static void main(String[] args)
-	{
-		new FinancialWindow();
-	}
-	
-	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
