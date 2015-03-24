@@ -140,10 +140,10 @@ public class EmployeeWindow extends JFrame implements ActionListener
 				String empSalary = getSalary(theEmp);
 				String empID = getID(theEmp);
 				
-				Address.setText("Address: " + empAddress);
-				Position.setText("Position: " + empPosition);
-				Salary.setText("Salary: " + empSalary);
-				ID.setText("ID: " + empID);
+				Address.setText(empAddress);
+				Position.setText(empPosition);
+				Salary.setText(empSalary);
+				ID.setText(empID);
 				
 				Address.updateUI();
 				Position.updateUI();
@@ -247,7 +247,7 @@ public class EmployeeWindow extends JFrame implements ActionListener
 		String empSalary = getSalary(theEmp);
 		String empID = getID(theEmp);
 		
-		Address.setText("Address: " + empAddress);
+		/*Address.setText("Address: " + empAddress);
 		Position.setText("Position: " + empPosition);
 		Salary.setText("Salary: " + empSalary);
 		ID.setText("ID: " + empID);
@@ -258,7 +258,7 @@ public class EmployeeWindow extends JFrame implements ActionListener
 		ID.updateUI();
 		
 		optionPanel_textPanel.updateUI();
-		optionPanel.updateUI();
+		optionPanel.updateUI();*/
 	
 		Object a = e.getSource();
 		if(a == Edit)
@@ -432,12 +432,6 @@ public class EmployeeWindow extends JFrame implements ActionListener
 		}
 		
 		
-		
-		Address.setText(newAddress);
-		Position.setText(newPosition);
-		Salary.setText(newSalary);
-		ID.setText(newID);
-		
 		Address.setText(newAddress);
 		Position.setText(newPosition);
 		Salary.setText(newSalary);
@@ -480,7 +474,7 @@ public class EmployeeWindow extends JFrame implements ActionListener
 			if(EmployeeNameArray[j] == emp)
 			{
 				j++;
-				temp[i] = EmployeeNameArray[j];
+				//temp[i] = EmployeeNameArray[j];
 				continue;
 			}
 			temp[i] = EmployeeNameArray[j];
@@ -509,6 +503,8 @@ public class EmployeeWindow extends JFrame implements ActionListener
 		empList.setLayoutOrientation(JList.VERTICAL);
 		empList.setVisibleRowCount(5);
 		
+		
+		
 		//Setting up the Scroll Pane
 		EmpScroller = new JScrollPane(empList);
 		
@@ -526,6 +522,33 @@ public class EmployeeWindow extends JFrame implements ActionListener
 		ID.updateUI();
 		
 		empPanel.updateUI();
+		
+		empList.addListSelectionListener( new ListSelectionListener() {
+		    public void valueChanged(ListSelectionEvent e){
+		    	Object particularEmployee = empList.getSelectedValue();
+				int employeeIndex = empList.getSelectedIndex();
+
+				String theEmp = (String)(particularEmployee);
+
+				String empAddress = getAddress(theEmp);
+				String empPosition = getPosition(theEmp);
+				String empSalary = getSalary(theEmp);
+				String empID = getID(theEmp);
+				
+				Address.setText("Address: " + empAddress);
+				Position.setText("Position: " + empPosition);
+				Salary.setText("Salary: " + empSalary);
+				ID.setText("ID: " + empID);
+				
+				Address.updateUI();
+				Position.updateUI();
+				Salary.updateUI();
+				ID.updateUI();
+				
+				optionPanel_textPanel.updateUI();
+				optionPanel.updateUI();    	
+			    }
+			} );
 		
 		
 	}
