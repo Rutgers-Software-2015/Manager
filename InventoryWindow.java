@@ -68,6 +68,16 @@ public class InventoryWindow extends JFrame implements ActionListener
 			MenuTable.setModel(new DefaultTableModel(Menu_RowData, Menu_ColumnNames));
 		}
 		
+		if(a == updateInventory)
+		{
+			String tempNewIngredient = ingredientField.getText();
+			String tempQuantity = quantityField.getText();
+			
+			MenuTable.getModel().setValueAt(tempNewIngredient, MenuTable.getSelectedRow(), 0);
+			MenuTable.getModel().setValueAt(tempQuantity, MenuTable.getSelectedRow(), 1);
+			
+		}
+		
 		if(a == removeInventory)
 		{
 	        if (MenuTable.getSelectedRow() != -1) 
@@ -155,20 +165,20 @@ public class InventoryWindow extends JFrame implements ActionListener
 		
 		//Initialize buttons
 		addNewInventory = new JButton("Add New Inventory");
-		removeInventory = new JButton("Delete Ingredient");
 		updateInventory = new JButton("Update Inventory");
+		removeInventory = new JButton("Delete Ingredient");
 		logOut = new JButton("Logout");
 		
 		//Add the action listeners
 		addNewInventory.addActionListener(this);
-		removeInventory.addActionListener(this);
 		updateInventory.addActionListener(this);
+		removeInventory.addActionListener(this);
 		logOut.addActionListener(this);
 		
 		//Add to the panel
 		buttonPanel.add(addNewInventory);
-		buttonPanel.add(removeInventory);
 		buttonPanel.add(updateInventory);
+		buttonPanel.add(removeInventory);
 		buttonPanel.add(logOut);
 		
 		rootPanel.add(buttonPanel);
