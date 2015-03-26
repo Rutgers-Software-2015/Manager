@@ -118,7 +118,7 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 			}
 		if(a == B_Inventory)
 			{
-				
+				gen_Inventory();
 			}
 		if(a == B_Financials)
 			{
@@ -146,6 +146,12 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
     {
         Win_Menu = new MenuWindow();
         Win_Menu.setVisible(true);
+    }
+    
+    public void gen_Inventory()
+    {
+    	Win_Inventory = new InventoryWindow();
+    	Win_Inventory.setVisible(true);
     }
 	
 
