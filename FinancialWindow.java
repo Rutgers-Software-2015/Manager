@@ -16,10 +16,10 @@ public class FinancialWindow extends JFrame implements ActionListener
 {
 	JPanel rootPanel, buttonPanel;
 	static JPanel textPanel;
-	JButton Trends, ProfitPerItem;
+	JButton Trends, ProfitPerItem, Back;
 	
 	GridLayout rootLayout = new GridLayout(0,2);
-	GridLayout buttonLayout = new GridLayout(2,0);
+	GridLayout buttonLayout = new GridLayout(3,0);
 	GridLayout textLayout = new GridLayout(1,1);
 	
 	JScrollPane TrendScroller, PPIScroller;
@@ -66,6 +66,10 @@ public class FinancialWindow extends JFrame implements ActionListener
 				textPanel.updateUI();
 			}
 		}
+		if(a == Back)
+		{
+			dispose();
+		}
 		
 	}
 	
@@ -106,14 +110,17 @@ public class FinancialWindow extends JFrame implements ActionListener
 		//Initialize buttons
 		Trends = new JButton("Trends");
 		ProfitPerItem = new JButton("Profit Per Item");
+		Back = new JButton("Back");
 		
 		//Add the action listeners
 		Trends.addActionListener(this);
 		ProfitPerItem.addActionListener(this);
+		Back.addActionListener(this);
 		
 		//Add to the panel
 		buttonPanel.add(Trends);
 		buttonPanel.add(ProfitPerItem);
+		buttonPanel.add(Back);
 		
 		rootPanel.add(buttonPanel);
 		

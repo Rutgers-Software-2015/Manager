@@ -277,6 +277,7 @@ public class EmployeeWindow extends JFrame implements ActionListener
 		if(a == Done)
 			{
 				Done_Click(theEmp);
+				dispose();
 			}
 		if(a == Hire_Add)
 			{
@@ -458,6 +459,7 @@ public class EmployeeWindow extends JFrame implements ActionListener
 		Address.setEditable(false);
 		Position.setEditable(false);
 		Salary.setEditable(false);
+		
 	}
 
 	public void Fire_Click(String emp)

@@ -68,6 +68,11 @@ public class MenuWindow extends JFrame implements ActionListener
 			Menu_RowData = temp;
 			
 			MenuTable.setModel(new DefaultTableModel(Menu_RowData, Menu_ColumnNames));
+			
+			nameField.setText("New Name");
+			ingredientField.setText("New Ingredients");
+			priceField.setText("New Price");
+			IDField.setText("New ID Number");
 		}
 		
 		if(a == removeItem)
@@ -104,7 +109,7 @@ public class MenuWindow extends JFrame implements ActionListener
 		
 		if(a == logOut)
 		{
-			
+			dispose();
 		}
 		
 	}
@@ -168,7 +173,7 @@ public class MenuWindow extends JFrame implements ActionListener
 		//Initialize buttons
 		addItem = new JButton("Add Item");
 		removeItem = new JButton("Remove Item");
-		logOut = new JButton("Logout");
+		logOut = new JButton("Back");
 		
 		//Add the action listeners
 		addItem.addActionListener(this);

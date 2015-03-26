@@ -66,6 +66,9 @@ public class InventoryWindow extends JFrame implements ActionListener
 			Menu_RowData = temp;
 			
 			MenuTable.setModel(new DefaultTableModel(Menu_RowData, Menu_ColumnNames));
+			
+			ingredientField.setText("New Ingredient");
+			quantityField.setText("New Quantity");
 		}
 		
 		if(a == updateInventory)
@@ -105,7 +108,7 @@ public class InventoryWindow extends JFrame implements ActionListener
 		
 		if(a == logOut)
 		{
-			
+			dispose();
 		}
 		
 	}
@@ -167,7 +170,7 @@ public class InventoryWindow extends JFrame implements ActionListener
 		addNewInventory = new JButton("Add New Inventory");
 		updateInventory = new JButton("Update Inventory");
 		removeInventory = new JButton("Delete Ingredient");
-		logOut = new JButton("Logout");
+		logOut = new JButton("Back");
 		
 		//Add the action listeners
 		addNewInventory.addActionListener(this);
