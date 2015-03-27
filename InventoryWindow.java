@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 
 import ADT.Ingredient;
 import ADT.IngredientHandler;
+import ADT.MenuItem;
 
 
 public class InventoryWindow extends JFrame implements ActionListener
@@ -51,24 +52,35 @@ public class InventoryWindow extends JFrame implements ActionListener
 			
 			String tempNewIngredient = ingredientField.getText();
 			String tempQuantity = quantityField.getText();
-			int quantity=Integer.parseInt(tempQuantity);
+			int quantity;
 
-
-			IngredientHandler.AddIngredient(tempNewIngredient, quantity);	
-			String[][] temp = new String[Menu_RowData.length + 1][2];
-			
-			for(int i = 0; i < Menu_RowData.length; i++)
+			try {
+				
+				
+				quantity=Integer.parseInt(tempQuantity);
+				
+				IngredientHandler.AddIngredient(tempNewIngredient, quantity);
+				
+				String[][] temp = new String[Menu_RowData.length + 1][2];
+				
+				for(int i = 0; i < Menu_RowData.length; i++)
+				{
+					for(int j = 0; j < 2; j++)
+						temp[i][j] = Menu_RowData[i][j];
+				}
+				
+				temp[Menu_RowData.length][0] = tempNewIngredient;
+				temp[Menu_RowData.length][1] = tempQuantity;
+				
+				Menu_RowData = temp;
+				
+				MenuTable.setModel(new DefaultTableModel(Menu_RowData, Menu_ColumnNames));
+				
+			} 
+			catch (NumberFormatException e1)
 			{
-				for(int j = 0; j < 2; j++)
-					temp[i][j] = Menu_RowData[i][j];
+				JOptionPane.showMessageDialog(InventoryAddingFrame, "Please enter a number for quantity.");
 			}
-			
-			temp[Menu_RowData.length][0] = tempNewIngredient;
-			temp[Menu_RowData.length][1] = tempQuantity;
-			
-			Menu_RowData = temp;
-			
-			MenuTable.setModel(new DefaultTableModel(Menu_RowData, Menu_ColumnNames));
 
 			ingredientField.setText("New Ingredient");
 			quantityField.setText("New Quantity");
@@ -76,6 +88,9 @@ public class InventoryWindow extends JFrame implements ActionListener
 		
 		if(a == updateInventory)
 		{
+			
+			if(MenuTable.getSelectedRow() != -1)
+			{
 			String tempNewIngredient = ingredientField.getText();
 			String tempQuantity = quantityField.getText();
 			int quantity=Integer.parseInt(tempQuantity);
@@ -84,6 +99,11 @@ public class InventoryWindow extends JFrame implements ActionListener
 			String newcount= ""+temp.count;
 			MenuTable.getModel().setValueAt(tempNewIngredient,MenuTable.getSelectedRow(),0);
 			MenuTable.getModel().setValueAt(newcount,MenuTable.getSelectedRow(),1);
+			}
+	        else
+	        {
+	        	JOptionPane.showMessageDialog(InventoryAddingFrame, "Please select a menu item.");
+	        }
 			
 			
 			
@@ -91,11 +111,14 @@ public class InventoryWindow extends JFrame implements ActionListener
 		
 		if(a == removeInventory)
 		{
+			
 	        if (MenuTable.getSelectedRow() != -1) 
 	        {
+	        	
 	        	int position = MenuTable.getSelectedRow();
 	        	String[][] temp = new String[Menu_RowData.length - 1][2];
-	        	
+	        	String removed=(String) MenuTable.getValueAt(position, 0);
+	        	IngredientHandler.Remove(removed);
 	        	for(int i = 0; i < position; i++)
 	        	{
 	        		temp[i][0] = Menu_RowData[i][0];
@@ -110,6 +133,11 @@ public class InventoryWindow extends JFrame implements ActionListener
 	        	
 	        	Menu_RowData = temp;
 	        	MenuTable.setModel(new DefaultTableModel(Menu_RowData, Menu_ColumnNames));
+	        }
+	        
+	        else
+	        {
+	        	JOptionPane.showMessageDialog(InventoryAddingFrame, "Please select a menu item.");
 	        }
 			
 		}
