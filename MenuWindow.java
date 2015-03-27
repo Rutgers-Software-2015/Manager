@@ -35,10 +35,14 @@ public class MenuWindow extends JFrame implements ActionListener
 	
 	JTextField nameField, priceField, ingredientField, IDField;
 	
+	/*
+	
 	public static void main(String[] args)
 	{
 		new MenuWindow();
 	}
+	
+	*/
 	
 	
 	public void actionPerformed(ActionEvent e) {
