@@ -19,11 +19,11 @@ public class MenuWindow extends JFrame implements ActionListener
 	JPanel rootPanel, buttonPanel;
 	JPanel AddingPanel;
 	static JPanel textPanel;
-	JButton addItem, removeItem, Add, logOut;
+	JButton addItem, removeItem, updateItem, Add, logOut;
 	
 	
 	GridLayout rootLayout = new GridLayout(0,2);
-	GridLayout buttonLayout = new GridLayout(7,0);
+	GridLayout buttonLayout = new GridLayout(8,0);
 	GridLayout textLayout = new GridLayout(1,1);
 		
 	JScrollPane MenuScroller;
@@ -107,6 +107,20 @@ public class MenuWindow extends JFrame implements ActionListener
 			
 		}
 		
+		if(a == updateItem)
+		{
+			String tempName = nameField.getText();
+			String tempIngredient = ingredientField.getText();
+			String tempPrice = priceField.getText();
+			String tempID = IDField.getText();
+			
+			MenuTable.getModel().setValueAt(tempName, MenuTable.getSelectedRow(), 0);
+			MenuTable.getModel().setValueAt(tempIngredient, MenuTable.getSelectedRow(), 1);
+			MenuTable.getModel().setValueAt(tempPrice, MenuTable.getSelectedRow(), 2);
+			MenuTable.getModel().setValueAt(tempID, MenuTable.getSelectedRow(), 3);
+			
+		}
+		
 		if(a == logOut)
 		{
 			dispose();
@@ -172,16 +186,19 @@ public class MenuWindow extends JFrame implements ActionListener
 		
 		//Initialize buttons
 		addItem = new JButton("Add Item");
+		updateItem = new JButton("Update Item");
 		removeItem = new JButton("Remove Item");
 		logOut = new JButton("Back");
 		
 		//Add the action listeners
 		addItem.addActionListener(this);
+		updateItem.addActionListener(this);
 		removeItem.addActionListener(this);
 		logOut.addActionListener(this);
 		
 		//Add to the panel
 		buttonPanel.add(addItem);
+		buttonPanel.add(updateItem);
 		buttonPanel.add(removeItem);
 		buttonPanel.add(logOut);
 		
@@ -201,6 +218,8 @@ public class MenuWindow extends JFrame implements ActionListener
 		//Need to populate the arrays before they are fed to the JTable
 		Menu_RowData = MenuHandler.getMenu();
 		MenuTable = new JTable(Menu_RowData, Menu_ColumnNames);
+		MenuTable.getColumnModel().getColumn(0).setPreferredWidth(130);
+		MenuTable.getColumnModel().getColumn(1).setPreferredWidth(220);
 		MenuScroller = new JScrollPane(MenuTable);
 		MenuTable.setFillsViewportHeight(true);
 		

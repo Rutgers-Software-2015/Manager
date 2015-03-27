@@ -12,7 +12,7 @@ public class MenuHandler {
 	public static String[][] getMenu()
 	{
 		
-		
+		/*
 		LinkedList<LinkedList<String>> Menu = new LinkedList<LinkedList<String>>();
 		LinkedList<String> Stuff = new LinkedList<String>();
 		
@@ -39,16 +39,15 @@ public class MenuHandler {
 		
 		Menu.add(Stuff);
 		Stuff = new LinkedList<String>(); 
-		
+		*/
 		
 		String[][] trendArray = 
 		{
-				{"John Cena", "Hustle, Loyalty, Respect", "$28", "0"},
-				{"John Cena", "Hustle, Loyalty, Respect", "$28", "1"},
-				{"John Cena", "Hustle, Loyalty, Respect", "$28", "2"},
-				{"John Cena", "Hustle, Loyalty, Respect", "$28", "3"},
-				{"John Cena", "Hustle, Loyalty, Respect", "$28", "4"},
-				{"John Cena", "Hustle, Loyalty, Respect", "$28", "5"},
+				{"Chicken Sandwich", "Chicken, Bread, Lettuce", "$5", "0"},
+				{"Spinach Alfredo", "Spinach, Pasta, White Sauce", "$8", "1"},
+				{"Canoli", "Dough, Whipped Cream", "$3", "2"},
+				{"Gulash", "Vegetables, Stock, Spices", "$5", "3"},
+				{"Salad", "Vegetables, Fruit, Dressing", "$5", "5"},
 				/*
 				{"Hot Dog", "25"},
 				{"French Fries","23"},
