@@ -1,18 +1,15 @@
-package Manager;
-
-import java.awt.*; 
+import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import ADT.Employee;
-import ADT.EmployeeHandler;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+
+
 
 /*
  * This class is a GUI for managing the employees
@@ -22,6 +19,7 @@ import java.awt.event.WindowEvent;
 
 public class EmployeeWindow extends JFrame implements ActionListener
 {
+
 	
 //Components
 	/*rootFrame*/
@@ -60,11 +58,11 @@ public class EmployeeWindow extends JFrame implements ActionListener
 	
 	
 
-	//public static void main(String[] args)
-	//{
-	//	new EmployeeWindow();
-	//	return;
-	//}
+	public static void main(String[] args)
+	{
+		new EmployeeWindow();
+		return;
+	}
 
 
 	/* 
@@ -277,7 +275,6 @@ public class EmployeeWindow extends JFrame implements ActionListener
 		if(a == Done)
 			{
 				Done_Click(theEmp);
-				dispose();
 			}
 		if(a == Hire_Add)
 			{
@@ -380,6 +377,33 @@ public class EmployeeWindow extends JFrame implements ActionListener
 		empList.setLayoutOrientation(JList.VERTICAL);
 		empList.setVisibleRowCount(8);
 		
+		empList.addListSelectionListener( new ListSelectionListener() {
+		    public void valueChanged(ListSelectionEvent e){
+		    	Object particularEmployee = empList.getSelectedValue();
+				int employeeIndex = empList.getSelectedIndex();
+
+				String theEmp = (String)(particularEmployee);
+
+				String empAddress = getAddress(theEmp);
+				String empPosition = getPosition(theEmp);
+				String empSalary = getSalary(theEmp);
+				String empID = getID(theEmp);
+				
+				Address.setText(empAddress);
+				Position.setText(empPosition);
+				Salary.setText(empSalary);
+				ID.setText(empID);
+				
+				Address.updateUI();
+				Position.updateUI();
+				Salary.updateUI();
+				
+				optionPanel_textPanel.updateUI();
+				optionPanel.updateUI();    	
+			    }
+			} );
+
+		
 		//Setting up the Scroll Pane
 		EmpScroller = new JScrollPane(empList);
 		
@@ -459,7 +483,6 @@ public class EmployeeWindow extends JFrame implements ActionListener
 		Address.setEditable(false);
 		Position.setEditable(false);
 		Salary.setEditable(false);
-		
 	}
 
 	public void Fire_Click(String emp)
