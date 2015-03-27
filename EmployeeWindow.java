@@ -1,9 +1,14 @@
+package Manager;
+
 import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import ADT.Employee;
+import ADT.EmployeeHandler;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +30,7 @@ public class EmployeeWindow extends JFrame implements ActionListener
 	/*rootFrame*/
 	JPanel rootPanel, empPanel, optionPanel;
 	JPanel optionPanel_textPanel, optionPanel_ButtonPanel;
-	JButton Edit, Fire, Hire, Done;
+	JButton Edit, Fire, Hire, Done, Back;
 	JTextField Address, Position, Salary, ID;	
 	JList empList;
 	
@@ -210,18 +215,21 @@ public class EmployeeWindow extends JFrame implements ActionListener
 		Fire = new JButton("Fire");
 		Hire = new JButton("Hire");
 		Done = new JButton("Done");
+		Back = new JButton("Back");
 		
 		Edit.addActionListener(this);
 		Fire.addActionListener(this);
 		Hire.addActionListener(this);
 		Done.addActionListener(this);
+		Back.addActionListener(this);
 
 		optionPanel_ButtonPanel = new JPanel();
-		optionPanel_ButtonPanel.setLayout(new GridLayout(4,1));
+		optionPanel_ButtonPanel.setLayout(new GridLayout(5,1));
 		optionPanel_ButtonPanel.add(Edit);
 		optionPanel_ButtonPanel.add(Fire);
 		optionPanel_ButtonPanel.add(Hire);
 		optionPanel_ButtonPanel.add(Done);
+		optionPanel_ButtonPanel.add(Back);
 
 		optionPanel.add(optionPanel_ButtonPanel);
 	}
@@ -279,7 +287,11 @@ public class EmployeeWindow extends JFrame implements ActionListener
 		if(a == Hire_Add)
 			{
 				Hire_Add_Click();
-			}				
+			}		
+		if(a == Back)
+			{
+				dispose();
+			}
 	}
 
 
