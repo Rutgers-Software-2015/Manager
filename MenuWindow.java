@@ -35,15 +35,6 @@ public class MenuWindow extends JFrame implements ActionListener
 	
 	JTextField nameField, priceField, ingredientField, IDField;
 	
-	/*
-	
-	public static void main(String[] args)
-	{
-		new MenuWindow();
-	}
-	
-	*/
-	
 	
 	public void actionPerformed(ActionEvent e) {
 		Object a = e.getSource();
@@ -77,6 +68,9 @@ public class MenuWindow extends JFrame implements ActionListener
 			ingredientField.setText("New Ingredients");
 			priceField.setText("New Price");
 			IDField.setText("New ID Number");
+			
+			MenuTable.getColumnModel().getColumn(0).setPreferredWidth(130);
+			MenuTable.getColumnModel().getColumn(1).setPreferredWidth(220);
 		}
 		
 		if(a == removeItem)
@@ -105,6 +99,9 @@ public class MenuWindow extends JFrame implements ActionListener
 	        	Menu_RowData = temp;
 	        	MenuTable.setModel(new DefaultTableModel(Menu_RowData, Menu_ColumnNames));
 	        	
+	    		MenuTable.getColumnModel().getColumn(0).setPreferredWidth(130);
+	    		MenuTable.getColumnModel().getColumn(1).setPreferredWidth(220);
+	        	
 	            //remove selected row from the model
 	            // model.removeRow(MenuTable.getSelectedRow());
 	        }
@@ -122,6 +119,9 @@ public class MenuWindow extends JFrame implements ActionListener
 			MenuTable.getModel().setValueAt(tempIngredient, MenuTable.getSelectedRow(), 1);
 			MenuTable.getModel().setValueAt(tempPrice, MenuTable.getSelectedRow(), 2);
 			MenuTable.getModel().setValueAt(tempID, MenuTable.getSelectedRow(), 3);
+			
+			MenuTable.getColumnModel().getColumn(0).setPreferredWidth(130);
+			MenuTable.getColumnModel().getColumn(1).setPreferredWidth(220);
 			
 		}
 		
