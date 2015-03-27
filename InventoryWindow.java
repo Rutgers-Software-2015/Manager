@@ -51,7 +51,10 @@ public class InventoryWindow extends JFrame implements ActionListener
 			
 			String tempNewIngredient = ingredientField.getText();
 			String tempQuantity = quantityField.getText();
-			
+			int quantity=Integer.parseInt(tempQuantity);
+
+
+			IngredientHandler.AddIngredient(tempNewIngredient, quantity);	
 			String[][] temp = new String[Menu_RowData.length + 1][2];
 			
 			for(int i = 0; i < Menu_RowData.length; i++)
@@ -66,7 +69,7 @@ public class InventoryWindow extends JFrame implements ActionListener
 			Menu_RowData = temp;
 			
 			MenuTable.setModel(new DefaultTableModel(Menu_RowData, Menu_ColumnNames));
-			
+
 			ingredientField.setText("New Ingredient");
 			quantityField.setText("New Quantity");
 		}
@@ -75,9 +78,14 @@ public class InventoryWindow extends JFrame implements ActionListener
 		{
 			String tempNewIngredient = ingredientField.getText();
 			String tempQuantity = quantityField.getText();
+			int quantity=Integer.parseInt(tempQuantity);
+			Ingredient temp=(IngredientHandler.FindInventory(tempNewIngredient));
+			IngredientHandler.UpdateInventory(temp, quantity);	
+			String newcount= ""+temp.count;
+			MenuTable.getModel().setValueAt(tempNewIngredient,MenuTable.getSelectedRow(),0);
+			MenuTable.getModel().setValueAt(newcount,MenuTable.getSelectedRow(),1);
 			
-			MenuTable.getModel().setValueAt(tempNewIngredient, MenuTable.getSelectedRow(), 0);
-			MenuTable.getModel().setValueAt(tempQuantity, MenuTable.getSelectedRow(), 1);
+			
 			
 		}
 		
@@ -198,6 +206,7 @@ public class InventoryWindow extends JFrame implements ActionListener
 	public void init_inventory()
 	{
 		//Need to populate the arrays before they are fed to the JTable
+		inglist = new String[IngredientHandler.IngredientList.length][2];
 		Menu_RowData = inglist;
 		getList();
 		MenuTable = new JTable(Menu_RowData, Menu_ColumnNames);
