@@ -1,6 +1,6 @@
 /**
  * InventoryWindow.java
- * Author: Ryan Sanichar and Harsh Shah
+ * Author: Ryan Sanichar
  * 
  * The window for the Inventory. This window
  * allows the user to see the current inventory 
