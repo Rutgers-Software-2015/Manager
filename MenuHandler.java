@@ -1,3 +1,12 @@
+/**
+ * MenuHandler.java
+ * Author: Ryan Sanichar
+ * 
+ * Handler for the MenuWindow.java file
+ * Generates menu items to be used as the menu. 
+ */
+
+
 package Manager;
 
 import java.sql.*; 
@@ -12,58 +21,45 @@ public class MenuHandler {
 	public static String[][] getMenu()
 	{
 		
+		// The following commented code will be used in Demo 2
+		// Implementing a linked list
+		
 		/*
 		LinkedList<LinkedList<String>> Menu = new LinkedList<LinkedList<String>>();
 		LinkedList<String> Stuff = new LinkedList<String>();
 		
-		Stuff.add("John Cena");
-		Stuff.add("Hustle, Loyalty, Respect");
+		Stuff.add("");
+		Stuff.add("");
 		Stuff.add("$28");
 		Stuff.add("0");
 		
 		Menu.add(Stuff);
 		Stuff = new LinkedList<String>(); 
 		
-		Stuff.add("John Cena");
-		Stuff.add("Hustle, Loyalty, Respect");
+		Stuff.add("");
+		Stuff.add("");
 		Stuff.add("$28");
-		Stuff.add("1");
+		Stuff.add("0");
 		
 		Menu.add(Stuff);
 		Stuff = new LinkedList<String>(); 
-	
-		Stuff.add("John Cena");
-		Stuff.add("Hustle, Loyalty, Respect");
-		Stuff.add("$28");
-		Stuff.add("2");
 		
-		Menu.add(Stuff);
-		Stuff = new LinkedList<String>(); 
 		*/
-		
+		// Creating the menu with the name, the ingredients, the price, and the ID
 		String[][] trendArray = 
 		{
+				
+				
 				{"Chicken Sandwich", "Chicken, Bread, Lettuce", "$5", "0"},
 				{"Spinach Alfredo", "Spinach, Pasta, White Sauce", "$8", "1"},
 				{"Canoli", "Dough, Whipped Cream", "$3", "2"},
 				{"Gulash", "Vegetables, Stock, Spices", "$5", "3"},
 				{"Salad", "Vegetables, Fruit, Dressing", "$5", "5"},
-				/*
-				{"Hot Dog", "25"},
-				{"French Fries","23"},
-				{"Pizza","20"},
-				{"Salad","19"},
-				{"Mozzarella Sticks","17"},
-				{"Onion Rings","15"},
-				{"Macaroni","13"},
-				{"Tomata","10"},
-				{"Peas and Carrots","9"},
-				{"Penne Vodka","8"},
-				{"Hot Pockets","5"},
-				{"Chicken Sandwich","3"},
-				{"Broccoli Chedder Soup","1"} */
 				
 		};
+		
+		/* For Demo 2
+		
 		//Connect to DB
 		
 		//Query for Amount sold for each item
@@ -71,6 +67,9 @@ public class MenuHandler {
 		//Format the result set into an array
 		
 		//Return array
+		  
+		 
+		 */
 		
 		return trendArray;
 		// return Menu;
