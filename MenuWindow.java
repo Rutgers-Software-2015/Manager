@@ -1,3 +1,14 @@
+/**
+ * MenuWindow.java
+ * Author: Ryan Sanichar
+ * 
+ * The window for the Menu. This window
+ * allows the user to see the current menu 
+ * in the restaurant, and gives them the ability
+ * to add, remove, and update the menu.
+ * 
+ */
+
 package Manager;
 
 import java.awt.*; 

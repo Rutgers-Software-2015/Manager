@@ -1,5 +1,5 @@
 /**
- * InventoryWindow.java
+ * InventoryWindow.java 
  * Author: Ryan Sanichar
  * 
  * The window for the Inventory. This window
