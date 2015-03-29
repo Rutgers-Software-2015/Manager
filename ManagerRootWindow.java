@@ -1,3 +1,15 @@
+/**
+ * ManagerRootWindow.java
+ * Author: Ryan Sanichar and Harsh Shah
+ * 
+ * The root window for the manager class. This window 
+ * shows the four buttons that lead to the four classes
+ * that the manager can do:
+ * MenuWindow, Employee Window, FinancialWindow, and InventoryWindoiw
+ * 
+ */
+
+
 package Manager;
 
 import java.awt.*;
@@ -32,7 +44,7 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 	GridLayout rootLayout = new GridLayout(1, 1);
 	BorderLayout suboptLayout = new BorderLayout();
 	
-	/*
+	/* Main
 	public static void main(String[] args)
 	{
 		new ManagerRootWindow();
@@ -40,10 +52,12 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 	}	
 	*/
 
+	// Constructor
 	public ManagerRootWindow()
 	{
 		super();
 		init();
+		// Logout when closing window
 		addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent e) {
                 new LoginWindow();
@@ -53,7 +67,7 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 		
 	}
 
-
+	// Initialize manager window
 	public void init()
 	{
 		this.setTitle("Manager");
@@ -66,6 +80,7 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 		this.setVisible(true);
 	}
 
+	// Set the frame manipulation
 	public void frameManipulation()
 	{
 		rootPanel = new JPanel();
@@ -75,10 +90,9 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 		init_OptPanel();
 		rootPanel.add(optionPanel);
 
-		//B_temp = new JButton("Temp Butt");
-		//rootPanel.add(B_temp);
 	}
 	
+	// Initialize all the panels with the buttons
 	public void init_OptPanel()
 	{
 		//Entire Left Panel
@@ -119,35 +133,42 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 		if(a == B_Inventory)
 			{
 				gen_Inventory();
+				//Return Inventory Window
 			}
 		if(a == B_Financials)
 			{
 				gen_Financials_Win();
+				//Return Financial Window
 			}
 		if(a == B_Menu)
 			{
                 gen_Menu();
+                //Return Menu Window
 			}
 	}
 
+	// Generate window function
 	public void gen_Employees_Win()
 	{	
 		Win_Employees = new EmployeeWindow();
 		Win_Employees.setVisible(true);
 	}
 
+	// Generate window function
 	public void gen_Financials_Win()
 	{
 		Win_Financials = new FinancialWindow();
 		Win_Financials.setVisible(true);
 	}
     
+	// Generate window function
     public void gen_Menu()
     {
         Win_Menu = new MenuWindow();
         Win_Menu.setVisible(true);
     }
     
+    // Generate window function
     public void gen_Inventory()
     {
     	Win_Inventory = new InventoryWindow();
