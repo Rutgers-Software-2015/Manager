@@ -1,319 +1,465 @@
-/**
- * InventoryWindow.java 
- * Author: Ryan Sanichar
- * 
- * The window for the Inventory. This window
- * allows the user to see the current inventory 
- * in the restaurant, and gives them the ability
- * to add, remove, and update the inventory.
- * 
- */
-
 package Manager;
-import java.awt.*;    
-import java.awt.event.*;
 
-import javax.swing.*;
-
+import java.awt.*; 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+import java.util.Vector;
 
-import javax.swing.border.*;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import javax.swing.Timer;
+import javax.swing.border.BevelBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.ImageIcon;
 
+import Login.LoginWindow;
+import Manager.MenuHandler;
 import Shared.ADT.Ingredient;
 import Shared.ADT.IngredientHandler;
-import Shared.ADT.MenuItem;
+import Shared.GUITemplates.MainTemplate;
+import Shared.Gradients.*;
+
+import javax.swing.ButtonGroup;
+import javax.swing.border.LineBorder;
 
 
-public class InventoryWindow extends JFrame implements ActionListener
-{	
-	// Frames, panels, and buttons
-	JFrame InventoryAddingFrame;
-	JPanel rootPanel, buttonPanel;
-	static JPanel textPanel;
-	JButton addNewInventory, removeInventory, updateInventory, logOut;
+
+public class InventoryWindow extends JFrame implements ActionListener{
+
 	
-	// Layouts
-	GridLayout rootLayout = new GridLayout(0,2);
-	GridLayout buttonLayout = new GridLayout(6,0);
-	GridLayout textLayout = new GridLayout(1,1);
-	GridLayout AddingLayout = new GridLayout(4,0);
-	
-	// Scroller
-	JScrollPane MenuScroller;
-	
-	// Table that will show the data from the inventory
-	JTable InventoryTable;
-	
-	// String that holds the inventory
-	String[][] Inventory_RowData = new String[IngredientHandler.IngredientList.length][2];
-	String[] Inventory_ColumnNames = {"Name of Ingredient", "Quantity"};
-	
-	// Text fields for users to write ingredient name and quantity added to the ingredient
-	JTextField ingredientField, quantityField;
-	
-	// A temporary ingredient array and double array used to hold
-	// to get the data and display it onto the table
-	Ingredient tempIngredient[] = IngredientHandler.IngredientList;
-	String[][] inglist = new String[tempIngredient.length][2];
-	
-	// Actions performed by the button
-	public void actionPerformed(ActionEvent e) {
-		Object a = e.getSource();
+		//Parent Panels
+		private JPanel rootPanel,titlePanel,buttonPanel;
+		private GradientPanel backgroundPanel,buttonPanelBackground,cardPanel;
+		private GradientPanel card1,card2,card3;
+		//Swing Objects
+		private GradientButton addButton, removeButton, updateButton, backButton;
+		private JButton payWithCash, payWithCard;
+		private JLabel titleLabel,dateAndTime;
+		//Swing Layouts
+		private CardLayout c;
+		//Other Variables
+		private Timer timer;
 		
-		// When the addNewInventory button is selected
-		if(a == addNewInventory)
+		private JFrame InventoryAddingFrame;
+		
+		// Scroller
+		private JScrollPane InventoryScroller;
+		
+		// Table that will show the data from the menu
+		private JTable InventoryTable;
+		
+		// String that holds the menu
+		private String[][] Inventory_RowData = new String[IngredientHandler.IngredientList.length][2];
+		private String[] Inventory_ColumnNames = {"Name of Ingredient", "Quantity"};
+		
+		
+		// Text fields for users to write name, price, ingredients, and ID
+		private JTextField ingredientField, quantityField;
+		
+		static JPanel textPanel;
+		
+		// A temporary ingredient array and double array used to hold
+		// to get the data and display it onto the table
+		Ingredient tempIngredient[] = IngredientHandler.IngredientList;
+		String[][] inglist = new String[tempIngredient.length][2];
+		
+		public InventoryWindow()
+		{
+			super();
+			init();
+		}
+
+		public void init()
+		{
+			this.setTitle("Edit Inventory");
+			this.setResizable(true);
+			this.setSize(1200,700);
+			this.frameManipulation();
+			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			setLocationRelativeTo(null);
+			this.setResizable(false);
+			getContentPane().add(rootPanel);
+			
+			addWindowListener(new WindowAdapter() // To open main window again if you hit the corner "X"
+	        {
+	            @Override
+	            public void windowClosing(WindowEvent e)
+	            {
+	                new ManagerRootWindow();
+	                dispose();
+	            }
+	        });
+			
+			c = (CardLayout)(cardPanel.getLayout());
+			
+			this.setVisible(true);
+		}
+
+		public void frameManipulation()
+		{
+			rootPanel = new JPanel();
+			rootPanel.setLayout(null);
+			setBackgroundPanel();
+			setTitlePanel();
+			setCardPanel();
+			setButtonPanel();
+			setRootPanel();
+		}
+		
+		private void setRootPanel()
+		{
+			rootPanel.add(titlePanel);
+			rootPanel.add(cardPanel);
+			rootPanel.add(buttonPanel);
+			rootPanel.add(buttonPanelBackground);
+			rootPanel.add(backgroundPanel);
+		}
+		
+		private void setBackgroundPanel()
+		{
+			// Create Button Background Panel
+			buttonPanelBackground = new GradientPanel();
+			buttonPanelBackground.setGradient(new Color(255,220,220), new Color(255,110,110));
+			buttonPanelBackground.setBounds(0, 55, 250, 617);
+			buttonPanelBackground.setBorder(new LineBorder(new Color(0, 0, 0)));
+			
+			// Create Background Panel
+			backgroundPanel = new GradientPanel();
+			backgroundPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+			backgroundPanel.setGradient(new Color(255,255,255), new Color(255,110,110));
+			backgroundPanel.setLayout(null);
+			backgroundPanel.setBounds(0,0,1194,672);
+		}
+		
+		//************************************************************
+		//DO NOT edit the following function except for the title name
+		//************************************************************
+		
+		private void setTitlePanel()
+		{
+			// Create Title Panel
+			titlePanel = new JPanel();
+			titlePanel.setBounds(0, 0, 1194, 56);
+			titlePanel.setLayout(null);
+			titlePanel.setOpaque(false);
+			// Set Title
+			titleLabel = new JLabel("Edit Inventory Interface");
+			titleLabel.setHorizontalAlignment(JLabel.CENTER);
+			titleLabel.setFont(titleLabel.getFont().deriveFont(38f));
+			titleLabel.setBorder(BorderFactory.createLineBorder(Color.black));
+			titleLabel.setBounds(new Rectangle(0, 0, 793, 56));
+			
+						// Add components to Title Panel
+						titlePanel.add(titleLabel);
+						// Set Date and Time
+						dateAndTime = new JLabel();
+						dateAndTime.setBounds(792, 0, 402, 56);
+						titlePanel.add(dateAndTime);
+						dateAndTime.setHorizontalAlignment(JLabel.CENTER);
+						dateAndTime.setFont(dateAndTime.getFont().deriveFont(28f));
+						dateAndTime.setBorder(BorderFactory.createLineBorder(Color.black));
+						updateClock();
+						// Create a timer to update the clock
+						timer = new Timer(500,this);
+			            timer.setRepeats(true);
+			            timer.setCoalesce(true);
+			            timer.setInitialDelay(0);
+			            timer.start();
+		}
+		
+		//*********************************************************
+		//DO NOT change the location of the following panel
+		//*********************************************************
+		
+		private void setButtonPanel()
 		{
 			
-			// Retreive data from the text fields
-			String tempNewIngredient = ingredientField.getText();
-			String tempQuantity = quantityField.getText();
-			int quantity;
+			// Create Button Panel
+			buttonPanel = new JPanel();
+			buttonPanel.setBounds(7, 61, 236, 604);
+			buttonPanel.setOpaque(false);
+			buttonPanel.setBorder(null);
+			buttonPanel.setLayout(new GridLayout(6, 0, 5, 5));
+			
+			//Initialize text fields
+			ingredientField = new JTextField("New Ingredients");
+			quantityField = new JTextField("New Quantity");
+			
+			// Make text fields editable
+			ingredientField.setEditable(true);
+			quantityField.setEditable(true);
+			
+			// Add the text fields to the panel
+			buttonPanel.add(ingredientField);
+			buttonPanel.add(quantityField);
+			
+			
+			addButton = new GradientButton("Add Inventory Item");
+			addButton.addActionListener(this);
+			addButton.setFont(addButton.getFont().deriveFont(16.0f));
+			addButton.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+			addButton.setFocusPainted(false);
+			
+			
+			removeButton = new GradientButton("Remove Inventory Item");
+			removeButton.addActionListener(this);
+			removeButton.setFont(removeButton.getFont().deriveFont(16.0f));
+			removeButton.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+			removeButton.setFocusPainted(false);
+			
 
-			try {
+			updateButton = new GradientButton("Edit Inventory Item");
+			updateButton.addActionListener(this);
+			updateButton.setFont(updateButton.getFont().deriveFont(16.0f));
+			updateButton.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+			updateButton.setFocusPainted(false);
+			
+			// Set Back Button
+			backButton = new GradientButton("BACK");
+			backButton.addActionListener(this);												
+			backButton.setFont(backButton.getFont().deriveFont(16.0f));
+			backButton.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+			backButton.setFocusPainted(false);
+			
+			buttonPanel.add(addButton);
+			buttonPanel.add(removeButton);
+			buttonPanel.add(updateButton);
+			buttonPanel.add(backButton);
+		}
+		
+		public void init_inventory()
+		{
+			//Need to populate the arrays before they are fed to the JTable
+			inglist = new String[IngredientHandler.IngredientList.length][2];
+			Inventory_RowData = inglist;
+			getList();
+			InventoryTable = new JTable(Inventory_RowData, Inventory_ColumnNames);
+			InventoryScroller = new JScrollPane(InventoryTable);
+			InventoryTable.setFillsViewportHeight(true);
+			
+		}
+		
+		// Get the list
+		public void getList()
+		{
+
+			for(int i = 0; i < inglist.length; i++)
+			{
+				for(int j = 0; j < inglist[1].length; j++)
+				{
+					if(j == 0)
+					{
+						inglist[i][j] = tempIngredient[i].name;
+					}
+					if(j == 1)
+					{
+						inglist[i][j] = "" + tempIngredient[i].count;
+					}
+				}
+			}
+			
+		}
+		
+		//********************************************************************************
+		//DO NOT deviate from the card layout or change the size/location of the cardPanel.
+		//Creating and adding cards is OK
+		//********************************************************************************
+	
+		public void init_textPanel()
+		{
+			init_inventory();
+			rootPanel.add(textPanel);
+			
+		}
+		
+		private void setCardPanel()
+		{
+			cardPanel = new GradientPanel();
+			cardPanel.setLayout(new CardLayout()); // How to define a Card Layout
+			cardPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+			cardPanel.setGradient(new Color(255,255,255), new Color(255,110,110));
+			cardPanel.setBounds(273, 79, 896, 569);
+			
+			init_inventory();
+			
+			card1 = new GradientPanel();
+			card1.add(InventoryScroller); 
+			card1.setLayout(new GridLayout(1,0));
+			
+			cardPanel.add(card1,""); // How to add cards to a Card Layout
+			
+			cardPanel.setVisible(true); 
+			
+			/*
+			
+			card1 = new GradientPanel(); // Create card with a button YES
+			card1.add(new JButton("YES"));
+			card1.setLayout(new GridLayout(1,0));
+			
+			card2 = new GradientPanel(); // Create card with a button NO
+			card2.setLayout(new GridLayout(1,0));
+			card2.add(new JButton("NO"));
+			
+			card3 = new GradientPanel(); // Create blank card
+			
+			cardPanel.add(card1,"YES"); // How to add cards to a Card Layout
+			cardPanel.add(card2,"NO"); // The string can be named anything, the string is how you call the card
+			cardPanel.add(card3,"BLANK");
+			
+			cardPanel.setVisible(true); 
+			*/
+		}
+		
+		// Action Listener
+		public void actionPerformed(ActionEvent e) 
+		{
+			Object a = e.getSource();
+			if(a == backButton)
+				{
+					new MainTemplate();
+					dispose();
+				}
+			if(a == addButton)
+				{
+				// Retreive data from the text fields
+				String tempNewIngredient = ingredientField.getText();
+				String tempQuantity = quantityField.getText();
+				int quantity;
+
+				try {
+						
+					// Set the quantity and the name of the ingredient to the handler
+					quantity=Integer.parseInt(tempQuantity);
+					IngredientHandler.AddIngredient(tempNewIngredient, quantity);
 					
-				// Set the quantity and the name of the ingredient to the handler
-				quantity=Integer.parseInt(tempQuantity);
-				IngredientHandler.AddIngredient(tempNewIngredient, quantity);
+					// Make a new temp array of size + 1 to add the new item
+					String[][] temp = new String[Inventory_RowData.length + 1][2];
+					
+					// For loop to make the new table
+					for(int i = 0; i < Inventory_RowData.length; i++)
+					{
+						for(int j = 0; j < 2; j++)
+							temp[i][j] = Inventory_RowData[i][j];
+					}
+					
+					// Make the new rows
+					temp[Inventory_RowData.length][0] = tempNewIngredient;
+					temp[Inventory_RowData.length][1] = tempQuantity;
+					
+					// Set the new table
+					Inventory_RowData = temp;
+					InventoryTable.setModel(new DefaultTableModel(Inventory_RowData, Inventory_ColumnNames));
+					
+				} 
 				
-				// Make a new temp array of size + 1 to add the new item
-				String[][] temp = new String[Inventory_RowData.length + 1][2];
-				
-				// For loop to make the new table
-				for(int i = 0; i < Inventory_RowData.length; i++)
+				// If the user inputs a value that is not a number
+				catch (NumberFormatException e1)
 				{
-					for(int j = 0; j < 2; j++)
-						temp[i][j] = Inventory_RowData[i][j];
+					JOptionPane.showMessageDialog(InventoryAddingFrame, "Please enter a number for quantity.");
+				}
+
+				// Return the text to asking for New Ingredient and New Quantity
+				ingredientField.setText("New Ingredient");
+				quantityField.setText("New Quantity");
+				}
+			if(a == removeButton)
+				{
+
+				// User need to selects a row
+		        if (InventoryTable.getSelectedRow() != -1) 
+		        {
+		        	// Get the position of the selected row
+		        	int position = InventoryTable.getSelectedRow();
+		        	
+		        	// Temporary array 
+		        	String[][] temp = new String[Inventory_RowData.length - 1][2];
+		        	
+		        	// The removed item removed from the handler
+		        	String removed=(String) InventoryTable.getValueAt(position, 0);
+		        	IngredientHandler.Remove(removed);
+		        	
+		        	// Remake the table
+		        	for(int i = 0; i < position; i++)
+		        	{
+		        		temp[i][0] = Inventory_RowData[i][0];
+		        		temp[i][1] = Inventory_RowData[i][1];
+		        	}
+		        	
+		        	for(int i = position + 1; i < Inventory_RowData.length; i++)
+		        	{
+		        		temp[i-1][0] = Inventory_RowData[i][0];
+		        		temp[i-1][1] = Inventory_RowData[i][1];	
+		        	}
+		        	
+		        	// Make the new table
+		        	Inventory_RowData = temp;
+		        	InventoryTable.setModel(new DefaultTableModel(Inventory_RowData, Inventory_ColumnNames));
+		        }
+		        
+		        
+		        // Error
+		        else
+		        {
+		        	JOptionPane.showMessageDialog(InventoryAddingFrame, "Please select a menu item.");
+		        }
+				
+			}
+			if(a == updateButton)
+				{
+				// User needs to select a row
+				if(InventoryTable.getSelectedRow() != -1)
+				{
+				// Retreive data from the text file
+				String tempNewIngredient = ingredientField.getText();
+				String tempQuantity = quantityField.getText();
+				// Send the data to the handler
+				int quantity=Integer.parseInt(tempQuantity);
+				Ingredient temp=(IngredientHandler.FindInventory(tempNewIngredient));
+				IngredientHandler.UpdateInventory(temp, quantity);	
+				String newcount= ""+temp.count;
+				
+				// Update the table
+				InventoryTable.getModel().setValueAt(tempNewIngredient,InventoryTable.getSelectedRow(),0);
+				InventoryTable.getModel().setValueAt(newcount,InventoryTable.getSelectedRow(),1);
 				}
 				
-				// Make the new rows
-				temp[Inventory_RowData.length][0] = tempNewIngredient;
-				temp[Inventory_RowData.length][1] = tempQuantity;
+				// Error message
+		        else
+		        {
+		        	JOptionPane.showMessageDialog(InventoryAddingFrame, "Please select a menu item.");
+		        }
 				
-				// Set the new table
-				Inventory_RowData = temp;
-				InventoryTable.setModel(new DefaultTableModel(Inventory_RowData, Inventory_ColumnNames));
 				
-			} 
-			
-			// If the user inputs a value that is not a number
-			catch (NumberFormatException e1)
-			{
-				JOptionPane.showMessageDialog(InventoryAddingFrame, "Please enter a number for quantity.");
-			}
-
-			// Return the text to asking for New Ingredient and New Quantity
-			ingredientField.setText("New Ingredient");
-			quantityField.setText("New Quantity");
-		}
-		
-		// If you select UpdateInventory
-		if(a == updateInventory)
-		{
-			// User needs to select a row
-			if(InventoryTable.getSelectedRow() != -1)
-			{
-			// Retreive data from the text file
-			String tempNewIngredient = ingredientField.getText();
-			String tempQuantity = quantityField.getText();
-			// Send the data to the handler
-			int quantity=Integer.parseInt(tempQuantity);
-			Ingredient temp=(IngredientHandler.FindInventory(tempNewIngredient));
-			IngredientHandler.UpdateInventory(temp, quantity);	
-			String newcount= ""+temp.count;
-			
-			// Update the table
-			InventoryTable.getModel().setValueAt(tempNewIngredient,InventoryTable.getSelectedRow(),0);
-			InventoryTable.getModel().setValueAt(newcount,InventoryTable.getSelectedRow(),1);
-			}
-			
-			// Error message
-	        else
-	        {
-	        	JOptionPane.showMessageDialog(InventoryAddingFrame, "Please select a menu item.");
-	        }
-			
-			
-			
-		}
-		
-		// RemoveInventory button
-		if(a == removeInventory)
-		{
-			
-			// User need to selects a row
-	        if (InventoryTable.getSelectedRow() != -1) 
-	        {
-	        	// Get the position of the selected row
-	        	int position = InventoryTable.getSelectedRow();
-	        	
-	        	// Temporary array 
-	        	String[][] temp = new String[Inventory_RowData.length - 1][2];
-	        	
-	        	// The removed item removed from the handler
-	        	String removed=(String) InventoryTable.getValueAt(position, 0);
-	        	IngredientHandler.Remove(removed);
-	        	
-	        	// Remake the table
-	        	for(int i = 0; i < position; i++)
-	        	{
-	        		temp[i][0] = Inventory_RowData[i][0];
-	        		temp[i][1] = Inventory_RowData[i][1];
-	        	}
-	        	
-	        	for(int i = position + 1; i < Inventory_RowData.length; i++)
-	        	{
-	        		temp[i-1][0] = Inventory_RowData[i][0];
-	        		temp[i-1][1] = Inventory_RowData[i][1];	
-	        	}
-	        	
-	        	// Make the new table
-	        	Inventory_RowData = temp;
-	        	InventoryTable.setModel(new DefaultTableModel(Inventory_RowData, Inventory_ColumnNames));
-	        }
-	        
-	        
-	        // Error
-	        else
-	        {
-	        	JOptionPane.showMessageDialog(InventoryAddingFrame, "Please select a menu item.");
-	        }
-			
-		}
-		
-		// Logout
-		if(a == logOut)
-		{
-			dispose();
-		}
-		
-	}
-
-	// Make the window
-	public static void main(String[] args)
-	{
-		new InventoryWindow();
-	}
-	
-	// Make the window
-	public InventoryWindow()
-	{
-		super();
-		init();
-	}
-	
-	// Initialize the frames
-	public void init()
-	{
-		this.setTitle("Manager - Edit Inventory");
-		this.setResizable(true);
-		this.setSize(900,600);
-		this.frameManipulation();
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.add(rootPanel);
-		this.setVisible(true);	
-	}
-	
-	// Frame manipulation 
-	public void frameManipulation()
-	{
-		rootPanel = new JPanel();
-		rootPanel.setLayout(rootLayout);
-		
-		buttonPanel = new JPanel();
-		buttonPanel.setLayout(buttonLayout);
-		init_buttonPanel();
-		
-		textPanel = new JPanel();
-		textPanel.setLayout(textLayout);
-		init_textPanel();
-	}
-	
-	// Initialize the panel
-	public void init_buttonPanel()
-	{
-	
-		
-		//Initialize text fields
-		ingredientField = new JTextField("New Ingredient");
-		quantityField = new JTextField("New Quantity");
-		
-		// Make text fields editable
-		ingredientField.setEditable(true);
-		quantityField.setEditable(true);
-
-		// Add the text fields to the panel
-		buttonPanel.add(ingredientField);
-		buttonPanel.add(quantityField);
-		
-		//Initialize buttons
-		addNewInventory = new JButton("Add New Inventory");
-		updateInventory = new JButton("Update Inventory");
-		removeInventory = new JButton("Delete Ingredient");
-		logOut = new JButton("Back");
-		
-		//Add the action listeners
-		addNewInventory.addActionListener(this);
-		updateInventory.addActionListener(this);
-		removeInventory.addActionListener(this);
-		logOut.addActionListener(this);
-		
-		//Add to the panel
-		buttonPanel.add(addNewInventory);
-		buttonPanel.add(updateInventory);
-		buttonPanel.add(removeInventory);
-		buttonPanel.add(logOut);
-		
-		rootPanel.add(buttonPanel);
-		
-	}
-	
-	// Initialize the text panel
-	public void init_textPanel()
-	{
-		
-		init_inventory();
-		rootPanel.add(textPanel);	
-	}
-	
-	// Initialize the inventory 
-	public void init_inventory()
-	{
-		//Need to populate the arrays before they are fed to the JTable
-		inglist = new String[IngredientHandler.IngredientList.length][2];
-		Inventory_RowData = inglist;
-		getList();
-		InventoryTable = new JTable(Inventory_RowData, Inventory_ColumnNames);
-		MenuScroller = new JScrollPane(InventoryTable);
-		InventoryTable.setFillsViewportHeight(true);
-		
-		textPanel.add(MenuScroller); 
-	}
-
-	// Get the list
-	public void getList()
-	{
-
-		for(int i = 0; i < inglist.length; i++)
-		{
-			for(int j = 0; j < inglist[1].length; j++)
-			{
-				if(j == 0)
-				{
-					inglist[i][j] = tempIngredient[i].name;
 				}
-				if(j == 1)
+			if(a == timer)
 				{
-					inglist[i][j] = "" + tempIngredient[i].count;
+					updateClock();
 				}
-			}
 		}
 		
-	}
-	
-
-	
+		private void updateClock() {
+            dateAndTime.setText(DateFormat.getDateTimeInstance().format(new Date()));
+        }
 }

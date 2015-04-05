@@ -99,7 +99,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 	            @Override
 	            public void windowClosing(WindowEvent e)
 	            {
-	                new MainTemplate();
+	            	new ManagerRootWindow();
 	                dispose();
 	            }
 	        });
