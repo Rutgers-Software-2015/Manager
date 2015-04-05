@@ -1,14 +1,14 @@
 package Manager;
 
-import java.awt.*;
+import java.awt.*; 
 import java.awt.event.*;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import ADT.Employee;
-import ADT.EmployeeHandler;
+import Shared.ADT.Employee;
+import Shared.ADT.EmployeeHandler;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

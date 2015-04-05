@@ -10,7 +10,7 @@
  */
 
 package Manager;
-import java.awt.*;   
+import java.awt.*;    
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -23,9 +23,9 @@ import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.ImageIcon;
 
-import ADT.Ingredient;
-import ADT.IngredientHandler;
-import ADT.MenuItem;
+import Shared.ADT.Ingredient;
+import Shared.ADT.IngredientHandler;
+import Shared.ADT.MenuItem;
 
 
 public class InventoryWindow extends JFrame implements ActionListener

@@ -8,7 +8,7 @@
 
 
 package Manager;
-import ADT.Ingredient;
+import Shared.ADT.Ingredient;
 
 
 public class InventoryHandler {
