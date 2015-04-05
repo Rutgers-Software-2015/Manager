@@ -28,6 +28,7 @@ public class EmployeeWindow extends JFrame implements ActionListener
 	
 //Components
 	/*rootFrame*/
+	// Here we have button, panel, text-field, and list declarations so that they may be used throughout the rest of the code.
 	JPanel rootPanel, empPanel, optionPanel;
 	JPanel optionPanel_textPanel, optionPanel_ButtonPanel;
 	JButton Edit, Fire, Hire, Done, Back;
@@ -129,12 +130,16 @@ public class EmployeeWindow extends JFrame implements ActionListener
 		//Setting Up List of Employees		
 		empList = new JList(EmployeeNameArray);
 		
+		// Here I declared an action listener, which will perform the action within the action listener statement once the
+		// item has been selected on the list.
 		ListSelectionModel t = empList.getSelectionModel();
 		empList.addListSelectionListener( new ListSelectionListener() {
 		    public void valueChanged(ListSelectionEvent e){
 		    	Object particularEmployee = empList.getSelectedValue();
 				int employeeIndex = empList.getSelectedIndex();
-
+				
+				// The following is simply used to display what will be shown on the list.
+				
 				String theEmp = (String)(particularEmployee);
 
 				String empAddress = getAddress(theEmp);
@@ -156,6 +161,7 @@ public class EmployeeWindow extends JFrame implements ActionListener
 			    }
 			} );
 		
+		// Changing the specifications of the list
 		empList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		empList.setLayoutOrientation(JList.VERTICAL);
 		empList.setVisibleRowCount(8);
@@ -204,7 +210,7 @@ public class EmployeeWindow extends JFrame implements ActionListener
 		ID.setEditable(false);
 		
 		
-		
+		// Adding items to the option panel
 		optionPanel_textPanel.add(Address);
 		optionPanel_textPanel.add(Position);
 		optionPanel_textPanel.add(Salary);
@@ -238,7 +244,7 @@ public class EmployeeWindow extends JFrame implements ActionListener
 	
 
 
-
+	// Separate function for action listener
 	public void actionPerformed(ActionEvent e) 
 	{
 		
@@ -265,6 +271,18 @@ public class EmployeeWindow extends JFrame implements ActionListener
 		optionPanel_textPanel.updateUI();
 		optionPanel.updateUI();*/
 	
+		// If a certain item gets clicked, do the following:
+		// Edit clicked -> register that edit was clicked
+			// Do the action that edit pertains to
+		// Hire clicked -> register that hire was clicked
+			// Do the action that hire pertains to
+		// Fire clicked -> register that fire was clicked
+			// Do the action that fire pertains to
+		// Done clicked -> register that done was clicked
+			// Do the action that done pertains to
+		// Hire_Add clicked -> register that done was clicked
+					// Do the action that Hire_Add pertains to
+		
 		Object a = e.getSource();
 		if(a == Edit)
 			{
@@ -298,8 +316,12 @@ public class EmployeeWindow extends JFrame implements ActionListener
 	/*****************************
 	 * All click action functions*
 	 *****************************/
+	
+	// What happens when previous action listeners are activated:
+	
 	public void Edit_Click()
 	{
+		// Set the address, position, and salary to be editable
 		Address.setEditable(true);
 		Position.setEditable(true);
 		Salary.setEditable(true);
@@ -308,6 +330,7 @@ public class EmployeeWindow extends JFrame implements ActionListener
 	
 	public void Hire_Click()
 	{ 
+		
 		HireFrame = new JFrame();
 		HireFrame.setTitle("Manger--Employees--Hire");
 		HireFrame.setResizable(true);
