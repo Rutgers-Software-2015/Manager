@@ -1,3 +1,5 @@
+package Manager;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,7 +26,7 @@ import javax.swing.event.ChangeListener;
 
 //import Login.LoginWindow;
 import Shared.Gradients.*;
-
+import Login.LoginWindow;
 
 public class ManagerRootWindow extends JFrame implements ActionListener{
 
@@ -41,8 +43,8 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 		//Manager Sub Buttons
 		private GradientButton EmployeeButton;
 		private GradientButton FinancialsButton;
-		private GradientButton Button3;
-		private GradientButton Button4;
+		private GradientButton InventoryButton;
+		private GradientButton MenuButton;
 		
 		public static void main(String[] args)
 		{
@@ -175,13 +177,15 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 			FinancialsButton.setFont(FinancialsButton.getFont().deriveFont(16.0f));
 			buttonPanel.add(FinancialsButton);
 			
-			Button3 = new GradientButton("New button");
-			Button3.setFont(Button3.getFont().deriveFont(16.0f));
-			buttonPanel.add(Button3);
+			InventoryButton = new GradientButton("Inventory");
+			InventoryButton.setFont(InventoryButton.getFont().deriveFont(16.0f));
+			InventoryButton.addActionListener(this);
+			buttonPanel.add(InventoryButton);
 			
-			Button4 = new GradientButton("New button");
-			Button4.setFont(Button4.getFont().deriveFont(16.0f));
-			buttonPanel.add(Button4);
+			MenuButton = new GradientButton("Menu");
+			MenuButton.setFont(MenuButton.getFont().deriveFont(16.0f));
+			MenuButton.addActionListener(this);
+			buttonPanel.add(MenuButton);
 			
 			buttonPanel.setOpaque(false);
 			buttonPanel.setVisible(true);
@@ -196,9 +200,19 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 				new  EmployeeWindow();
 				dispose();
 			}
+			if(a == MenuButton)
+				{
+					new MenuWindow();
+					dispose();
+				}
+			if(a == InventoryButton)
+				{
+				new InventoryWindow();
+				dispose();
+				}
 			if(a == logoutButton)
 				{
-					//new LoginWindow();
+					new LoginWindow();
 					dispose();
 				}
 			if(a == timer)

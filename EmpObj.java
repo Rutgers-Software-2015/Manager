@@ -1,3 +1,4 @@
+package Manager;
 
 public class EmpObj {
 	public String first_name, last_name;

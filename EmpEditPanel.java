@@ -1,3 +1,5 @@
+package Manager;
+
 import java.awt.*; 
 
 import javax.swing.JLabel;
