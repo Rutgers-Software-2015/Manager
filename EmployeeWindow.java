@@ -1,712 +1,401 @@
-package Manager;
+
 
 import java.awt.*; 
-import java.awt.event.*;
-
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import Shared.ADT.Employee;
-import Shared.ADT.EmployeeHandler;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+import java.util.Vector;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import javax.swing.Timer;
+import javax.swing.border.BevelBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 
 
-/*
- * This class is a GUI for managing the employees
- * It will have  HIRE, FIRE, EDIT buttons
- * It will display a list of employees to operate on
- */
+//import Login.LoginWindow;
+import Shared.Gradients.*;
 
-public class EmployeeWindow extends JFrame implements ActionListener
-{
-
-	
-//Components
-	/*rootFrame*/
-	// Here we have button, panel, text-field, and list declarations so that they may be used throughout the rest of the code.
-	JPanel rootPanel, empPanel, optionPanel;
-	JPanel optionPanel_textPanel, optionPanel_ButtonPanel;
-	JButton Edit, Fire, Hire, Done, Back;
-	JTextField Address, Position, Salary, ID;	
-	JList empList;
-	
-	/*HireFrame*/
-	JFrame HireFrame;
-	JPanel Hire_rootPanel, Hire_Address, Hire_Position, Hire_Salary, Hire_Name, Hire_ID;
-	JButton Hire_Add;
-	JTextField H_Address, H_Position, H_Salary, H_Name, H_ID;
-	
-	JScrollPane EmpScroller;
-	
-//Layouts
-	/*RootFrame Layouts*/
-	GridLayout frameLayout = new GridLayout(0,2);
-	GridLayout optionLayout = new GridLayout(2, 0);
-	GridLayout empLayout = new GridLayout(0,1);
-		
-	/*HireFrame Layouts*/
-	GridLayout HireLayout = new GridLayout(6,0);
-
-//Variables
-	String newAddress, newPosition, newSalary, newID;
-	Employee[] EmployeeArray;
-	String[] EmployeeNameArray;
-	
-	
-	//TESTING VARIABLES
-	// This string is temporary for testing purposes	
-	String[] theEmployees = {"Jane Doe", "Harsh Shah", "Ryan Sanichar", "David Ark", "Sam Baysting", "Rahul Tandon", "Rob Schultz"};
-	
-	
-
-	public static void main(String[] args)
-	{
-		new EmployeeWindow();
-		return;
-	}
+import javax.swing.ButtonGroup;
+import javax.swing.border.LineBorder;
 
 
-	/* 
-		This function will generate the window
-	*/
-	public EmployeeWindow()
-	{
-		super();
-		init();
-	}
 
-	/*
-		This function will establish the window settings
-	*/
-	public void init()
-	{
-		this.setTitle("Manger--Employees");
-		this.setResizable(true);
-		this.setSize(700,700);
-		this.frameManipulation();
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.add(rootPanel);
-		this.setVisible(true);
-	}
-
-	/*
-		This function will add all sub-panels to the @rootPanel
-	*/
-	public void frameManipulation()
-	{	
-		//initialize rootPanel
-		rootPanel = new JPanel();
-		rootPanel.setLayout(frameLayout);
-		
-		//initialize employee panel
-		empPanel = new JPanel();
-		empPanel.setLayout(empLayout);		
-		init_empPanel();
-		
-		//initialize the option panel
-		optionPanel = new JPanel();
-		optionPanel.setLayout(optionLayout);
-		init_optionPanel();
-	
-		//Add Panels to root panel
-		rootPanel.add(empPanel);
-		rootPanel.add(optionPanel);
-	}
-
-	/*
-		This function established the settings of the employee panel
-		The employee panel contains a list of all the employees
-	*/
-	public void init_empPanel()
-	{
-		//get all the employees for the list
-		getEmployees();
-		
-		//Setting Up List of Employees		
-		empList = new JList(EmployeeNameArray);
-		
-		// Here I declared an action listener, which will perform the action within the action listener statement once the
-		// item has been selected on the list.
-		ListSelectionModel t = empList.getSelectionModel();
-		empList.addListSelectionListener( new ListSelectionListener() {
-		    public void valueChanged(ListSelectionEvent e){
-		    	Object particularEmployee = empList.getSelectedValue();
-				int employeeIndex = empList.getSelectedIndex();
-				
-				// The following is simply used to display what will be shown on the list.
-				
-				String theEmp = (String)(particularEmployee);
-
-				String empAddress = getAddress(theEmp);
-				String empPosition = getPosition(theEmp);
-				String empSalary = getSalary(theEmp);
-				String empID = getID(theEmp);
-				
-				Address.setText(empAddress);
-				Position.setText(empPosition);
-				Salary.setText(empSalary);
-				ID.setText(empID);
-				
-				Address.updateUI();
-				Position.updateUI();
-				Salary.updateUI();
-				
-				optionPanel_textPanel.updateUI();
-				optionPanel.updateUI();    	
-			    }
-			} );
-		
-		// Changing the specifications of the list
-		empList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		empList.setLayoutOrientation(JList.VERTICAL);
-		empList.setVisibleRowCount(8);
-		
-		
-		
-		//Setting up the Scroll Pane
-		EmpScroller = new JScrollPane(empList);
-		
-		
-		//Add the Scroll Pane to Employee Panel
-		empPanel.add(EmpScroller);
-	}
-
-	/*
-		This function established the option panel
-		The option panel contains informaton of the employees
-		and it contains buttons to alter information
-	*/	
-	public void init_optionPanel()
-	{
-		optionPanel_textPanel = new JPanel();
-		optionPanel_textPanel.setLayout(new GridLayout(4,1));
-		
-		//Address Text Field
-		Address = new JTextField();
-		Address.setEditable(false);
-		JLabel AddressLabel = new JLabel("Address");
-		AddressLabel.setLabelFor(Address);
-
-		//Position Text Field
-		Position = new JTextField();
-		Position.setEditable(false);
-		JLabel PositionLabel = new JLabel("Position");
-		PositionLabel.setLabelFor(Position);
-
-
-		//Salary Text Field
-		Salary = new JTextField();
-		Salary.setEditable(false);
-		JLabel SalaryLabel = new JLabel("Salary");
-		SalaryLabel.setLabelFor(Salary);
-
-		//Id Text Field
-		ID = new JTextField();
-		ID.setEditable(false);
-		
-		
-		// Adding items to the option panel
-		optionPanel_textPanel.add(Address);
-		optionPanel_textPanel.add(Position);
-		optionPanel_textPanel.add(Salary);
-		optionPanel_textPanel.add(ID);
-		optionPanel.add(optionPanel_textPanel);
-		
-		Edit = new JButton("Edit");
-		Fire = new JButton("Fire");
-		Hire = new JButton("Hire");
-		Done = new JButton("Done");
-		Back = new JButton("Back");
-		
-		Edit.addActionListener(this);
-		Fire.addActionListener(this);
-		Hire.addActionListener(this);
-		Done.addActionListener(this);
-		Back.addActionListener(this);
-
-		optionPanel_ButtonPanel = new JPanel();
-		optionPanel_ButtonPanel.setLayout(new GridLayout(5,1));
-		optionPanel_ButtonPanel.add(Edit);
-		optionPanel_ButtonPanel.add(Fire);
-		optionPanel_ButtonPanel.add(Hire);
-		optionPanel_ButtonPanel.add(Done);
-		optionPanel_ButtonPanel.add(Back);
-
-		optionPanel.add(optionPanel_ButtonPanel);
-	}
+public class EmployeeWindow extends JFrame implements ActionListener{
 
 	
-	
-
-
-	// Separate function for action listener
-	public void actionPerformed(ActionEvent e) 
-	{
+		//Parent Panels
+		private JPanel rootPanel,titlePanel,buttonPanel;
+		private GradientPanel backgroundPanel,buttonPanelBackground,cardPanel;
+		//Swing Objects
+		private GradientButton backButton,EditButton,HireButton,FireButton,PerfomanceButton;
+		private JLabel titleLabel,dateAndTime;
+		//Swing Layouts
+		private CardLayout c;
+		//Other Variables
+		private Timer timer;
 		
-		Object particularEmployee = empList.getSelectedValue();
-		int employeeIndex = empList.getSelectedIndex();
-
-		String theEmp = (String)(particularEmployee);
-
-		String empAddress = getAddress(theEmp);
-		String empPosition = getPosition(theEmp);
-		String empSalary = getSalary(theEmp);
-		String empID = getID(theEmp);
+		/*Functional Stuff*/
+		/* Hiring Process Stuff */
+			public JPanel HP1;
+			public GradientPanel HireRoot_Card;
+			public HirePanel_S1  form1 = new HirePanel_S1();
+			public HirePanel_S2  form2 = new HirePanel_S2();
+			public HirePanel_S3  form3 = new HirePanel_S3();
+			public JTabbedPane formpane;
+			public GradientButton Done_Hire;
+			public EmpObj H_EmpInfo;
+			public JFrame Hire_Error_Window;
+			public JLabel Hire_Error_Message;
+			public EmpSummaryPanel SumForm;
 		
-		/*Address.setText("Address: " + empAddress);
-		Position.setText("Position: " + empPosition);
-		Salary.setText("Salary: " + empSalary);
-		ID.setText("ID: " + empID);
-		
-		Address.updateUI();
-		Position.updateUI();
-		Salary.updateUI();
-		ID.updateUI();
-		
-		optionPanel_textPanel.updateUI();
-		optionPanel.updateUI();*/
-	
-		// If a certain item gets clicked, do the following:
-		// Edit clicked -> register that edit was clicked
-			// Do the action that edit pertains to
-		// Hire clicked -> register that hire was clicked
-			// Do the action that hire pertains to
-		// Fire clicked -> register that fire was clicked
-			// Do the action that fire pertains to
-		// Done clicked -> register that done was clicked
-			// Do the action that done pertains to
-		// Hire_Add clicked -> register that done was clicked
-					// Do the action that Hire_Add pertains to
-		
-		Object a = e.getSource();
-		if(a == Edit)
-			{
-				Edit_Click();
-				
-			}
-		if(a == Hire)
-			{
-				
-				Hire_Click();
-			}
-		if(a == Fire)
-			{
-				Fire_Click(theEmp);
-			}
-		if(a == Done)
-			{
-				Done_Click(theEmp);
-			}
-		if(a == Hire_Add)
-			{
-				Hire_Add_Click();
-			}		
-		if(a == Back)
-			{
-				dispose();
-			}
-	}
-
-
-	/*****************************
-	 * All click action functions*
-	 *****************************/
-	
-	// What happens when previous action listeners are activated:
-	
-	public void Edit_Click()
-	{
-		// Set the address, position, and salary to be editable
-		Address.setEditable(true);
-		Position.setEditable(true);
-		Salary.setEditable(true);
-	}
-
-	
-	public void Hire_Click()
-	{ 
-		
-		HireFrame = new JFrame();
-		HireFrame.setTitle("Manger--Employees--Hire");
-		HireFrame.setResizable(true);
-		HireFrame.setSize(400,400);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		Hire_rootPanel = new JPanel();
-		Hire_rootPanel.setLayout(HireLayout);
-		
-		//Hire_Name = new JPanel();
-		//Hire_Address = new JPanel();
-		//Hire_Position = new JPanel();
-		//Hire_Salary = new JPanel();
-
-		H_Name = new JTextField("Enter Name");
-		H_Address = new JTextField("Enter Address");
-		H_Position = new JTextField("Enter Position");
-		H_Salary = new JTextField("Enter Salary");
-		H_ID = new JTextField("ID");
-		
-		H_Address.setEditable(true);
-		H_Position.setEditable(true);
-		H_Salary.setEditable(true);		
-		H_Name.setEditable(true);
-		H_ID.setEditable(true);
-		
-		Hire_rootPanel.add(H_Name);		
-		Hire_rootPanel.add(H_Address);
-		Hire_rootPanel.add(H_Position);
-		Hire_rootPanel.add(H_Salary);
-		Hire_rootPanel.add(H_ID);
-		
-		Hire_Add = new JButton("Hire");
-		Hire_Add.addActionListener(this);
-
-		//Hire_rootPanel.add(Hire_Name);
-		//Hire_rootPanel.add(Hire_Address);
-		//Hire_rootPanel.add(Hire_Position);
-		//Hire_rootPanel.add(Hire_Salary);
-		Hire_rootPanel.add(Hire_Add);
-		
-		HireFrame.add(Hire_rootPanel);
-		
-		HireFrame.setVisible(true);
-	}
-
-	public void Hire_Add_Click()
-	{
-		String HName = H_Name.getText();
-		String HAddress = H_Address.getText();
-		String HPosition = H_Position.getText();
-		String HSalary = H_Salary.getText();
-		String HID = H_ID.getText();
-		
-		Employee newEmp = new Employee(HName, HAddress, HPosition, HSalary, HID);
-		
-		empPanel.removeAll();
-		
-		int NameArraySize = EmployeeNameArray.length +  1;
-		String[] temp = new String[NameArraySize];
-		for(int i = 0; i < temp.length - 1; i++)
+		/*Editing Employee Stuff*/	
+			
+		public EmployeeWindow()
 		{
-			temp[i] = EmployeeNameArray[i];
+			super();
+			init();
 		}
-		temp[temp.length - 1] = HName;
-		EmployeeNameArray = temp;
-		
-		int EmployeeArraySize = EmployeeArray.length + 1;
-		Employee[] temp1 = new Employee[EmployeeArraySize];
-		for(int i = 0; i < temp1.length - 1; i++)
+
+
+		public void init()
 		{
-			temp1[i] = EmployeeArray[i];
+			this.setTitle("Employee Management Console");
+			this.setResizable(true);
+			this.setSize(1200,700);
+			this.frameManipulation();
+			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			setLocationRelativeTo(null);
+			this.setResizable(false);
+			getContentPane().add(rootPanel);
+			
+			addWindowListener(new WindowAdapter() // To open main window again if you hit the corner "X"
+	        {
+	            @Override
+	            public void windowClosing(WindowEvent e)
+	            {
+	                new ManagerRootWindow();
+	                dispose();
+	            }
+	        });
+			
+			c = (CardLayout)(cardPanel.getLayout());
+			
+			this.setVisible(true);
 		}
-		temp1[temp1.length - 1] = newEmp;
-		EmployeeArray = temp1;
-		
-		empList = new JList(EmployeeNameArray);
-		empList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		empList.setLayoutOrientation(JList.VERTICAL);
-		empList.setVisibleRowCount(8);
-		
-		empList.addListSelectionListener( new ListSelectionListener() {
-		    public void valueChanged(ListSelectionEvent e){
-		    	Object particularEmployee = empList.getSelectedValue();
-				int employeeIndex = empList.getSelectedIndex();
 
-				String theEmp = (String)(particularEmployee);
-
-				String empAddress = getAddress(theEmp);
-				String empPosition = getPosition(theEmp);
-				String empSalary = getSalary(theEmp);
-				String empID = getID(theEmp);
-				
-				Address.setText(empAddress);
-				Position.setText(empPosition);
-				Salary.setText(empSalary);
-				ID.setText(empID);
-				
-				Address.updateUI();
-				Position.updateUI();
-				Salary.updateUI();
-				
-				optionPanel_textPanel.updateUI();
-				optionPanel.updateUI();    	
-			    }
-			} );
-
-		
-		//Setting up the Scroll Pane
-		EmpScroller = new JScrollPane(empList);
-		
-		empPanel.add(EmpScroller);
-		
-		empPanel.updateUI();
-		
-		
-		
-		
-		//boolean checkEmpAdded
-		//= EmployeeHandler.addEmployee(HName, HAddress, HPosition, HSalary);
-		
-		//if(checkEmpAdded == false)
-		//{
-		//	System.out.println("Unable to Add Employee!");
-		//}
-	
-		HireFrame.setVisible(false);
-	}
-
-	public void Done_Click(String Name)
-	{
-		//Obtain the new filled in fields
-		Object particularEmployee = empList.getSelectedValue();
-		//int employeeIndex = empList.getSelectedIndex();
-
-		String theEmp = (String)(particularEmployee);
-
-		newAddress = Address.getText();
-		newSalary = Salary.getText();
-		newPosition = Position.getText();
-		newID = ID.getText();
-		
-		System.out.println(newAddress);
-		System.out.println(newSalary);
-		System.out.println(newPosition);
-		System.out.println(newID);
-		
-		for(int i = 0; i < EmployeeArray.length; i++)
+		public void frameManipulation()
 		{
-			if(theEmp.equals(EmployeeArray[i].Name))
+			rootPanel = new JPanel();
+			rootPanel.setLayout(null);
+			setBackgroundPanel();
+			setTitlePanel();
+			setCardPanel();
+			setButtonPanel();
+			setRootPanel();
+		}
+		
+		private void setRootPanel()
+		{
+			rootPanel.add(titlePanel);
+			rootPanel.add(cardPanel);
+			rootPanel.add(buttonPanel);
+			rootPanel.add(buttonPanelBackground);
+			rootPanel.add(backgroundPanel);
+		}
+		
+		private void setBackgroundPanel()
+		{
+			// Create Button Background Panel
+			buttonPanelBackground = new GradientPanel();
+			buttonPanelBackground.setGradient(new Color(255,220,220), new Color(255,110,110));
+			buttonPanelBackground.setBounds(0, 55, 250, 617);
+			buttonPanelBackground.setBorder(new LineBorder(new Color(0, 0, 0)));
+			
+			// Create Background Panel
+			backgroundPanel = new GradientPanel();
+			backgroundPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+			backgroundPanel.setGradient(new Color(255,255,255), new Color(255,110,110));
+			backgroundPanel.setLayout(null);
+			backgroundPanel.setBounds(0,0,1194,672);
+		}
+		
+		//************************************************************
+		//DO NOT edit the following function except for the title name
+		//************************************************************
+		
+		private void setTitlePanel()
+		{
+			// Create Title Panel
+			titlePanel = new JPanel();
+			titlePanel.setBounds(0, 0, 1194, 56);
+			titlePanel.setLayout(null);
+			titlePanel.setOpaque(false);
+			// Set Title
+			titleLabel = new JLabel("Employee Management");
+			titleLabel.setHorizontalAlignment(JLabel.CENTER);
+			titleLabel.setFont(titleLabel.getFont().deriveFont(38f));
+			titleLabel.setBorder(BorderFactory.createLineBorder(Color.black));
+			titleLabel.setBounds(new Rectangle(0, 0, 793, 56));
+			
+						// Add components to Title Panel
+						titlePanel.add(titleLabel);
+						// Set Date and Time
+						dateAndTime = new JLabel();
+						dateAndTime.setBounds(792, 0, 402, 56);
+						titlePanel.add(dateAndTime);
+						dateAndTime.setHorizontalAlignment(JLabel.CENTER);
+						dateAndTime.setFont(dateAndTime.getFont().deriveFont(28f));
+						dateAndTime.setBorder(BorderFactory.createLineBorder(Color.black));
+						updateClock();
+						// Create a timer to update the clock
+						timer = new Timer(500,this);
+			            timer.setRepeats(true);
+			            timer.setCoalesce(true);
+			            timer.setInitialDelay(0);
+			            timer.start();
+		}
+		
+		//*********************************************************
+		//DO NOT change the location of the following panel
+		//*********************************************************
+		
+		private void setButtonPanel()
+		{
+			// Create Button Panel
+			buttonPanel = new JPanel();
+			buttonPanel.setBounds(7, 61, 236, 604);
+			buttonPanel.setOpaque(false);
+			buttonPanel.setBorder(null);
+			buttonPanel.setLayout(new GridLayout(5, 0, 5, 5));
+			
+			// Set Request Table Status Change Button
+			EditButton = new GradientButton("<html>Edit Employee Information</html>");
+			EditButton.addActionListener(this);
+			EditButton.setFont(EditButton.getFont().deriveFont(16.0f));
+			EditButton.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+			EditButton.setFocusPainted(false);
+			
+			// Set Manage Order Queue Button
+			HireButton = new GradientButton("Hire Employee");
+			HireButton.addActionListener(this);
+			HireButton.setFont(HireButton.getFont().deriveFont(16.0f));
+			HireButton.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+			HireButton.setFocusPainted(false);
+			
+			// Set Accept Payment Button
+			FireButton = new GradientButton("Fire Employee");
+			FireButton.addActionListener(this);
+			FireButton.setFont(FireButton.getFont().deriveFont(16.0f));
+			FireButton.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+			FireButton.setFocusPainted(false);
+			
+			// Set Request Refund Button
+			PerfomanceButton = new GradientButton("Employee Performance");
+			PerfomanceButton.addActionListener(this);
+			PerfomanceButton.setFont(PerfomanceButton.getFont().deriveFont(16.0f));
+			PerfomanceButton.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+			PerfomanceButton.setFocusPainted(false);
+			// Set Back Button
+			backButton = new GradientButton("BACK");
+			backButton.addActionListener(this);												
+			backButton.setFont(backButton.getFont().deriveFont(16.0f));
+			backButton.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+			backButton.setFocusPainted(false);
+			
+			buttonPanel.add(EditButton);
+			buttonPanel.add(HireButton);
+			buttonPanel.add(FireButton);
+			buttonPanel.add(PerfomanceButton);
+			buttonPanel.add(backButton);
+		}
+		
+		//********************************************************************************
+		//DO NOT deviate from the card layout or change the size/location of the cardPanel.
+		//Creating and adding cards is OK
+		//********************************************************************************
+		
+		private void setCardPanel()
+		{
+			cardPanel = new GradientPanel();
+			cardPanel.setLayout(new CardLayout()); // How to define a Card Layout
+			cardPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+			cardPanel.setGradient(new Color(255,255,255), new Color(255,110,110));
+			cardPanel.setBounds(273, 79, 896, 569);
+			
+			HireRoot_Card = new GradientPanel();
+			HireRoot_Card.setLayout(new BorderLayout());
+			HireRoot_Card.setVisible(true);
+			setFormPanel();
+			setDoneHire();
+			
+			cardPanel.add(HireRoot_Card, "HireProcess");
+			cardPanel.setVisible(true);
+		}
+		
+		private void setFormPanel()
+		{
+			formpane = new JTabbedPane();
+			formpane.setVisible(true);
+			formpane.addTab("Page 1", form1);
+			formpane.addTab("Page 2", form2);
+			formpane.addTab("Page 3", form3);
+			HireRoot_Card.add(formpane, BorderLayout.CENTER);
+			
+		}
+		
+		private void setDoneHire()
+		{
+			Done_Hire = new GradientButton("Done");
+			Done_Hire.addActionListener(this);
+			HireRoot_Card.add(Done_Hire, BorderLayout.SOUTH);
+		}
+		
+		// Action Listener
+		public void actionPerformed(ActionEvent e) 
+		{
+			Object a = e.getSource();
+			if(a == backButton)
+				{
+					new ManagerRootWindow();
+					dispose();
+				}
+			if(a == HireButton)
+				{
+					c.show(cardPanel, "HireProcess");
+				}
+			if(a == Done_Hire)
 			{
-				EmployeeArray[i].Address = newAddress;
-				EmployeeArray[i].Position = newPosition;
-				EmployeeArray[i].Salary = newSalary;
-				EmployeeArray[i].ID = newID;
-				break;
+				getNewHireInfo();
 			}
+			if(a == timer)
+				{
+					updateClock();
+				}
 		}
 		
 		
-		Address.setText(newAddress);
-		Position.setText(newPosition);
-		Salary.setText(newSalary);
-		ID.setText(newID);
-		
-		Address.updateUI();
-		Position.updateUI();
-		Salary.updateUI();
-		ID.updateUI();
-		
-		optionPanel_textPanel.updateUI();
-		optionPanel.updateUI(); 
-		
-		
-		
-		//update the database
-		//boolean checkedit = EmployeeHandler.editEmployee(Name, newAddress, newPosition, newSalary);
-		
-		//if(checkedit == false)
-		//{
-		//	System.out.println("Unable to edit employee!");
-		//}
-		
-		//make fields no longer alterable
-		Address.setEditable(false);
-		Position.setEditable(false);
-		Salary.setEditable(false);
-	}
-
-	public void Fire_Click(String emp)
-	{
-		empList.removeAll();
-		empPanel.removeAll();
-		int NameArraySize = EmployeeNameArray.length - 1;
-		String[] temp = new String[NameArraySize];
-		
-		int j = 0;
-		for(int i = 0; i < temp.length; i++)
+		public void getNewHireInfo()
 		{
-			if(EmployeeNameArray[j] == emp)
+			Hire_Error_Window = new JFrame();
+			Hire_Error_Window.setSize(200, 100);
+			Hire_Error_Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			
+			
+			String[] S1 = form1.answers();
+			String[] S2 = form2.answers();
+			String[] S3 = form3.answers();
+			String S1flag;
+			String S2flag;
+			
+			//Check form 1
+			for(int i = 0; i < S1.length; i++)
 			{
-				j++;
-				//temp[i] = EmployeeNameArray[j];
-				continue;
+				//[fname, lname, address, dob, school, gpa, question]
+				if((S1[i] == null) || S1[i] == "")
+				{
+					if(i == 0){
+						S1flag = "Page 1 Error: FIRST NAME";
+						Hire_Error_Message = new JLabel(S1flag);
+						Hire_Error_Window.add(Hire_Error_Message);
+						Hire_Error_Window.setVisible(true);
+						return;
+					}
+					if(i == 1){
+						S1flag = "Page 1 Error: LAST NAME";
+						Hire_Error_Message = new JLabel(S1flag);
+						Hire_Error_Window.add(Hire_Error_Message);
+						Hire_Error_Window.setVisible(true);
+						return;
+					}
+					if(i == 2){
+						S1flag = "Page 1 Error: ADDRESS";
+						Hire_Error_Message = new JLabel(S1flag);
+						Hire_Error_Window.add(Hire_Error_Message);
+						Hire_Error_Window.setVisible(true);
+						return;
+					}
+					if(i == 3){
+						S1flag = "Page 1 Error: DOB";
+						Hire_Error_Message = new JLabel(S1flag);
+						Hire_Error_Window.add(Hire_Error_Message);
+						Hire_Error_Window.setVisible(true);
+						return;
+					}
+					if(i == 4){
+						S1flag = "Page 1 Error: SCHOOL";
+						Hire_Error_Message = new JLabel(S1flag);
+						Hire_Error_Window.add(Hire_Error_Message);
+						Hire_Error_Window.setVisible(true);
+						return;
+					}
+					if(i == 5){
+						S1flag = "Page 1 Error: GPA";
+						Hire_Error_Message = new JLabel(S1flag);
+						Hire_Error_Window.add(Hire_Error_Message);
+						Hire_Error_Window.setVisible(true);
+						return;
+					}
+					if(i == 0){
+						S1flag = "Page 1 Error: QUESTION ONE";
+						Hire_Error_Message = new JLabel(S1flag);
+						Hire_Error_Window.add(Hire_Error_Message);
+						Hire_Error_Window.setVisible(true);
+						return;
+					}
+				}
 			}
-			temp[i] = EmployeeNameArray[j];
-			j++;
+			
+
+			
+			//Construct the handler object
+			///[fname, lname, address, dob, school, gpa, question]
+			///FNAME, LNAME, ADDRESS, DOB, SCHOOL, GPA, q1, q2, q3, q4, position, sal
+			H_EmpInfo = new EmpObj(S1[0], S1[1], S1[2], S1[3], S1[4], S1[5], S1[6], S2[0], S2[1], S2[2], S2[3], S3[0], S3[1]);
+			
+			
+			
+			Hire_Error_Message = new JLabel("Worker Added!");
+			Hire_Error_Window.add(Hire_Error_Message);
+			Hire_Error_Window.setVisible(true);
+			
+			SumForm = new EmpSummaryPanel(H_EmpInfo);
+			cardPanel.add(SumForm,"Summary");
+			c.show(cardPanel, "Summary");
+			
+			//Clean up the form
+			form1.cleanform();
+			form2.cleanform();
+			form3.cleanform();
+			
+			//Send the data to the database
 		}
 		
-		EmployeeNameArray = temp;
 		
-		int x = 0;
-		Employee[] temp2 = new Employee[NameArraySize];
-		for(int i = 0; i < temp2.length; i++)
-		{
-			if(EmployeeArray[x].Name == emp)
-			{
-				x++;
-				temp2[i] = EmployeeArray[x];
-				continue;
-			}
-			temp2[i] = EmployeeArray[x];
-			x++;
-		}
-		
-		EmployeeArray = temp2;
-		empList = new JList(EmployeeNameArray);
-		empList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		empList.setLayoutOrientation(JList.VERTICAL);
-		empList.setVisibleRowCount(5);
-		
-		
-		
-		//Setting up the Scroll Pane
-		EmpScroller = new JScrollPane(empList);
-		
-		empPanel.add(EmpScroller);
-		
-		
-		Address.setText("");
-		Position.setText("");
-		Salary.setText("");
-		ID.setText("");
-		
-		Address.updateUI();
-		Position.updateUI();
-		Salary.updateUI();
-		ID.updateUI();
-		
-		empPanel.updateUI();
-		
-		empList.addListSelectionListener( new ListSelectionListener() {
-		    public void valueChanged(ListSelectionEvent e){
-		    	Object particularEmployee = empList.getSelectedValue();
-				int employeeIndex = empList.getSelectedIndex();
-
-				String theEmp = (String)(particularEmployee);
-
-				String empAddress = getAddress(theEmp);
-				String empPosition = getPosition(theEmp);
-				String empSalary = getSalary(theEmp);
-				String empID = getID(theEmp);
-				
-				Address.setText("Address: " + empAddress);
-				Position.setText("Position: " + empPosition);
-				Salary.setText("Salary: " + empSalary);
-				ID.setText("ID: " + empID);
-				
-				Address.updateUI();
-				Position.updateUI();
-				Salary.updateUI();
-				ID.updateUI();
-				
-				optionPanel_textPanel.updateUI();
-				optionPanel.updateUI();    	
-			    }
-			} );
-		
-		
-	}
-
-	//////////////////////////////////////////////////////////
-	/*
-		The following functions perform the async tasks including:
-		1) Getting the List of all employees in an Employee[]
-		2) Generating a String[] of employee names
-		3) Updating the GUI to show new information
-	*/
-	
-	public void getEmployees()
-	{
-		//Set the employee Array
-		EmployeeArray = EmployeeHandler.getAllEmployees();
-		EmployeeNameArray = new String[EmployeeArray.length];
-		//Add the employee names to the employee name array
-		for(int i = 0; i < EmployeeArray.length; i++)
-		{
-			EmployeeNameArray[i] = EmployeeArray[i].Name;
-		}
-		return;
-	}
-
-	/*
-	 * These Functions will need to reference an employee object
-	 *
-	 */
-	public String getAddress(String anEmp)
-	{
-		String retAddress;
-
-		//search for employee in employee array
-		for(int i = 0; i < EmployeeArray.length; i++)
-		{
-			if(EmployeeArray[i].Name == anEmp)
-			{
-				retAddress = EmployeeArray[i].Address;
-				return retAddress;
-			}
-		}		
-		
-		return "No Listed Employee Address";
-	}
-
-	public String getPosition(String anEmp)
-	{
-		String retPosition;
-
-		//search for employee in employee array
-		for(int i = 0; i < EmployeeArray.length; i++)
-		{
-			if(EmployeeArray[i].Name == anEmp)
-			{
-				retPosition = EmployeeArray[i].Position;
-				return retPosition;
-			}
-		}		
-		
-		
-		return "No Listed Position";
-	}
-
-	public String getSalary(String anEmp)
-	{
-		String retSalary;
-
-		//search for employee in employee array
-		for(int i = 0; i < EmployeeArray.length; i++)
-		{
-			if(EmployeeArray[i].Name == anEmp)
-			{
-				retSalary = EmployeeArray[i].Salary;
-				return retSalary;
-			}
-		}		
-				
-
-		//Fill in this function
-		return "No Listed Salary";
-	}
-	
-	public String getID(String anEmp)
-	{
-		String retID;
-		
-		for(int i = 0; i < EmployeeArray.length; i++)
-		{
-			if(EmployeeArray[i].Name == anEmp)
-			{
-				retID = EmployeeArray[i].ID;
-				return retID;
-			}
-		}
-		return "No ID";
-		
-	}
-
-	
-
+		private void updateClock() {
+            dateAndTime.setText(DateFormat.getDateTimeInstance().format(new Date()));
+        }
 }

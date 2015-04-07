@@ -1,180 +1,213 @@
-/**
- * ManagerRootWindow.java
- * Author: Ryan Sanichar and Harsh Shah
- * 
- * The root window for the manager class. This window 
- * shows the four buttons that lead to the four classes
- * that the manager can do:
- * MenuWindow, Employee Window, FinancialWindow, and InventoryWindoiw
- * 
- */
-
-
-package Manager;
-
 import java.awt.*;
-import java.awt.event.*;
-
-import javax.swing.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.DateFormat;
+import java.util.Date;
 
-import javax.swing.border.*;
-import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.Timer;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-import Login.LoginWindow;
+//import Login.LoginWindow;
+import Shared.Gradients.*;
+
 
 public class ManagerRootWindow extends JFrame implements ActionListener{
 
-	
-	//This Frame
-	private JFrame Win_Employees, Win_Financials, Win_Menu, Win_Inventory ;
-	
-	//This Frames panels
-	private JPanel optionPanel;
-	private JPanel rootPanel;
-	
-	//This Frames Buttons
-	private JButton B_Employees, B_Inventory, B_Financials, B_Menu, B_temp;
-	
-	//The Layout of the panel
-	GridLayout optionLayout = new GridLayout(2,2);
-	GridLayout rootLayout = new GridLayout(1, 1);
-	BorderLayout suboptLayout = new BorderLayout();
-	
-	/* Main
-	public static void main(String[] args)
-	{
-		new ManagerRootWindow();
-		return;
-	}	
-	*/
+		//Swing Variables
+		private JPanel rootPanel,titlePanel;
+		private GradientPanel backgroundPanel;
+		private GradientButton logoutButton;
+		//private GradientButton logoutButton;
+		private JLabel titleLabel,dateAndTime;
+		//Other Variables
+		private Timer timer;
+		private JPanel buttonPanel;
+		
+		//Manager Sub Buttons
+		private GradientButton EmployeeButton;
+		private GradientButton FinancialsButton;
+		private GradientButton Button3;
+		private GradientButton Button4;
+		
+		public static void main(String[] args)
+		{
+			new ManagerRootWindow();
+		}
+		
+		public ManagerRootWindow()
+		{
+			super();
+			init();
+		}
 
-	// Constructor
-	public ManagerRootWindow()
-	{
-		super();
-		init();
-		// Logout when closing window
-		addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent e) {
-                new LoginWindow();
-                dispose();
-            }
-        });
-		
-	}
 
-	// Initialize manager window
-	public void init()
-	{
-		this.setTitle("Manager");
-		this.setResizable(true);
-		this.setSize(1000,750);
-		this.frameManipulation();
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.add(rootPanel);
-		this.setVisible(true);
-	}
+		public void init()
+		{
+			this.setTitle("Manager");
+			this.setVisible(false);
+			this.setResizable(true);
+			this.setSize(1200,700);
+			this.frameManipulation();
+			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			setLocationRelativeTo(null);
+			this.setResizable(false);
+			getContentPane().add(rootPanel);
+			
+			/* addWindowListener(new WindowAdapter() // To open login again if you hit the corner "X"
+		        {
+		            @Override
+		            public void windowClosing(WindowEvent e)
+		            {
+		                new LoginWindow();
+		                dispose();
+		            }
+		        });
+			*/
+			this.setVisible(true);
+		} 
 
-	// Set the frame manipulation
-	public void frameManipulation()
-	{
-		rootPanel = new JPanel();
-		rootPanel.setLayout(rootLayout);
+		public void frameManipulation()
+		{
+			setBackgroundPanel();
+			setTitlePanel();
+			setButtonPanel();
+			setRootPanel();
+		}
+		
+		private void setRootPanel()
+		{
+			rootPanel = new JPanel();
+			rootPanel.setLayout(null);
+			rootPanel.add(titlePanel);
+			rootPanel.add(buttonPanel);
+			rootPanel.add(backgroundPanel);
+			rootPanel.setVisible(true);
+		}
+		
+		private void setBackgroundPanel()
+		{
+			// Create Background Panel
+			backgroundPanel = new GradientPanel();
+			backgroundPanel.setGradient(Color.white,new Color(153,230,255));
+			//backgroundPanel.setBrightness(backgroundPanel.getColor2(),1);
+			backgroundPanel.setLayout(null);
+			backgroundPanel.setBounds(0,0,1200,700);
+			
+			logoutButton = new GradientButton("LOGOUT");
+			logoutButton.setBounds(187, 550, 825, 66);
+			logoutButton.setFocusPainted(false);
+			logoutButton.setFont(logoutButton.getFont().deriveFont(16.0f));
+			backgroundPanel.add(logoutButton);
+			logoutButton.addActionListener(this);
+			
+			backgroundPanel.setVisible(true);
+		}
 		
 		
-		init_OptPanel();
-		rootPanel.add(optionPanel);
+		//*********************************************************
+		//DO NOT edit the following function except for title name
+		//*********************************************************
+		
+		private void setTitlePanel()
+		{
+			// Create Title Panel
+			titlePanel = new JPanel();
+			titlePanel.setLayout(null);
+			titlePanel.setOpaque(false);
+			titlePanel.setBounds(new Rectangle(0, 0, 1200, 56));
+			// Set Title
+			titleLabel = new JLabel("Your Main Window Interface");
+			titleLabel.setHorizontalAlignment(JLabel.CENTER);
+			titleLabel.setFont(titleLabel.getFont().deriveFont(38f));
+			titleLabel.setBorder(BorderFactory.createLineBorder(Color.black));
+			titleLabel.setBounds(new Rectangle(0, 0, 793, 56));
+			// Create a timer to update the clock
+			timer = new Timer(500,this);
+            timer.setRepeats(true);
+            timer.setCoalesce(true);
+            timer.setInitialDelay(0);
+            timer.addActionListener(this);
+            timer.start();
 
-	}
-	
-	// Initialize all the panels with the buttons
-	public void init_OptPanel()
-	{
-		//Entire Left Panel
-		optionPanel = new JPanel();
-		optionPanel.setLayout(optionLayout);
+			// Add components to Title Panel
+			titlePanel.add(titleLabel);
+			// Set Date and Time
+			dateAndTime = new JLabel();
+			dateAndTime.setBounds(792, 0, 402, 56);
+			titlePanel.add(dateAndTime);
+			dateAndTime.setHorizontalAlignment(JLabel.CENTER);
+			dateAndTime.setFont(dateAndTime.getFont().deriveFont(28f));
+			dateAndTime.setBorder(BorderFactory.createLineBorder(Color.black));
+			
+			titlePanel.setVisible(true);
+		}
 		
-		//Initialize The Buttons	
-		B_Employees = new JButton("Employees");
-		B_Inventory = new JButton("Inventory");
-		B_Financials = new JButton("Financials");
-		B_Menu = new JButton("Menu");
+		private void setButtonPanel()
+		{
+			// Only adjust horizontal and vertical gaps for this layout
+			// DO NOT adjust panel size or location!!
+			
+			buttonPanel = new JPanel();
+			buttonPanel.setBounds(200, 105, 800, 388); // setBounds(DONT FUCK WITH)
+			buttonPanel.setLayout(new GridLayout(2, 2, 150, 100)); // GridLayout(DONT FUCK WITH, DONT FUCK WITH, h gap, v gap)
+			
+			EmployeeButton = new GradientButton("Employees");
+			EmployeeButton.setFont(EmployeeButton.getFont().deriveFont(16.0f));
+			EmployeeButton.addActionListener(this);
+			buttonPanel.add(EmployeeButton);
+			
+			FinancialsButton = new GradientButton("Financials");
+			FinancialsButton.setFont(FinancialsButton.getFont().deriveFont(16.0f));
+			buttonPanel.add(FinancialsButton);
+			
+			Button3 = new GradientButton("New button");
+			Button3.setFont(Button3.getFont().deriveFont(16.0f));
+			buttonPanel.add(Button3);
+			
+			Button4 = new GradientButton("New button");
+			Button4.setFont(Button4.getFont().deriveFont(16.0f));
+			buttonPanel.add(Button4);
+			
+			buttonPanel.setOpaque(false);
+			buttonPanel.setVisible(true);
+			
+		}
 		
-		//Styling the buttons
-		B_Employees.setBorderPainted(false);
-		
-
-		//Add The ActionListener to the buttons
-		B_Employees.addActionListener(this);
-		B_Inventory.addActionListener(this);
-		B_Financials.addActionListener(this);
-		B_Menu.addActionListener(this);
-		
-		//Add buttons to panel
-		optionPanel.add(B_Employees);
-		optionPanel.add(B_Inventory);
-		optionPanel.add(B_Financials);
-		optionPanel.add(B_Menu);
-	}
-
-	public void actionPerformed(ActionEvent e) 
-	{
-		Object a = e.getSource();
-		if(a == B_Employees)
+		public void actionPerformed(ActionEvent e) 
+		{
+			Object a = e.getSource();
+			if(a == EmployeeButton)
 			{
-				gen_Employees_Win();
-				//Return Employees Window
+				new  EmployeeWindow();
+				dispose();
 			}
-		if(a == B_Inventory)
-			{
-				gen_Inventory();
-				//Return Inventory Window
-			}
-		if(a == B_Financials)
-			{
-				gen_Financials_Win();
-				//Return Financial Window
-			}
-		if(a == B_Menu)
-			{
-                gen_Menu();
-                //Return Menu Window
-			}
-	}
-
-	// Generate window function
-	public void gen_Employees_Win()
-	{	
-		Win_Employees = new EmployeeWindow();
-		Win_Employees.setVisible(true);
-	}
-
-	// Generate window function
-	public void gen_Financials_Win()
-	{
-		Win_Financials = new FinancialWindow();
-		Win_Financials.setVisible(true);
-	}
-    
-	// Generate window function
-    public void gen_Menu()
-    {
-        Win_Menu = new MenuWindow();
-        Win_Menu.setVisible(true);
-    }
-    
-    // Generate window function
-    public void gen_Inventory()
-    {
-    	Win_Inventory = new InventoryWindow();
-    	Win_Inventory.setVisible(true);
-    }
-	
-
+			if(a == logoutButton)
+				{
+					//new LoginWindow();
+					dispose();
+				}
+			if(a == timer)
+				{
+					updateClock();
+				}
+		}
+		
+		private void updateClock() {
+            dateAndTime.setText(DateFormat.getDateTimeInstance().format(new Date()));
+        }
 }
-
