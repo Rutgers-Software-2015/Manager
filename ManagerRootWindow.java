@@ -46,10 +46,6 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 		private GradientButton InventoryButton;
 		private GradientButton MenuButton;
 		
-		public static void main(String[] args)
-		{
-			new ManagerRootWindow();
-		}
 		
 		public ManagerRootWindow()
 		{
