@@ -9,116 +9,106 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import Shared.Communicator.*;
 import Shared.Gradients.*;
 
 
-public class EmpEditPage extends GradientPanel implements ActionListener{
+public class EmpEditPage extends GradientPanel {
 
 	public JPanel rootPanel = new JPanel(new GridLayout(0,2));
 	public JPanel EmpListHolder = new JPanel(null);
 	public JPanel FormHolder = new JPanel(null);
 	public JList  EmployeeList;
-	public Vector EmpListVector;
-	public DatabaseCommunicator DBC = new DatabaseCommunicator();
+	public Vector<EmpObj> EmpListVector;
+	public String[] Emp_Names;
+	public EmployeeHandler Emp_H = new EmployeeHandler();
+	public EmpSummaryPanel EmpSum;
 	
 	public EmpEditPage()
 	{
 		super();
 		this.add(rootPanel);
+		rootPanel.setVisible(true);
 		this.setVisible(true);
 		panelManipulation();
+		System.out.println("Got Here 1 <-- EmpEditPage.java");
 	}
 	
 	public void panelManipulation()
 	{
+		init_EmpListHolder();
 		rootPanel.add(EmpListHolder);
+		
+		init_FormHolder();
 		rootPanel.add(FormHolder);
+		
 		rootPanel.setVisible(true);
 	}
 	
 	public void init_EmpListHolder()
 	{
 		//Create JList
-		//Format it
-		//Make selection model for it
-		//add listener to it
-		//add it to the panel
-		//make panel visible
-	}
- 
-	public Vector<EmpObj> getEmployees() throws SQLException
-	{
-		
-		DBC.connect("root", "gradMay17");
-		DBC.tell("use MAINDB;");
-		ResultSet rs = DBC.tell("SELECT * FROM EmployeeList;");
-		EmpListVector = new Vector();
-		
 		try{
-			while(rs.next())
-			{
-				boolean vis = rs.getBoolean("Visibility");
-				if(vis == true)
-				{
-					continue;
-				}else
-				{
-					String fn = rs.getString("firstname");
-					String ls = rs.getString("lastname");
-					String addr = rs.getString("address");
-					String dob = rs.getString("dob");
-					String sch =  rs.getString("school");
-					String gp = ""+rs.getInt("gpa");
-					String c, qone, qtwo, qthree, qfour;
-					boolean crm = rs.getBoolean("crimes");
-					c = "yes";
-					if(crm == false){
-						c = "no";
-					}
-					boolean one = rs.getBoolean("qone");
-					qone = "no";
-					if(one == true)
-					{
-						qone = "yes";
-					}
-					boolean two = rs.getBoolean("qtwo");
-					qtwo = "no";
-					if(two == true)
-					{
-						qtwo = "yes";
-					}
-					boolean three = rs.getBoolean("qthree");
-					qthree = "no";
-					if(three == true)
-					{
-						qthree = "yes";
-					}
-					boolean four = rs.getBoolean("qfour");
-					qfour = "no";
-					if(one == true)
-					{
-						qfour = "yes";
-					}
-					String pos = rs.getString("position");
-					String sal = ""+rs.getInt("salary");
-					
-				}
-			}
+			EmpListVector = Emp_H.getEmployees();
 		}catch(SQLException e)
 		{
-			System.out.println("No Result Set");
+			System.out.println(e);
 		}
 		
-		return EmpListVector;
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+		Emp_Names = new String[EmpListVector.size()];
+		for(int i = 0; i < EmpListVector.size() - 1; i++)
+		{
+			EmpObj temp = EmpListVector.elementAt(i);
+			Emp_Names[i] = temp.first_name + temp.last_name;
+		}
 		
-	}
+		EmployeeList = new JList(Emp_Names);
+		//Format it, Make selection model for it
+		EmployeeList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		EmployeeList.setLayoutOrientation(JList.VERTICAL);
+		EmployeeList.setVisibleRowCount(5);
+		EmployeeList.addListSelectionListener(new ListSelectionListener()
+		{
 
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				String tname = String.valueOf(EmployeeList.getSelectedValue());
+				String name = "";
+				EmpObj t = new EmpObj();
+				for(int i = 0; i < tname.length() && (tname.charAt(i) != (' ')); i++)
+				{
+					name = name + tname.charAt(i);
+				}
+				for(int i = 0 ; i < EmpListVector.size(); i++)
+				{
+					if(EmpListVector.elementAt(i).first_name.equals(name))
+					{
+						t = EmpListVector.elementAt(i);
+						break;
+					}
+				}
+				EmpSum = new EmpSummaryPanel(t);
+				EmpSum.updateUI();
+				rootPanel.updateUI();
+			}
+			
+			
+		});
+		EmployeeList.setVisible(true);
+		//make panel visible
+		EmpListHolder.add(EmployeeList);
+		EmpListHolder.setVisible(true);
+	}
+ 
+	public void init_FormHolder()
+	{
+		EmpSum = new EmpSummaryPanel(new EmpObj());
+		FormHolder.add(EmpSum);
+		EmpSum.setVisible(true);
+		FormHolder.setVisible(true);
+	}
 	
 }

@@ -73,6 +73,7 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			public EmpSummaryPanel SumForm;
 		
 		/*Editing Employee Stuff*/	
+			public EmpEditPage EditPage_Card;
 			
 		public EmployeeWindow()
 		{
@@ -252,6 +253,10 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			setFormPanel();
 			setDoneHire();
 			
+			EditPage_Card = new EmpEditPage();		
+			EditPage_Card.setVisible(true);
+			
+			cardPanel.add(EditPage_Card, "EditProcess");
 			cardPanel.add(HireRoot_Card, "HireProcess");
 			cardPanel.setVisible(true);
 		}
@@ -286,11 +291,17 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			if(a == HireButton)
 				{
 					c.show(cardPanel, "HireProcess");
+				
 				}
 			if(a == Done_Hire)
 			{
 				getNewHireInfo();
 			}
+			if(a == EditButton)
+				{
+					c.show(cardPanel, "EditProcess");
+					cardPanel.updateUI();
+				}
 			if(a == timer)
 				{
 					updateClock();

@@ -27,4 +27,21 @@ public class EmpObj {
 		this.salary = sal;
 	}
 	
+	public EmpObj()
+	{
+		this.first_name = "";
+		this.last_name = "";
+		this.address = "";
+		this.DOB = "";
+		this.school = "";
+		this.GPA = "";
+		this.crimesQuestion = "";
+		this.Q1 = "";
+		this.Q2 = "";
+		this.Q3 = "";
+		this.Q4 = "";
+		this.position = "";
+		this.salary = "";
+	}
+	
 }
