@@ -63,12 +63,18 @@ public class EmpSummaryPanel extends JPanel{
 	
 	public void panelManipulation(EmpObj HEMP)
 	{
-		namep = new JPanel(new GridLayout(0,2));
-		name = new JLabel("Name");
-		String empname = HEMP.first_name +" "+HEMP.last_name;
-		JLabel nname = new JLabel(empname);
-		namep.add(name);
-		namep.add(nname);
+		namep = new JPanel(new GridLayout(0,2));				//Base row panel
+		name = new JLabel("Name");								//Row Label
+		String empname = HEMP.first_name +" "+HEMP.last_name;	//Row information
+		JLabel nname = new JLabel(empname);						//Row Label applied
+		JPanel name_left = new JPanel(new BorderLayout());		//Left column
+		JPanel name_right = new JPanel(new BorderLayout());		//Right Column
+		name_left.add(name, BorderLayout.WEST);
+		name_right.add(nname, BorderLayout.CENTER);
+		name_left.setVisible(true);
+		name_right.setVisible(true);
+		namep.add(name_left);									//Add Left Column
+		namep.add(name_right);									//Add Right Column
 		namep.setVisible(true);
 		
 		addrp = new JPanel(new GridLayout(0,2));

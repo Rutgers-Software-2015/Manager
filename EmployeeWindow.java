@@ -58,6 +58,9 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 		//Other Variables
 		private Timer timer;
 		
+		//DATABASE HANDLER
+		private EmployeeHandler EmpHandle = new EmployeeHandler();
+		
 		/*Functional Stuff*/
 		/* Hiring Process Stuff */
 			public JPanel HP1;
@@ -422,6 +425,7 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			form3.cleanform();
 			
 			//Send the data to the database
+			EmpHandle.addEmployee(H_EmpInfo);
 		}
 		
 		

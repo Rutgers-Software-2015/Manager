@@ -94,7 +94,7 @@ public class EmpEditPage extends GradientPanel implements ActionListener{
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				Object a = e.getSource();
+				/*Object a = e.getSource();
 				System.out.println("Printing new emp info page!");
 				String tname = String.valueOf(EmployeeList.getSelectedValue());
 				String name = "";
@@ -113,9 +113,11 @@ public class EmpEditPage extends GradientPanel implements ActionListener{
 				}
 				EmpSum = new EmpSummaryPanel(t);
 				FormHolder.removeAll();
+				rootPanel.remove(FormHolder);
 				FormHolder.add(EmpSum);
+				rootPanel.add(FormHolder);
 				EmpSum.updateUI();
-				rootPanel.updateUI();
+				rootPanel.updateUI();*/
 				
 			}
 			
@@ -141,6 +143,7 @@ public class EmpEditPage extends GradientPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object a = e.getSource();
+		if(a == EmployeeList){ // If statement
 		System.out.println("Printing new emp info page!");
 		String tname = String.valueOf(EmployeeList.getSelectedValue());
 		String name = "";
@@ -159,11 +162,13 @@ public class EmpEditPage extends GradientPanel implements ActionListener{
 		}
 		EmpSum = new EmpSummaryPanel(t);
 		FormHolder.removeAll();
+		rootPanel.remove(FormHolder);
 		FormHolder.add(EmpSum);
+		rootPanel.add(FormHolder);
 		EmpSum.updateUI();
 		rootPanel.updateUI();
 		this.updateUI();
-		
+		}
 	}
 	
 }

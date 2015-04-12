@@ -115,6 +115,48 @@ public class EmployeeHandler extends DatabaseCommunicator{
 		
 		System.out.println("Obtained the Employees <-- EmployeeHandler.java");
 		System.out.println("There are " + EmpListVector.size() +" ready to be acted on!" );
+		this.disconnect();
 		return EmpListVector;
+	}
+	
+	public void addEmployee(EmpObj E)
+	{
+		this.connect("admin", "gradMay17");
+		this.tell("use MAINDB;");
+		
+		ResultSet rs = this.tell("Select * from EmployeeList;");
+		int counter = 0;
+		try{
+			rs.beforeFirst();
+			while(rs.next())
+			{
+				counter++;
+			}
+		}catch(SQLException e)
+		{
+			System.out.println(e);
+		}
+		
+		String idstr = ""+counter;
+		
+		String q1 = "1";
+		String q2 = "1";
+		String q3 = "1";
+		String q4 = "1";
+		String c = "0";
+		if(E.Q1.equals("false")){ q1 = "0"; }
+		if(E.Q2.equals("false")){ q2 = "0"; }
+		if(E.Q3.equals("false")){ q3 = "0"; }
+		if(E.Q4.equals("false")){ q4 = "0"; }
+		if(E.crimesQuestion.equals("")){c = "1"; }
+		
+		String params = E.first_name+","+E.last_name+","+idstr+","+E.address+","+E.DOB+","+E.school+","+E.GPA+","+c+","+q1+","+q2+","+q3+","+q4+","+E.position+","+E.salary+","+"1"+","+E.first_name+","+E.first_name+","+"1";
+		String sqlComm = "INSERT INTO EmployeeList (firstname, lastname, id, address, dob, school, gpa, crimes, qone, qtwo, qthree, qfour, position, salary, visibility, username, password, avail) values ( "+params+" );";
+		
+		this.update(sqlComm);
+		
+		System.out.println("EmployeeAdded!");
+		
+		return;
 	}
 }
