@@ -5,6 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.Collections;
@@ -33,6 +37,7 @@ import javax.swing.Timer;
 import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
 
 
 
@@ -433,9 +438,7 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			
 			
 			
-			Hire_Error_Message = new JLabel("Worker Added!");
-			Hire_Error_Window.add(Hire_Error_Message);
-			Hire_Error_Window.setVisible(true);
+			
 			
 			SumForm = new EmpSummaryPanel(H_EmpInfo);
 			cardPanel.add(SumForm,"Summary");
@@ -447,11 +450,46 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			form3.cleanform();
 			
 			//Send the data to the database
-			EmpHandle.addEmployee(H_EmpInfo);
+			Boolean INTERNET;
+			INTERNET = isThereInternet();
+			if(INTERNET == true){
+				EmpHandle.addEmployee(H_EmpInfo);
+				Hire_Error_Message = new JLabel("Worker Added!");
+				Hire_Error_Window.add(Hire_Error_Message);
+				Hire_Error_Window.setVisible(true);
+			}
+			else
+			{
+				Hire_Error_Message = new JLabel("NO INTERNET CONNECTION!");
+				Hire_Error_Window.add(Hire_Error_Message);
+				Hire_Error_Window.setVisible(true);
+			}
 		}
 		
 		
 		private void updateClock() {
             dateAndTime.setText(DateFormat.getDateTimeInstance().format(new Date()));
         }
+		
+		public boolean isThereInternet()
+		{
+			try
+			{
+				URL yourl = new URL("http://google.com");
+				HttpURLConnection yourlConnect = (HttpURLConnection)yourl.openConnection();
+				yourlConnect.setConnectTimeout(2000);
+				
+				Object objData = yourlConnect.getContent();
+			}catch(UnknownHostException e)
+			{
+				return false;
+			}
+			catch(IOException e)
+			{
+				return false;
+			}
+			return true;
+		}
+		
+		
 }
