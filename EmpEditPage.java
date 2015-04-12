@@ -16,16 +16,31 @@ import Shared.Communicator.*;
 import Shared.Gradients.*;
 
 
-public class EmpEditPage extends GradientPanel {
+public class EmpEditPage extends GradientPanel implements ActionListener{
 
-	public JPanel rootPanel = new JPanel(new GridLayout(0,2));
-	public JPanel EmpListHolder = new JPanel(null);
-	public JPanel FormHolder = new JPanel(null);
+	public GradientPanel rootPanel = new GradientPanel();
+	public GradientPanel EmpListHolder; 
+	public GradientPanel FormHolder; 
 	public JList  EmployeeList;
 	public Vector<EmpObj> EmpListVector;
 	public String[] Emp_Names;
 	public EmployeeHandler Emp_H = new EmployeeHandler();
 	public EmpSummaryPanel EmpSum;
+	
+	//TESTING ONLY
+	/*public static void main(String[] args)
+	{
+		JFrame temp = new JFrame();
+		temp.setTitle("Manager");
+		temp.setVisible(false);
+		temp.setResizable(true);
+		temp.setSize(1200,700);
+		temp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		EmpEditPage t = new EmpEditPage();
+		temp.add(t);
+		temp.setVisible(true);
+		return;
+	}*/
 	
 	public EmpEditPage()
 	{
@@ -33,6 +48,7 @@ public class EmpEditPage extends GradientPanel {
 		this.setLayout(new GridLayout(1,1));
 		this.add(rootPanel);
 		rootPanel.setVisible(true);
+		rootPanel.setLayout(new BorderLayout());
 		this.setVisible(true);
 		panelManipulation();
 		System.out.println("Got Here 1 <-- EmpEditPage.java");
@@ -41,10 +57,10 @@ public class EmpEditPage extends GradientPanel {
 	public void panelManipulation()
 	{
 		init_EmpListHolder();
-		rootPanel.add(EmpListHolder);
+		rootPanel.add(EmpListHolder, BorderLayout.WEST);
 		
 		init_FormHolder();
-		rootPanel.add(FormHolder);
+		rootPanel.add(FormHolder, BorderLayout.CENTER);
 		
 		rootPanel.setVisible(true);
 	}
@@ -52,6 +68,8 @@ public class EmpEditPage extends GradientPanel {
 	public void init_EmpListHolder()
 	{
 		//Create JList
+		EmpListHolder = new GradientPanel();
+		EmpListHolder.setLayout(new GridLayout(1,1));
 		try{
 			EmpListVector = Emp_H.getEmployees();
 		}catch(SQLException e)
@@ -60,7 +78,7 @@ public class EmpEditPage extends GradientPanel {
 		}
 		
 		Emp_Names = new String[EmpListVector.size()];
-		for(int i = 0; i < EmpListVector.size() - 1; i++)
+		for(int i = 0; i < EmpListVector.size(); i++)
 		{
 			EmpObj temp = EmpListVector.elementAt(i);
 			Emp_Names[i] = temp.first_name + temp.last_name;
@@ -76,6 +94,7 @@ public class EmpEditPage extends GradientPanel {
 
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
+				System.out.println("Printing new emp info page!");
 				String tname = String.valueOf(EmployeeList.getSelectedValue());
 				String name = "";
 				EmpObj t = new EmpObj();
@@ -106,10 +125,37 @@ public class EmpEditPage extends GradientPanel {
  
 	public void init_FormHolder()
 	{
+		FormHolder = new GradientPanel();
+		FormHolder.setLayout(new GridLayout(1,1));
 		EmpSum = new EmpSummaryPanel(new EmpObj());
 		FormHolder.add(EmpSum);
 		EmpSum.setVisible(true);
 		FormHolder.setVisible(true);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object a = e.getSource();
+		System.out.println("Printing new emp info page!");
+		String tname = String.valueOf(EmployeeList.getSelectedValue());
+		String name = "";
+		EmpObj t = new EmpObj();
+		for(int i = 0; i < tname.length() && (tname.charAt(i) != (' ')); i++)
+		{
+			name = name + tname.charAt(i);
+		}
+		for(int i = 0 ; i < EmpListVector.size(); i++)
+		{
+			if(EmpListVector.elementAt(i).first_name.equals(name))
+			{
+				t = EmpListVector.elementAt(i);
+				break;
+			}
+		}
+		EmpSum = new EmpSummaryPanel(t);
+		EmpSum.updateUI();
+		rootPanel.updateUI();
+		
 	}
 	
 }
