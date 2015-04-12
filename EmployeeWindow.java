@@ -74,6 +74,9 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 		
 		/*Editing Employee Stuff*/	
 			public EmpEditPage EditPage_Card;
+			public GradientPanel EmpEdit_Root;
+			public GradientButton EmpEdit_Button;
+		
 			
 		public EmployeeWindow()
 		{
@@ -253,12 +256,28 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			setFormPanel();
 			setDoneHire();
 			
-			EditPage_Card = new EmpEditPage();		
-			EditPage_Card.setVisible(true);
+			EmpEdit_Root = new GradientPanel();
+			EmpEdit_Root.setLayout(new BorderLayout());
+			EmpEdit_Root.setVisible(true);
+			setEditPage();
+			setEmpEditButton();
 			
-			cardPanel.add(EditPage_Card, "EditProcess");
+			cardPanel.add(EmpEdit_Root, "EditProcess");
 			cardPanel.add(HireRoot_Card, "HireProcess");
 			cardPanel.setVisible(true);
+		}
+		private void setEditPage()
+		{
+			EditPage_Card = new EmpEditPage();		
+			EmpEdit_Root.add(EditPage_Card, BorderLayout.CENTER);
+			EditPage_Card.setVisible(true);
+		}
+		
+		private void setEmpEditButton()
+		{
+			EmpEdit_Button = new GradientButton("Edit Selection");
+			EmpEdit_Button.addActionListener(this);
+			EmpEdit_Root.add(EmpEdit_Button, BorderLayout.SOUTH);
 		}
 		
 		private void setFormPanel()
@@ -300,7 +319,7 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			if(a == EditButton)
 				{
 					c.show(cardPanel, "EditProcess");
-					cardPanel.updateUI();
+				
 				}
 			if(a == timer)
 				{

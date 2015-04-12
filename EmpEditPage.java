@@ -30,6 +30,7 @@ public class EmpEditPage extends GradientPanel {
 	public EmpEditPage()
 	{
 		super();
+		this.setLayout(new GridLayout(1,1));
 		this.add(rootPanel);
 		rootPanel.setVisible(true);
 		this.setVisible(true);
