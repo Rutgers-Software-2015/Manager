@@ -59,7 +59,7 @@ public class FirePanel extends GradientPanel{
 	public Vector<EmpObj> EmpListVector;
 	public JList EmployeeList;
 	public EmployeeHandler Emp_H = new EmployeeHandler();
-	public JTextField Reason_Area;
+	public JTextArea Reason_Area;
 	public GradientButton FireButton;
 	
 	public FirePanel()
@@ -117,15 +117,22 @@ public class FirePanel extends GradientPanel{
 	{
 		Reason_Panel = new GradientPanel();
 		Reason_Panel.setLayout(new BorderLayout());
+		Reason_Panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
-		Reason_Area = new JTextField();
+		Reason_Area = new JTextArea();
 		Reason_Area.setEditable(true);
+		Reason_Area.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
 		JLabel ReasonLabel = new JLabel("Reason for Firing");
 		
 		FireButton = new GradientButton("Fire");
+		//Add the actionlistner
 		
+		Reason_Panel.add(ReasonLabel, BorderLayout.BEFORE_FIRST_LINE);
+		Reason_Panel.add(Reason_Area, BorderLayout.CENTER);
+		Reason_Panel.add(FireButton, BorderLayout.SOUTH);
 		
+		Reason_Panel.setVisible(true);
 		
 	}
 }

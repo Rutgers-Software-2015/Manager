@@ -1,6 +1,7 @@
 package Manager;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -70,6 +71,8 @@ public class EmpEditPage extends GradientPanel implements ActionListener{
 		//Create JList
 		EmpListHolder = new GradientPanel();
 		EmpListHolder.setLayout(new GridLayout(1,1));
+		EmpListHolder.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		
 		try{
 			EmpListVector = Emp_H.getEmployees();
 		}catch(SQLException e)
@@ -133,6 +136,7 @@ public class EmpEditPage extends GradientPanel implements ActionListener{
 	{
 		FormHolder = new GradientPanel();
 		FormHolder.setLayout(new GridLayout(1,1));
+		FormHolder.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		EmpSum = new EmpSummaryPanel(EmpListVector.elementAt(0));
 		FormHolder.add(EmpSum);
 		EmpSum.setVisible(true);

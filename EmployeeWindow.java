@@ -81,6 +81,10 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			public GradientButton EmpEdit_Button;
 		
 			
+		/* Firing Process Stuff */
+			public GradientPanel FireRoot_Card;
+			public FirePanel FirePage;
+			
 		public EmployeeWindow()
 		{
 			super();
@@ -265,10 +269,24 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			setEditPage();
 			setEmpEditButton();
 			
+			FireRoot_Card = new GradientPanel();
+			FireRoot_Card.setLayout(new BorderLayout());
+			FireRoot_Card.setVisible(true);
+			setFireCard();
+			
+			
+			cardPanel.add(FireRoot_Card, "FireProcess");
 			cardPanel.add(EmpEdit_Root, "EditProcess");
 			cardPanel.add(HireRoot_Card, "HireProcess");
 			cardPanel.setVisible(true);
 		}
+		public void setFireCard()
+		{
+			FirePage = new FirePanel();
+			FirePage.setVisible(true);
+			FireRoot_Card.add(FirePage, BorderLayout.CENTER);
+		}
+		
 		private void setEditPage()
 		{
 			EditPage_Card = new EmpEditPage();		
@@ -314,6 +332,10 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 				{
 					c.show(cardPanel, "HireProcess");
 				
+				}
+			if(a == FireButton)
+				{
+					c.show(cardPanel, "FireProcess");
 				}
 			if(a == Done_Hire)
 			{
