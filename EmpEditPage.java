@@ -127,7 +127,7 @@ public class EmpEditPage extends GradientPanel implements ActionListener{
 	{
 		FormHolder = new GradientPanel();
 		FormHolder.setLayout(new GridLayout(1,1));
-		EmpSum = new EmpSummaryPanel(new EmpObj());
+		EmpSum = new EmpSummaryPanel(EmpListVector.elementAt(0));
 		FormHolder.add(EmpSum);
 		EmpSum.setVisible(true);
 		FormHolder.setVisible(true);
