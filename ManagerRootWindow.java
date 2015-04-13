@@ -220,4 +220,8 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 		private void updateClock() {
             dateAndTime.setText(DateFormat.getDateTimeInstance().format(new Date()));
         }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/master
