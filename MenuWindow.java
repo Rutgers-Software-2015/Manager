@@ -1,8 +1,11 @@
 package Manager;
 
-import java.awt.*; 
+import java.awt.*;  
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.DateFormat;
@@ -15,6 +18,8 @@ import java.util.Queue;
 import java.util.Scanner;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -33,6 +38,7 @@ import javax.swing.Timer;
 import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import Login.LoginWindow;
 import Manager.MenuHandler;
@@ -41,6 +47,8 @@ import Shared.Gradients.*;
 
 import javax.swing.ButtonGroup;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 
 
@@ -68,6 +76,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 		// Table that will show the data from the menu
 		private JTable MenuTable;
 		
+			
 		// String that holds the menu
 		private String[][] Menu_RowData;
 		private String[] Menu_ColumnNames = {"Name", "Ingredients", "Price", "ID"};
@@ -76,7 +85,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 		private JTextField nameField, priceField, ingredientField, IDField;
 		
 		static JPanel textPanel;
-		
+				
 		public MenuWindow()
 		{
 			super();
@@ -258,7 +267,9 @@ public class MenuWindow extends JFrame implements ActionListener{
 			MenuTable.setFillsViewportHeight(true);
 			
 			textPanel.add(MenuScroller); 
+			
 		}
+
 		
 		//********************************************************************************
 		//DO NOT deviate from the card layout or change the size/location of the cardPanel.
@@ -319,6 +330,48 @@ public class MenuWindow extends JFrame implements ActionListener{
 		public void actionPerformed(ActionEvent e) 
 		{
 			Object a = e.getSource();
+			
+			MenuTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+				
+				   public void valueChanged(ListSelectionEvent event) {
+				        if (MenuTable.getSelectedRow() > -1) 
+				        {
+							
+							try{
+								
+								int row = MenuTable.getSelectedRow();
+								
+								String column_name = MenuTable.getModel().getValueAt(row, 0).toString();
+								String column_ingredient = MenuTable.getModel().getValueAt(row, 1).toString();
+								String column_price = MenuTable.getModel().getValueAt(row, 2).toString();
+								String column_ID = MenuTable.getModel().getValueAt(row, 3).toString();
+								
+								nameField.setText(column_name);
+								ingredientField.setText(column_ingredient);
+								priceField.setText(column_price);
+								IDField.setText(column_ID);
+								
+								nameField.updateUI();
+								ingredientField.updateUI();
+								priceField.updateUI();
+								IDField.updateUI();
+								
+								buttonPanel.updateUI();
+								
+							}
+							
+							catch(Exception ex)
+							{
+								JOptionPane.showMessageDialog(null, ex);
+							}
+				        }
+				    }
+				
+				   
+			
+			});	
+			
+			
 			if(a == backButton)
 				{
 					new MainTemplate();
@@ -419,7 +472,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 		        if (MenuTable.getSelectedRow() != -1) 
 		        {
 				
-		      	
+
 		        // Retrieve data from the text file	
 				String tempName = nameField.getText();
 				String tempIngredient = ingredientField.getText();
@@ -450,6 +503,9 @@ public class MenuWindow extends JFrame implements ActionListener{
 					updateClock();
 				}
 		}
+		
+		
+		
 		
 		private void updateClock() {
             dateAndTime.setText(DateFormat.getDateTimeInstance().format(new Date()));

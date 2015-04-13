@@ -1,6 +1,6 @@
 package Manager;
 
-import java.awt.*; 
+import java.awt.*;  
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -43,7 +43,11 @@ import Shared.Gradients.*;
 
 import javax.swing.ButtonGroup;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 public class InventoryWindow extends JFrame implements ActionListener{
@@ -230,7 +234,7 @@ public class InventoryWindow extends JFrame implements ActionListener{
 			removeButton.setFocusPainted(false);
 			
 
-			updateButton = new GradientButton("Edit Inventory Item");
+			updateButton = new GradientButton("Update Inventory Item");
 			updateButton.addActionListener(this);
 			updateButton.setFont(updateButton.getFont().deriveFont(16.0f));
 			updateButton.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -336,6 +340,39 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		public void actionPerformed(ActionEvent e) 
 		{
 			Object a = e.getSource();
+			
+			InventoryTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+				
+				   public void valueChanged(ListSelectionEvent event) {
+				        if (InventoryTable.getSelectedRow() > -1) 
+				        {
+							
+							try{
+								
+								int row = InventoryTable.getSelectedRow();
+								
+								String column_ingredient = InventoryTable.getModel().getValueAt(row, 0).toString();
+								String column_quantity = InventoryTable.getModel().getValueAt(row, 1).toString();
+								
+								ingredientField.setText(column_ingredient);
+								quantityField.setText(column_quantity);
+								
+								ingredientField.updateUI();
+								quantityField.updateUI();
+								
+								buttonPanel.updateUI();
+								
+							}
+							
+							catch(Exception ex)
+							{
+								JOptionPane.showMessageDialog(null, ex);
+							}
+				        }
+				    }
+				   
+			});
+			
 			if(a == backButton)
 				{
 					new MainTemplate();
