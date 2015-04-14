@@ -375,7 +375,7 @@ public class InventoryWindow extends JFrame implements ActionListener{
 			
 			if(a == backButton)
 				{
-					new MainTemplate();
+					new ManagerRootWindow();
 					dispose();
 				}
 			if(a == addButton)

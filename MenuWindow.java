@@ -374,7 +374,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 			
 			if(a == backButton)
 				{
-					new MainTemplate();
+					new ManagerRootWindow();
 					dispose();
 				}
 			if(a == addItem)
