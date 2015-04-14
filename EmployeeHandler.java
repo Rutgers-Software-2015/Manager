@@ -171,10 +171,35 @@ public class EmployeeHandler extends DatabaseCommunicator{
 				if(E.Q3.equals("false")){ q3 = "0"; }
 				if(E.Q4.equals("false")){ q4 = "0"; }
 				if(E.crimesQuestion.equals("")){c = "1"; }
+				int g = Integer.parseInt(E.GPA);
+				int sally = Integer.parseInt(E.salary);
+				//Check all params before using the sql
 				
-				String params = E.first_name+","+E.last_name+","+idstr+","+E.address+","+E.DOB+","+E.school+","+E.GPA+","+c+","+q1+","+q2+","+q3+","+q4+","+E.position+","+E.salary+","+"1"+","+E.first_name+","+E.first_name+","+"1";
-				String sqlComm = "INSERT INTO EmployeeList (firstname, lastname, id, address, dob, school, gpa, crimes, qone, qtwo, qthree, qfour, position, salary, visibility, username, password, avail) values ( "+params+" );";
+				System.out.println("Attempting to add the following:");
+				System.out.println("");
+				System.out.println("firstname	: "+E.first_name);
+				System.out.println("lastname	: "+E.last_name);
+				System.out.println("id			: "+counter);
+				System.out.println("address		: "+E.address);
+				System.out.println("dob			: "+E.DOB);
+				System.out.println("school		: "+E.school);
+				System.out.println("gpa			: "+E.GPA);
+				System.out.println("crimes		: "+E.crimesQuestion);
+				System.out.println("q1			: "+E.Q1);
+				System.out.println("q2			: "+E.Q2);
+				System.out.println("q3			: "+E.Q3);
+				System.out.println("q4			: "+E.Q4);
+				System.out.println("positon		: "+E.position);
+				System.out.println("salary		: "+E.salary);
+				System.out.println("q2			: "+E.Q2);
+				System.out.println("username	: "+E.first_name);
+				System.out.println("password	: "+E.first_name);
+				System.out.println("avail		: "+1);
 				
+				
+				String params = "'"+E.first_name+"'"+","+"'"+E.last_name+"'"+","+counter+","+"'"+E.address+"'"+","+"'"+E.DOB+"'"+","+"'"+E.school+"'"+","+g+","+c+","+q1+","+q2+","+q3+","+q4+","+"'"+E.position+"'"+","+sally+","+1+","+"'"+E.first_name+"'"+","+"'"+E.first_name+"'"+","+1;
+				String sqlComm = "INSERT INTO EmployeeList (firstname, lastname, id, address, dob, school, gpa, crimes, qone, qtwo, qthree, qfour, position, salary, visibility, username, password, avail) VALUES (" + params + " );";
+	
 				this.update(sqlComm);
 				
 				System.out.println("EmployeeAdded!");

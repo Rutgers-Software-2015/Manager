@@ -129,7 +129,7 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 			titlePanel.setOpaque(false);
 			titlePanel.setBounds(new Rectangle(0, 0, 1200, 56));
 			// Set Title
-			titleLabel = new JLabel("Your Main Window Interface");
+			titleLabel = new JLabel("Manager Directory");
 			titleLabel.setHorizontalAlignment(JLabel.CENTER);
 			titleLabel.setFont(titleLabel.getFont().deriveFont(38f));
 			titleLabel.setBorder(BorderFactory.createLineBorder(Color.black));
