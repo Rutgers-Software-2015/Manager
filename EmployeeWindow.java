@@ -89,6 +89,7 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 		/* Firing Process Stuff */
 			public GradientPanel FireRoot_Card;
 			public FirePanel FirePage;
+			public JButton Fire_Emp;
 			
 		public EmployeeWindow()
 		{
@@ -290,6 +291,9 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			FirePage = new FirePanel();
 			FirePage.setVisible(true);
 			FireRoot_Card.add(FirePage, BorderLayout.CENTER);
+			Fire_Emp = new JButton("Submit");
+			Fire_Emp.addActionListener(this);
+			FireRoot_Card.add(Fire_Emp, BorderLayout.SOUTH);
 		}
 		
 		private void setEditPage()
@@ -346,6 +350,11 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			{
 				getNewHireInfo();
 			}
+			if(a == Fire_Emp)
+				{
+					//Submission of firing button
+					execFire();
+				}
 			if(a == EditButton)
 				{
 					c.show(cardPanel, "EditProcess");
@@ -430,20 +439,14 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			}
 			
 
-			
 			//Construct the handler object
 			///[fname, lname, address, dob, school, gpa, question]
 			///FNAME, LNAME, ADDRESS, DOB, SCHOOL, GPA, q1, q2, q3, q4, position, sal
 			H_EmpInfo = new EmpObj(S1[0], S1[1], S1[2], S1[3], S1[4], S1[5], S1[6], S2[0], S2[1], S2[2], S2[3], S3[0], S3[1]);
-			
-			
-			
-			
-			
 			SumForm = new EmpSummaryPanel(H_EmpInfo);
 			cardPanel.add(SumForm,"Summary");
 			c.show(cardPanel, "Summary");
-			
+	
 			//Clean up the form
 			form1.cleanform();
 			form2.cleanform();
@@ -464,6 +467,12 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 				Hire_Error_Window.add(Hire_Error_Message);
 				Hire_Error_Window.setVisible(true);
 			}
+		}
+		
+		public void execFire()
+		{
+			String[] NandR = FirePage.answers();
+			EmpHandle.fireEmployee(NandR);
 		}
 		
 		

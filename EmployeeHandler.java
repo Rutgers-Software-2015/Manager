@@ -212,7 +212,29 @@ public class EmployeeHandler extends DatabaseCommunicator{
 		}
 	}
 	
-	
+	public void fireEmployee(String[] NameAndReason)
+	{
+		//MASTER INTERNET CHECK
+		boolean INTERNET;
+		INTERNET = isThereInternet();
+
+		if(NameAndReason[0] == null || NameAndReason[0].equals("") || NameAndReason[1] == null || NameAndReason[1].equals(""))
+		{
+			System.out.println("Missing Firing Parameters!");
+			return;
+		}
+		
+		if(INTERNET == true)
+		{
+			this.connect("admin", "gradMay17");
+			this.tell("use MAINDB;");
+			this.update("UPDATE EmployeeList SET visibility = 0 WHERE firstname = " + "'" + NameAndReason[0] + "'" + ";");
+			this.update("UPDATE EmployeeList SET fire_reason = "+ "'" + NameAndReason[1] + "'"+";");
+		}else
+		{
+			System.out.println("No DB Connection!");
+		}
+	}
 	
 	
 	public boolean isThereInternet()

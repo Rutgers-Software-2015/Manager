@@ -60,7 +60,7 @@ public class FirePanel extends GradientPanel{
 	public JList EmployeeList;
 	public EmployeeHandler Emp_H = new EmployeeHandler();
 	public JTextArea Reason_Area;
-	public GradientButton FireButton;
+	
 	
 	public FirePanel()
 	{
@@ -96,7 +96,7 @@ public class FirePanel extends GradientPanel{
 			for(int i = 0; i < EmpListVector.size(); i++)
 			{
 				EmpObj temp = EmpListVector.elementAt(i);
-				Emp_Names[i] = temp.first_name + temp.last_name;
+				Emp_Names[i] = temp.first_name +" "+  temp.last_name;
 			}
 			
 			EmployeeList = new JList(Emp_Names);
@@ -125,14 +125,45 @@ public class FirePanel extends GradientPanel{
 		
 		JLabel ReasonLabel = new JLabel("Reason for Firing");
 		
-		FireButton = new GradientButton("Fire");
 		//Add the actionlistner
 		
 		Reason_Panel.add(ReasonLabel, BorderLayout.BEFORE_FIRST_LINE);
 		Reason_Panel.add(Reason_Area, BorderLayout.CENTER);
-		Reason_Panel.add(FireButton, BorderLayout.SOUTH);
 		
 		Reason_Panel.setVisible(true);
 		
+	}
+	
+	public String[] answers()
+	{
+		String[] answer = new String[2];
+		String fullname = (String)EmployeeList.getSelectedValue();
+		String FirstName = "";
+		for(int i = 0; i < fullname.length(); i++)
+		{
+			if(fullname.charAt(i) == ' ')
+			{
+				FirstName = fullname.substring(0, i-1);
+				break;
+			}
+		}
+		
+		answer[0] = FirstName;
+		
+		String reason = "";
+		
+		try{
+			reason = Reason_Area.getText();
+			answer[1] = reason;
+		}catch(Exception e){
+			if(reason == null)
+			{
+				System.out.println("Must Input Firing Reason!");
+				
+			}
+		}
+		
+		Reason_Area.setText("");
+		return answer;
 	}
 }
