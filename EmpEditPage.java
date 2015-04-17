@@ -94,48 +94,14 @@ public class EmpEditPage extends GradientPanel implements ActionListener{
 				for(int i = 0; i < EmpListVector.size(); i++)
 				{
 					EmpObj temp = EmpListVector.elementAt(i);
-					Emp_Names[i] = temp.first_name + temp.last_name;
+					Emp_Names[i] = temp.first_name + " " +temp.last_name;
 				}
 				
 				EmployeeList = new JList(Emp_Names);
 				//Format it, Make selection model for it
 				EmployeeList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 				EmployeeList.setLayoutOrientation(JList.VERTICAL);
-				EmployeeList.setVisibleRowCount(5);
-				EmployeeList.addListSelectionListener(new ListSelectionListener()
-				{
-		
-					@Override
-					public void valueChanged(ListSelectionEvent e) {
-						/*Object a = e.getSource();
-						System.out.println("Printing new emp info page!");
-						String tname = String.valueOf(EmployeeList.getSelectedValue());
-						String name = "";
-						EmpObj t = new EmpObj();
-						for(int i = 0; i < tname.length() && (tname.charAt(i) != (' ')); i++)
-						{
-							name = name + tname.charAt(i);
-						}
-						for(int i = 0 ; i < EmpListVector.size(); i++)
-						{
-							if(EmpListVector.elementAt(i).first_name.equals(name))
-							{
-								t = EmpListVector.elementAt(i);
-								break;
-							}
-						}
-						EmpSum = new EmpSummaryPanel(t);
-						FormHolder.removeAll();
-						rootPanel.remove(FormHolder);
-						FormHolder.add(EmpSum);
-						rootPanel.add(FormHolder);
-						EmpSum.updateUI();
-						rootPanel.updateUI();*/
-						
-					}
-					
-					
-				});
+				EmployeeList.setVisibleRowCount(20);	
 				EmployeeList.setVisible(true);
 				//make panel visible
 				EmpListHolder.add(EmployeeList);
@@ -189,32 +155,31 @@ public class EmpEditPage extends GradientPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object a = e.getSource();
-		if(a == EmployeeList){ // If statement
-		System.out.println("Printing new emp info page!");
-		String tname = String.valueOf(EmployeeList.getSelectedValue());
-		String name = "";
-		EmpObj t = new EmpObj();
-		for(int i = 0; i < tname.length() && (tname.charAt(i) != (' ')); i++)
-		{
-			name = name + tname.charAt(i);
-		}
-		for(int i = 0 ; i < EmpListVector.size(); i++)
-		{
-			if(EmpListVector.elementAt(i).first_name.equals(name))
+		
+			String tname = String.valueOf(EmployeeList.getSelectedValue());
+			String name = "";
+			EmpObj t = new EmpObj();
+			for(int i = 0; i < tname.length() && (tname.charAt(i) != (' ')); i++)
 			{
-				t = EmpListVector.elementAt(i);
-				break;
+				name = name + tname.charAt(i);
 			}
-		}
-		EmpSum = new EmpSummaryPanel(t);
-		FormHolder.removeAll();
-		rootPanel.remove(FormHolder);
-		FormHolder.add(EmpSum);
-		rootPanel.add(FormHolder);
-		EmpSum.updateUI();
-		rootPanel.updateUI();
-		this.updateUI();
-		}
+			for(int i = 0 ; i < EmpListVector.size(); i++)
+			{
+				if(EmpListVector.elementAt(i).first_name.equals(name))
+				{
+					t = EmpListVector.elementAt(i);
+					break;
+				}
+			}
+			EmpSum = new EmpSummaryPanel(t);
+			FormHolder.removeAll();
+			rootPanel.remove(FormHolder);
+			FormHolder.add(EmpSum);
+			rootPanel.add(FormHolder);
+			EmpSum.updateUI();
+			rootPanel.updateUI();
+			this.updateUI();
+		
 	}
 	
 	public boolean isThereInternet()

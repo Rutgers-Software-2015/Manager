@@ -49,8 +49,9 @@ import javax.swing.border.LineBorder;
 public class EmpSummaryPanel extends JPanel{
 
 	public GridLayout rootLayout = new GridLayout(12,0);
-	public JLabel name, addr, dob, sch, gpa, crimes, q1, q2, q3, q4, pos, sal;
+	public JLabel namel, addrl, dobl, schl, gpal, crimesl, q1l, q2l, q3l, q4l, posl, sall;
 	public JPanel namep, addrp, dobp, schp, gpap, crimesp, q1p, q2p, q3p, q4p, posp, salp;
+	public JTextField name, addr, dob, sch, gpa, crimes, q1, q2, q3, q4, pos, sal;
 	
 	///FNAME, LNAME, ADDRESS, DOB, SCHOOL, GPA, crimes, q1, q2, q3, q4, position, sal
 	public EmpSummaryPanel(EmpObj HEMP)
@@ -63,96 +64,69 @@ public class EmpSummaryPanel extends JPanel{
 	
 	public void panelManipulation(EmpObj HEMP)
 	{
-		namep = new JPanel(new GridLayout(0,2));				//Base row panel
-		name = new JLabel("Name");								//Row Label
-		String empname = HEMP.first_name +" "+HEMP.last_name;	//Row information
-		JLabel nname = new JLabel(empname);						//Row Label applied
-		JPanel name_left = new JPanel(new BorderLayout());		//Left column
-		JPanel name_right = new JPanel(new BorderLayout());		//Right Column
-		name_left.add(name, BorderLayout.WEST);
-		name_right.add(nname, BorderLayout.CENTER);
-		name_left.setVisible(true);
-		name_right.setVisible(true);
-		namep.add(name_left);									//Add Left Column
-		namep.add(name_right);									//Add Right Column
-		namep.setVisible(true);
-		
+		namep = new JPanel(new GridLayout(0,2));
 		addrp = new JPanel(new GridLayout(0,2));
-		addr = new JLabel("Address");
-		addrp.add(addr);
-		JLabel a = new JLabel(HEMP.address);
-		addrp.add(a);
-		addrp.setVisible(true);
-		
 		dobp = new JPanel(new GridLayout(0,2));
-		dob = new JLabel("Date of Birth (dd/mm/yyyy)");
-		dobp.add(dob);
-		JLabel d = new JLabel(HEMP.DOB);
-		dobp.add(d);
-		dobp.setVisible(true);
-		
 		schp = new JPanel(new GridLayout(0,2));
-		sch = new JLabel("School");
-		schp.add(sch);
-		JLabel s = new JLabel(HEMP.school);
-		schp.add(s);
-		schp.setVisible(true);
-		
 		gpap = new JPanel(new GridLayout(0,2));
-		gpa = new JLabel("GPA");
-		gpap.add(gpa);
-		JLabel g = new JLabel(HEMP.GPA);
-		gpap.add(g);
-		gpap.setVisible(true);
-		
 		crimesp = new JPanel(new GridLayout(0,2));
-		crimes = new JLabel("Have you committed and crimes?");
-		crimesp.add(crimes);
-		JLabel c = new JLabel(HEMP.crimesQuestion);
-		crimesp.add(c);
-		crimesp.setVisible(true);
-		
 		q1p = new JPanel(new GridLayout(0,2));
-		q1 = new JLabel("I agree not to expose restaurant secrets.");
-		q1p.add(q1);
-		JLabel q1l = new JLabel(HEMP.Q1);
-		q1p.add(q1l);
-		q1p.setVisible(true);
-		
 		q2p = new JPanel(new GridLayout(0,2));
-		q2 = new JLabel("I consent to be fired at any time without cause from my employer.");
-		q2p.add(q2);
-		JLabel q2l = new JLabel(HEMP.Q2);
-		q2p.add(q2l);
-		q2p.setVisible(true);
-		
 		q3p = new JPanel(new GridLayout(0,2));
-		q3 = new JLabel("I agree to take random drug tested at the request of my employer.");
-		q3p.add(q3);
-		JLabel q3l = new JLabel(HEMP.Q3);
-		q3p.add(q3l);
-		q3p.setVisible(true);
-		
 		q4p = new JPanel(new GridLayout(0,2));
-		q4 = new JLabel("I revoke my rights to have employer provided healthcare.");
-		q4p.add(q4);
-		JLabel q4l = new JLabel(HEMP.Q4);
-		q4p.add(q4l);
-		q4p.setVisible(true);
-			
 		posp = new JPanel(new GridLayout(0,2));
-		pos = new JLabel("Position");
-		posp.add(pos);
-		JLabel pp = new JLabel(HEMP.position);
-		posp.add(pp);
-		posp.setVisible(true);
-		
 		salp = new JPanel(new GridLayout(0,2));
-		sal = new JLabel("Salary");
+		
+		namel = new JLabel("Name");
+		addrl = new JLabel("Address");
+		dobl = new JLabel("Date of Birth");
+		schl = new JLabel("School");
+		gpal = new JLabel("GPA");
+		crimesl = new JLabel("Have You Committed any Crimes?");
+		q1l = new JLabel("I agree not to expose restaurant secrets.");
+		q2l = new JLabel("I consent to be fired at any time without cause from my employer.");
+		q3l = new JLabel("I agree to take random drug tested at the request of my employer.");
+		q4l = new JLabel("I revoke my rights to have employer provided healthcare.");
+		posl = new JLabel("Position");
+		sall = new JLabel("Salary ($)");
+		
+		name = new JTextField(""+HEMP.first_name+" "+HEMP.last_name);
+		addr = new JTextField(HEMP.address);
+		dob = new JTextField(HEMP.DOB);
+		sch = new JTextField(HEMP.school);
+		gpa = new JTextField(HEMP.GPA);
+		crimes = new JTextField(HEMP.crimesQuestion);
+		q1 = new JTextField(HEMP.Q1);
+		q2 = new JTextField(HEMP.Q2);
+		q3 = new JTextField(HEMP.Q3);
+		q4 = new JTextField(HEMP.Q4);
+		pos = new JTextField(HEMP.position);
+		sal = new JTextField(HEMP.salary);
+		
+		namep.add(namel);
+		namep.add(name);
+		addrp.add(addrl);
+		addrp.add(addr);
+		dobp.add(dobl);
+		dobp.add(dob);
+		schp.add(schl);
+		schp.add(sch);
+		gpap.add(gpal);
+		gpap.add(gpa);
+		crimesp.add(crimesl);
+		crimesp.add(crimes);
+		q1p.add(q1l);
+		q1p.add(q1);
+		q2p.add(q2l);
+		q2p.add(q2);
+		q3p.add(q3l);
+		q3p.add(q3);
+		q4p.add(q4l);
+		q4p.add(q4);
+		posp.add(posl);
+		posp.add(pos);
+		salp.add(sall);
 		salp.add(sal);
-		JLabel ss = new JLabel(HEMP.salary);
-		salp.add(ss);
-		salp.setVisible(true);
 		
 		this.add(namep);
 		this.add(addrp);
