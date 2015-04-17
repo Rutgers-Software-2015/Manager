@@ -103,6 +103,19 @@ public class EmpSummaryPanel extends JPanel{
 		pos = new JTextField(HEMP.position);
 		sal = new JTextField(HEMP.salary);
 		
+		name.setEditable(true);
+		addr.setEditable(true);
+		dob.setEditable(true);
+		sch.setEditable(true);
+		gpa.setEditable(true);
+		crimes.setEditable(true);
+		q1.setEditable(true);
+		q2.setEditable(true);
+		q3.setEditable(true);
+		q4.setEditable(true);
+		pos.setEditable(true);
+		sal.setEditable(true);
+		
 		namep.add(namel);
 		namep.add(name);
 		addrp.add(addrl);

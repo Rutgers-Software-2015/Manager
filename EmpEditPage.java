@@ -21,7 +21,7 @@ import Shared.Communicator.*;
 import Shared.Gradients.*;
 
 
-public class EmpEditPage extends GradientPanel implements ActionListener{
+public class EmpEditPage extends GradientPanel implements ListSelectionListener{
 
 	public GradientPanel rootPanel = new GradientPanel();
 	public GradientPanel EmpListHolder; 
@@ -98,6 +98,7 @@ public class EmpEditPage extends GradientPanel implements ActionListener{
 				}
 				
 				EmployeeList = new JList(Emp_Names);
+				EmployeeList.addListSelectionListener(this);
 				//Format it, Make selection model for it
 				EmployeeList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 				EmployeeList.setLayoutOrientation(JList.VERTICAL);
@@ -152,11 +153,11 @@ public class EmpEditPage extends GradientPanel implements ActionListener{
 	}
 	
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
+	//@Override
+	/*public void actionPerformed(ActionEvent e) {
 		Object a = e.getSource();
 		
-			String tname = String.valueOf(EmployeeList.getSelectedValue());
+			String tname = (String)EmployeeList.getSelectedValue();
 			String name = "";
 			EmpObj t = new EmpObj();
 			for(int i = 0; i < tname.length() && (tname.charAt(i) != (' ')); i++)
@@ -171,16 +172,45 @@ public class EmpEditPage extends GradientPanel implements ActionListener{
 					break;
 				}
 			}
-			EmpSum = new EmpSummaryPanel(t);
+			
+			EmpSum.name.setText(t.first_name + " " + t.last_name);
+			EmpSum.addr.setText(t.address);
+			EmpSum.dob.setText(t.DOB);
+			EmpSum.sch.setText(t.salary);
+			EmpSum.gpa.setText(t.GPA);
+			EmpSum.crimes.setText(t.crimesQuestion);
+			EmpSum.q1.setText(t.Q1);
+			EmpSum.q2.setText(t.Q2);
+			EmpSum.q3.setText(t.Q3);
+			EmpSum.q4.setText(t.Q4);
+			EmpSum.pos.setText(t.position);
+			EmpSum.sal.setText(t.salary);
+			
+			EmpSum.name.updateUI();
+			EmpSum.addr.updateUI();
+			EmpSum.dob.updateUI();
+			EmpSum.sch.updateUI();
+			EmpSum.gpa.updateUI();
+			EmpSum.crimes.updateUI();
+			EmpSum.q1.updateUI();
+			EmpSum.q2.updateUI();
+			EmpSum.q3.updateUI();
+			EmpSum.q4.updateUI();
+			EmpSum.pos.updateUI();
+			EmpSum.sal.updateUI();
+			EmpSum.updateUI();
+			rootPanel.updateUI();
+			this.updateUI();
+			/*EmpSum = new EmpSummaryPanel(t);
 			FormHolder.removeAll();
 			rootPanel.remove(FormHolder);
 			FormHolder.add(EmpSum);
 			rootPanel.add(FormHolder);
 			EmpSum.updateUI();
 			rootPanel.updateUI();
-			this.updateUI();
+			this.updateUI();*/
 		
-	}
+	//}
 	
 	public boolean isThereInternet()
 	{
@@ -199,6 +229,65 @@ public class EmpEditPage extends GradientPanel implements ActionListener{
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		Object a = e.getSource();
+		
+		String tname = (String)EmployeeList.getSelectedValue();
+		String name = "";
+		EmpObj t = new EmpObj();
+		for(int i = 0; i < tname.length() && (tname.charAt(i) != (' ')); i++)
+		{
+			name = name + tname.charAt(i);
+		}
+		for(int i = 0 ; i < EmpListVector.size(); i++)
+		{
+			if(EmpListVector.elementAt(i).first_name.equals(name))
+			{
+				t = EmpListVector.elementAt(i);
+				break;
+			}
+		}
+		
+		EmpSum.name.setText(t.first_name + " " + t.last_name);
+		EmpSum.addr.setText(t.address);
+		EmpSum.dob.setText(t.DOB);
+		EmpSum.sch.setText(t.salary);
+		EmpSum.gpa.setText(t.GPA);
+		EmpSum.crimes.setText(t.crimesQuestion);
+		EmpSum.q1.setText(t.Q1);
+		EmpSum.q2.setText(t.Q2);
+		EmpSum.q3.setText(t.Q3);
+		EmpSum.q4.setText(t.Q4);
+		EmpSum.pos.setText(t.position);
+		EmpSum.sal.setText(t.salary);
+		
+		EmpSum.name.updateUI();
+		EmpSum.addr.updateUI();
+		EmpSum.dob.updateUI();
+		EmpSum.sch.updateUI();
+		EmpSum.gpa.updateUI();
+		EmpSum.crimes.updateUI();
+		EmpSum.q1.updateUI();
+		EmpSum.q2.updateUI();
+		EmpSum.q3.updateUI();
+		EmpSum.q4.updateUI();
+		EmpSum.pos.updateUI();
+		EmpSum.sal.updateUI();
+		EmpSum.updateUI();
+		rootPanel.updateUI();
+		this.updateUI();
+		/*EmpSum = new EmpSummaryPanel(t);
+		FormHolder.removeAll();
+		rootPanel.remove(FormHolder);
+		FormHolder.add(EmpSum);
+		rootPanel.add(FormHolder);
+		EmpSum.updateUI();
+		rootPanel.updateUI();
+		this.updateUI();*/
+		
 	}
 	
 }
