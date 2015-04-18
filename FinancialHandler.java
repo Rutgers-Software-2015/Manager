@@ -124,7 +124,7 @@ public class FinancialHandler extends DatabaseCommunicator{
 		return amounts;
 	}
 	
-	public int[] getDay()
+	public String[] getDay()
 	{
 		this.connect("admin", "gradMay17");
 		this.tell("use MAINDB;");
@@ -149,12 +149,12 @@ public class FinancialHandler extends DatabaseCommunicator{
 			System.out.println("Not sure why this failed.....2");
 		}
 		
-		int[] days = new int[size];
+		String[] days = new String[size];
 		int i = 0;
 		try{
 			while(rs.next() == true)
 			{
-				int t = rs.getInt("Date");
+				String t = rs.getString("Date");
 				days[i] = t;
 				i++;
 			}
