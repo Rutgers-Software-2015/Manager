@@ -204,6 +204,7 @@ public class EmployeeHandler extends DatabaseCommunicator{
 				
 				System.out.println("EmployeeAdded!");
 				
+				this.disconnect();
 				return;
 			}
 		else
@@ -229,11 +230,32 @@ public class EmployeeHandler extends DatabaseCommunicator{
 			this.connect("admin", "gradMay17");
 			this.tell("use MAINDB;");
 			this.update("UPDATE EmployeeList SET visibility = 0 WHERE firstname = " + "'" + NameAndReason[0] + "'" + ";");
-			this.update("UPDATE EmployeeList SET fire_reason = "+ "'" + NameAndReason[1] + "'"+";");
+			this.update("UPDATE EmployeeList SET fire_reason = "+ "'" + NameAndReason[1] + "'" + "where firstname = " + "'" + NameAndReason[0] + "'" + ";");
+			this.disconnect();
 		}else
 		{
 			System.out.println("No DB Connection!");
 		}
+	}
+	
+	public void updateEmployee(EmpObj e)
+	{
+		boolean INTERNET;
+		INTERNET = isThereInternet();
+		
+		if(INTERNET == true)
+		{
+			this.connect("admin", "gradMay17");
+			this.tell("use MAINDB;");
+			String sqlComm = "UPDATE EmployeeList SET address = " + "'" + e.address + "'" + "," +  " position = " + "'" + e.position + "'" + "," + " salary = " + e.salary + " WHERE firstname = " + "'" + e.first_name + "' " + ";";
+			this.update(sqlComm);
+			this.disconnect();
+			
+		}else
+		{
+			System.out.println("NO DB CONNECTION!");
+		}
+		
 	}
 	
 	

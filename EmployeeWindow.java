@@ -360,6 +360,10 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 					c.show(cardPanel, "EditProcess");
 				
 				}
+			if(a == EmpEdit_Button)
+				{
+					pushEmpUpdates();
+				}
 			if(a == timer)
 				{
 					updateClock();
@@ -473,6 +477,12 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 		{
 			String[] NandR = FirePage.answers();
 			EmpHandle.fireEmployee(NandR);
+		}
+		
+		public void pushEmpUpdates()
+		{
+			EmpObj t =  EditPage_Card.answers();
+			EmpHandle.updateEmployee(t);
 		}
 		
 		

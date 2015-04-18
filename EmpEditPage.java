@@ -153,64 +153,6 @@ public class EmpEditPage extends GradientPanel implements ListSelectionListener{
 	}
 	
 
-	//@Override
-	/*public void actionPerformed(ActionEvent e) {
-		Object a = e.getSource();
-		
-			String tname = (String)EmployeeList.getSelectedValue();
-			String name = "";
-			EmpObj t = new EmpObj();
-			for(int i = 0; i < tname.length() && (tname.charAt(i) != (' ')); i++)
-			{
-				name = name + tname.charAt(i);
-			}
-			for(int i = 0 ; i < EmpListVector.size(); i++)
-			{
-				if(EmpListVector.elementAt(i).first_name.equals(name))
-				{
-					t = EmpListVector.elementAt(i);
-					break;
-				}
-			}
-			
-			EmpSum.name.setText(t.first_name + " " + t.last_name);
-			EmpSum.addr.setText(t.address);
-			EmpSum.dob.setText(t.DOB);
-			EmpSum.sch.setText(t.salary);
-			EmpSum.gpa.setText(t.GPA);
-			EmpSum.crimes.setText(t.crimesQuestion);
-			EmpSum.q1.setText(t.Q1);
-			EmpSum.q2.setText(t.Q2);
-			EmpSum.q3.setText(t.Q3);
-			EmpSum.q4.setText(t.Q4);
-			EmpSum.pos.setText(t.position);
-			EmpSum.sal.setText(t.salary);
-			
-			EmpSum.name.updateUI();
-			EmpSum.addr.updateUI();
-			EmpSum.dob.updateUI();
-			EmpSum.sch.updateUI();
-			EmpSum.gpa.updateUI();
-			EmpSum.crimes.updateUI();
-			EmpSum.q1.updateUI();
-			EmpSum.q2.updateUI();
-			EmpSum.q3.updateUI();
-			EmpSum.q4.updateUI();
-			EmpSum.pos.updateUI();
-			EmpSum.sal.updateUI();
-			EmpSum.updateUI();
-			rootPanel.updateUI();
-			this.updateUI();
-			/*EmpSum = new EmpSummaryPanel(t);
-			FormHolder.removeAll();
-			rootPanel.remove(FormHolder);
-			FormHolder.add(EmpSum);
-			rootPanel.add(FormHolder);
-			EmpSum.updateUI();
-			rootPanel.updateUI();
-			this.updateUI();*/
-		
-	//}
 	
 	public boolean isThereInternet()
 	{
@@ -279,15 +221,39 @@ public class EmpEditPage extends GradientPanel implements ListSelectionListener{
 		EmpSum.updateUI();
 		rootPanel.updateUI();
 		this.updateUI();
-		/*EmpSum = new EmpSummaryPanel(t);
-		FormHolder.removeAll();
-		rootPanel.remove(FormHolder);
-		FormHolder.add(EmpSum);
-		rootPanel.add(FormHolder);
-		EmpSum.updateUI();
-		rootPanel.updateUI();
-		this.updateUI();*/
+	}
+	
+	public EmpObj answers()
+	{	
+		//name, addr, dob, sch, gpa, crimes, q1, q2, q3, q4,pos,sal
+		EmpObj ans = new EmpObj();
+		String n = EmpSum.name.getText();
+		String first = null;
+		String last = null;
+		for(int i = 0; i < n.length(); i++)
+		{
+			if(n.charAt(i) == ' ')
+			{
+				first = n.substring(0, i+1);
+				last = n.substring(i+1);
+				break;
+			}
+		}
 		
+		ans.first_name = first;
+		ans.last_name = last;
+		ans.address = EmpSum.addr.getText();
+		ans.DOB = EmpSum.dob.getText();
+		ans.school = EmpSum.sch.getText();
+		ans.GPA = EmpSum.gpa.getText();
+		ans.crimesQuestion = EmpSum.crimes.getText();
+		ans.Q1 = EmpSum.q1.getText();
+		ans.Q2 = EmpSum.q2.getText();
+		ans.Q3 = EmpSum.q3.getText();
+		ans.Q4 = EmpSum.q4.getText();
+		ans.position = EmpSum.pos.getText();
+		ans.salary = EmpSum.sal.getText();
+		return ans;
 	}
 	
 }
