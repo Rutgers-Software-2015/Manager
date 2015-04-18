@@ -244,7 +244,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 			updateItem.setFocusPainted(false);
 			
 			// Set Back Button
-			backButton = new GradientButton("BACK");
+			backButton = new GradientButton("BLAH");
 			backButton.addActionListener(this);												
 			backButton.setFont(backButton.getFont().deriveFont(16.0f));
 			backButton.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
