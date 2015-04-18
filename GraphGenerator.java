@@ -1,9 +1,6 @@
 package Manager;
 
-import org.jCharts.chartData.ChartDataException;
-import org.jCharts.chartData.PieChartDataSet;
-import org.jCharts.nonAxisChart.PieChart2D;
-import org.jCharts.properties.*;
+
 
 import java.awt.*; 
 import java.awt.event.ActionEvent;
