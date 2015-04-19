@@ -1,13 +1,12 @@
 package Manager;
-
 import javafx.application.Platform;
-
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.layout.GridPane;
 
 import javax.swing.*;
+
 import java.awt.*;
 
 public class MondayScatter {
@@ -17,17 +16,17 @@ public class MondayScatter {
 		SwingUtilities.invokeLater(new Runnable() {
 		      @Override
 		      public void run() {
-		        ChartFrame mainFrame = new ChartFrame();
+		        ChartFrame1 mainFrame = new ChartFrame1();
 		        mainFrame.setVisible(true);
 		        }
 		      });
 		    }
 	}
 
-class ChartFrame extends JFrame {
+class ChartFrame1 extends JFrame {
 	
   JFXPanel fxPanel;
-  public ChartFrame(){
+  public ChartFrame1(){
     initSwingComponents();
 
     initFxComponents();
@@ -57,21 +56,26 @@ class ChartFrame extends JFrame {
            * Construct and populate Bar chart.
            * It uses 2 series of data.
            */
-          NumberAxis yAxis = new NumberAxis(0.0,5.0,1.0);
-          NumberAxis xAxis = new NumberAxis(0.0,5.0,1.0);
+          final CategoryAxis xAxis = new CategoryAxis();
+          final NumberAxis yAxis = new NumberAxis();
+          
+          BarChart<String,Number> bc =  new BarChart<String,Number>(xAxis,yAxis);
+          
+          bc.setTitle("Item Trends");
+          xAxis.setLabel("Day");       
+          yAxis.setLabel("Amount");
+   
           FinDataGenerator FDG = new FinDataGenerator();
-          ScatterChart bc = new ScatterChart<>(xAxis,yAxis);
-          XYChart.Series series =
-            new XYChart.Series<>();
-          series.setName("Amount");
-          for(int i = 0; i < FDG.days.length; i++)
-          {
-        	  if(FDG.days[i].equals("Monday"))
-        	  {
-        		  series.getData().add(getData(FDG.Monday[i],FDG.MenuItems[i]));
-        	  }
-          }
-          bc.getData().addAll(series);
+          
+          XYChart.Series series1 = new XYChart.Series();
+          series1.setName("Monday");       
+          for(int i = 0; i < FDG.Monday.length; i++){
+        	  System.out.println("Food: " + FDG.Monday[i] + " " + " " + "Item: " + FDG.MenuItems[i]);
+          	series1.getData().add(getData(FDG.Monday[i],FDG.MenuItems[i]));
+          }      
+          
+          bc.getData().addAll(series1);
+          
           grid.add(bc,0,0);
           
           grid.setVgap(20);
