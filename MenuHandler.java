@@ -98,7 +98,7 @@ public class MenuHandler extends DatabaseCommunicator {
 							double cost = rs.getDouble("COST");
 							String ingredient =  rs.getString("INGREDIENTS");
 							String description = rs.getString("DESCRIPTION");
-							String menu_sec = ""+rs.getInt("MENU_SECTION");
+							String menu_sec = ""+rs.getString("MENU_SECTION");
 							int valid = rs.getInt("VALID");
 					
 							MenuObj temp = new MenuObj(menu_id, item, price, cost, ingredient, description, menu_sec, valid);

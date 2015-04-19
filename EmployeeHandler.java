@@ -53,7 +53,7 @@ public class EmployeeHandler extends DatabaseCommunicator{
 				this.connect("admin", "gradMay17");
 				this.tell("use MAINDB;");
 				ResultSet rs = this.tell("SELECT * FROM EmployeeList;");
-				this.consolePrintTable(rs);
+				//this.consolePrintTable(rs);
 				
 				
 				int sizeRS = 0;
@@ -229,7 +229,7 @@ public class EmployeeHandler extends DatabaseCommunicator{
 		{
 			this.connect("admin", "gradMay17");
 			this.tell("use MAINDB;");
-			this.update("UPDATE EmployeeList SET visibility = 0 WHERE firstname = " + "'" + NameAndReason[0] + "'" + ";");
+			this.update("UPDATE EmployeeList SET visibility = false WHERE firstname = " + "'" + NameAndReason[0] + "'" + ";");
 			this.update("UPDATE EmployeeList SET fire_reason = "+ "'" + NameAndReason[1] + "'" + "where firstname = " + "'" + NameAndReason[0] + "'" + ";");
 			this.disconnect();
 		}else

@@ -93,7 +93,7 @@ public class FinDataGenerator{
 				String it = items[i];
 				int j = findItemIndex(it);
 				System.out.println("J: " + j);
-				Monday[j] = Monday[j] + amounts[j];
+				Monday[j] = Monday[j] + amounts[i];
 				continue;
 			}
 			if(days[i].equals("Tuesday"))
@@ -101,7 +101,7 @@ public class FinDataGenerator{
 				String it = items[i];
 				int j = findItemIndex(it);
 				System.out.println("J: " + j);
-				Tuesday[j] = Tuesday[j] + amounts[j];
+				Tuesday[j] = Tuesday[j] + amounts[i];
 				continue;
 			}
 			if(days[i].equals("Wednesday"))
@@ -109,7 +109,7 @@ public class FinDataGenerator{
 				String it = items[i];
 				int j = findItemIndex(it);
 				System.out.println("J: " + j);
-				Wednesday[j] = Wednesday[j] + amounts[j];
+				Wednesday[j] = Wednesday[j] + amounts[i];
 				continue;
 			}
 			if(days[i].equals("Thursday"))
@@ -117,7 +117,7 @@ public class FinDataGenerator{
 				String it = items[i];
 				int j = findItemIndex(it);
 				System.out.println("J: " + j);
-				Thursday[j] = Thursday[j] + amounts[j];
+				Thursday[j] = Thursday[j] + amounts[i];
 				continue;
 			}
 			if(days[i].equals("Friday"))
@@ -125,7 +125,7 @@ public class FinDataGenerator{
 				String it = items[i];
 				int j = findItemIndex(it);
 				System.out.println("J: " + j);
-				Friday[j] = Friday[j] + amounts[j];
+				Friday[j] = Friday[j] + amounts[i];
 				continue;
 			}
 			if(days[i].equals("Saturday"))
@@ -133,7 +133,7 @@ public class FinDataGenerator{
 				String it = items[i];
 				int j = findItemIndex(it);
 				System.out.println("J: " + j);
-				Saturday[j] = Saturday[j] + amounts[j];
+				Saturday[j] = Saturday[j] + amounts[i];
 				continue;
 			}
 			if(days[i].equals("Sunday"))
@@ -141,7 +141,7 @@ public class FinDataGenerator{
 				String it = items[i];
 				int j = findItemIndex(it);
 				System.out.println("J: " + j);
-				Sunday[j] = Sunday[j] + amounts[j];
+				Sunday[j] = Sunday[j] + amounts[i];
 				continue;
 			}
 			

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.Collections;
@@ -37,6 +38,7 @@ import javax.swing.Timer;
 import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
 
 
 
@@ -231,11 +233,11 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			FireButton.setFocusPainted(false);
 			
 			// Set Request Refund Button
-			PerfomanceButton = new GradientButton("Employee Performance");
+			/*PerfomanceButton = new GradientButton("Employee Performance");
 			PerfomanceButton.addActionListener(this);
 			PerfomanceButton.setFont(PerfomanceButton.getFont().deriveFont(16.0f));
 			PerfomanceButton.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			PerfomanceButton.setFocusPainted(false);
+			PerfomanceButton.setFocusPainted(false);*/
 			// Set Back Button
 			backButton = new GradientButton("BACK");
 			backButton.addActionListener(this);												
@@ -246,7 +248,7 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			buttonPanel.add(EditButton);
 			buttonPanel.add(HireButton);
 			buttonPanel.add(FireButton);
-			buttonPanel.add(PerfomanceButton);
+			//buttonPanel.add(PerfomanceButton);
 			buttonPanel.add(backButton);
 		}
 		
@@ -460,10 +462,26 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			Boolean INTERNET;
 			INTERNET = isThereInternet();
 			if(INTERNET == true){
+				System.out.println("Adding the New Employee!");
 				EmpHandle.addEmployee(H_EmpInfo);
 				Hire_Error_Message = new JLabel("Worker Added!");
 				Hire_Error_Window.add(Hire_Error_Message);
 				Hire_Error_Window.setVisible(true);
+				//HERE
+				EmpEdit_Root = new GradientPanel();
+				EmpEdit_Root.setLayout(new BorderLayout());
+				EmpEdit_Root.setVisible(true);
+				setEditPage();
+				setEmpEditButton();
+				EmpEdit_Root.updateUI();
+				cardPanel.add(EmpEdit_Root, "EditProcess");
+				//Here
+				FireRoot_Card = new GradientPanel();
+				FireRoot_Card.setLayout(new BorderLayout());
+				FireRoot_Card.setVisible(true);
+				setFireCard();
+				cardPanel.add(FireRoot_Card, "FireProcess");
+				
 			}
 			else
 			{
@@ -477,6 +495,20 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 		{
 			String[] NandR = FirePage.answers();
 			EmpHandle.fireEmployee(NandR);
+			//Update the views
+			EmpEdit_Root = new GradientPanel();
+			EmpEdit_Root.setLayout(new BorderLayout());
+			EmpEdit_Root.setVisible(true);
+			setEditPage();
+			setEmpEditButton();
+			EmpEdit_Root.updateUI();
+			cardPanel.add(EmpEdit_Root, "EditProcess");
+			//Here
+			FireRoot_Card = new GradientPanel();
+			FireRoot_Card.setLayout(new BorderLayout());
+			FireRoot_Card.setVisible(true);
+			setFireCard();
+			cardPanel.add(FireRoot_Card, "FireProcess");
 		}
 		
 		public void pushEmpUpdates()
