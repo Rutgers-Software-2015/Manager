@@ -5,9 +5,11 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
 import javax.swing.*;
+
 import java.awt.*;
 
 public class ItemDayGraph {
@@ -49,9 +51,11 @@ class ChartFrame extends JFrame {
     Platform.runLater(new Runnable() {
       @Override
       public void run() {
+    	  
           GridPane grid = new GridPane();
-          Scene scene = new Scene(grid, 800, 400);
-
+          Scene scene = new Scene(grid,800, 800);
+         
+          
          
           /**
            * Construct and populate Bar chart.
@@ -177,7 +181,7 @@ class ChartFrame extends JFrame {
           
           bc.getData().addAll(series1, series2, series3, series4, series5, series6, series7);
           
-          
+         
           grid.setVgap(20);
           grid.setHgap(20);
           grid.add(bc,0,0);

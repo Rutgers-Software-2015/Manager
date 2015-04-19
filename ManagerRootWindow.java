@@ -171,6 +171,7 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 			
 			FinancialsButton = new GradientButton("Financials");
 			FinancialsButton.setFont(FinancialsButton.getFont().deriveFont(16.0f));
+			FinancialsButton.addActionListener(this);
 			buttonPanel.add(FinancialsButton);
 			
 			InventoryButton = new GradientButton("Inventory");
@@ -196,6 +197,11 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 				new  EmployeeWindow();
 				dispose();
 			}
+			if(a == FinancialsButton)
+				{
+				 new FinancialFrame();
+				 dispose();
+				}
 			if(a == MenuButton)
 				{
 					new MenuWindow();

@@ -83,7 +83,7 @@ public class FinancialHandler extends DatabaseCommunicator{
 		{
 			System.out.println("Not sure why this failed.....2");
 		}
-		
+		this.disconnect();
 		return items;
 	}
 	
@@ -131,7 +131,7 @@ public class FinancialHandler extends DatabaseCommunicator{
 		{
 			System.out.println("Not sure why this failed.....2");
 		}
-		
+		this.disconnect();
 		return amounts;
 	}
 	
@@ -209,7 +209,7 @@ public class FinancialHandler extends DatabaseCommunicator{
 		{
 			System.out.println(e);
 		}		
-		
+		this.disconnect();
 		return items;
 	}
 	
