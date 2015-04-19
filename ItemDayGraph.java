@@ -12,12 +12,12 @@ import java.awt.*;
 
 public class ItemDayGraph {
 
-	public ItemDayGraph()
+	public ItemDayGraph(String d)
 	{
 		SwingUtilities.invokeLater(new Runnable() {
 		      @Override
 		      public void run() {
-		        ChartFrame mainFrame = new ChartFrame();
+		        ChartFrame mainFrame = new ChartFrame(d);
 		        mainFrame.setVisible(true);
 		        }
 		      });
@@ -27,10 +27,10 @@ public class ItemDayGraph {
 class ChartFrame extends JFrame {
 	
   JFXPanel fxPanel;
-  public ChartFrame(){
+  public ChartFrame(String d){
     initSwingComponents();
 
-    initFxComponents();
+    initFxComponents(d);
   }
 
   private void initSwingComponents(){
@@ -44,7 +44,7 @@ class ChartFrame extends JFrame {
     this.setSize(800,400);
   }
 
-  private void initFxComponents(){
+  private void initFxComponents(String d){
 
     Platform.runLater(new Runnable() {
       @Override
@@ -111,13 +111,76 @@ class ChartFrame extends JFrame {
           	series7.getData().add(getData(FDG.Sunday[i],FDG.MenuItems[i]));
           }
           
-         
+          if(d.equals("Monday"))
+          {
+        	  bc.getData().addAll(series1);
+        	  grid.setVgap(20);
+              grid.setHgap(20);
+              grid.add(bc,2,0);
+              fxPanel.setScene(scene);
+              return;
+          }
+          else if(d.equals("Tuesday"))
+          {
+        	  bc.getData().addAll(series2);
+        	  grid.setVgap(20);
+              grid.setHgap(20);
+              grid.add(bc,2,0);
+              fxPanel.setScene(scene);
+              return;
+          }
+          else if(d.equals("Wednesday"))
+          {
+        	  bc.getData().addAll(series3);
+        	  grid.setVgap(20);
+              grid.setHgap(20);
+              grid.add(bc,2,0);
+              fxPanel.setScene(scene);
+              return;
+          }
+          else if(d.equals("Thursday"))
+          {
+        	  bc.getData().addAll(series4);
+        	  grid.setVgap(20);
+              grid.setHgap(20);
+              grid.add(bc,2,0);
+              fxPanel.setScene(scene);
+              return;
+          }
+          else if(d.equals("Friday"))
+          {
+        	  bc.getData().addAll(series5);
+        	  grid.setVgap(20);
+              grid.setHgap(20);
+              grid.add(bc,2,0);
+              fxPanel.setScene(scene);
+              return;
+          }
+          else if(d.equals("Saturday"))
+          {
+        	  bc.getData().addAll(series6);
+        	  grid.setVgap(20);
+              grid.setHgap(20);
+              grid.add(bc,2,0);
+              fxPanel.setScene(scene);
+              return;
+          }
+          else if(d.equals("Sunday"))
+          {
+        	  bc.getData().addAll(series7);
+        	  grid.setVgap(20);
+              grid.setHgap(20);
+              grid.add(bc,2,0);
+              fxPanel.setScene(scene);
+              return;
+          }
+          
           bc.getData().addAll(series1, series2, series3, series4, series5, series6, series7);
           
           
           grid.setVgap(20);
           grid.setHgap(20);
-          grid.add(bc,2,0);
+          grid.add(bc,0,0);
           fxPanel.setScene(scene);
         }
       });
