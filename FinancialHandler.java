@@ -64,7 +64,12 @@ public class FinancialHandler extends DatabaseCommunicator{
 		{
 			System.out.println("Not sure why this failed.....2");
 		}
-		
+		try{
+			rs.beforeFirst();
+		}catch(SQLException e)
+		{
+			System.out.println(e);
+		}
 		String[] items = new String[size];
 		int i = 0;
 		try{
@@ -86,7 +91,7 @@ public class FinancialHandler extends DatabaseCommunicator{
 	{
 		this.connect("admin", "gradMay17");
 		this.tell("use MAINDB;");
-		ResultSet rs = this.tell("Select Date from OrderHistory;");
+		ResultSet rs = this.tell("Select Amount from OrderHistory;");
 		
 		int size = 0;
 		
@@ -106,7 +111,13 @@ public class FinancialHandler extends DatabaseCommunicator{
 		{
 			System.out.println("Not sure why this failed.....2");
 		}
-		
+		try
+		{
+			rs.beforeFirst();
+		}catch(SQLException e)
+		{
+			
+		}
 		int[] amounts = new int[size];
 		int i = 0;
 		try{
@@ -148,7 +159,11 @@ public class FinancialHandler extends DatabaseCommunicator{
 		{
 			System.out.println("Not sure why this failed.....2");
 		}
-		
+		try{
+			rs.beforeFirst();
+		}catch(SQLException e){
+			System.out.println(e);
+		}
 		String[] days = new String[size];
 		int i = 0;
 		try{
@@ -188,6 +203,7 @@ public class FinancialHandler extends DatabaseCommunicator{
 			while(rs.next() == true)
 			{
 				items[i] = rs.getString("ITEM_NAME");
+				i++;
 			}
 		}catch(SQLException e)
 		{
