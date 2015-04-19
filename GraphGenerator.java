@@ -1,5 +1,6 @@
 package Manager;
 
+import javafx.*;
 
 
 import java.awt.*; 
@@ -41,8 +42,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 
-
-
 //import Login.LoginWindow;
 import Shared.Gradients.*;
 
@@ -57,12 +56,29 @@ public class GraphGenerator{
 	String[] items = FinHandle.getItems();
 	int[] amounts = FinHandle.getAmounts();
 	String[] days = FinHandle.getDay();
+	String[] MenuItems = FinHandle.getMenuItems();
+	
+	//Holds day items
+	int[] Monday;
+	int[] Tuesday;
+	int[] Wednesday;
+	int[] Thursday;
+	int[] Friday;
+	int[] Saturday;
+	int[] Sunday;
+
 	
 	public void GraphGenerator()
 	{
 		
 	}
+
+	public void organizeData()
+	{
+		
+	}
 	
+
 	public void Gen_ItemBarGraph()
 	{
 		

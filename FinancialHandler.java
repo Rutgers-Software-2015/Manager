@@ -162,8 +162,39 @@ public class FinancialHandler extends DatabaseCommunicator{
 		{
 			System.out.println("Not sure why this failed.....2");
 		}
+		this.disconnect();
 		
 		return days;
+	}
+	
+	public String[] getMenuItems()
+	{
+		String[] items = null;
+		this.connect("admin", "gradMay17");
+		this.tell("use MAINDB;");
+		int size = 0;
+		String sqlcomm = "Select ITEM_NAME from MENU";
+		
+		try{
+			ResultSet rs = this.tell(sqlcomm);
+			rs.beforeFirst();
+			while(rs.next() == true)
+			{
+				size++;
+			}
+			items = new String[size];
+			rs.beforeFirst();
+			int i = 0;
+			while(rs.next() == true)
+			{
+				items[i] = rs.getString("ITEM_NAME");
+			}
+		}catch(SQLException e)
+		{
+			System.out.println(e);
+		}		
+		
+		return items;
 	}
 	
 	
