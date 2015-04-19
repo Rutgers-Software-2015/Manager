@@ -1,7 +1,7 @@
 package Manager;
 
 import javafx.application.Platform;
-import javafx.beans.property.SimpleListProperty;
+
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
