@@ -1,10 +1,11 @@
 package Manager;
 
-import java.awt.*;  
+import java.awt.*;   
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.Collections;
@@ -38,8 +39,8 @@ import Login.LoginWindow;
 import Manager.MenuHandler;
 import Shared.ADT.Ingredient;
 import Shared.ADT.IngredientHandler;
-import Shared.GUITemplates.MainTemplate;
 import Shared.Gradients.*;
+import Shared.Notifications.NotificationGUI;
 
 import javax.swing.ButtonGroup;
 import javax.swing.border.LineBorder;
@@ -53,6 +54,7 @@ import java.awt.event.MouseEvent;
 public class InventoryWindow extends JFrame implements ActionListener{
 
 	
+		private NotificationGUI notification;
 		//Parent Panels
 		private JPanel rootPanel,titlePanel,buttonPanel;
 		private GradientPanel backgroundPanel,buttonPanelBackground,cardPanel;
@@ -64,7 +66,7 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		//Swing Layouts
 		private CardLayout c;
 		//Other Variables
-		private Timer timer;
+		private Timer timer, timer_checker;
 		
 		private JFrame InventoryAddingFrame;
 		
@@ -134,6 +136,8 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		
 		private void setRootPanel()
 		{
+			notification = new NotificationGUI(1, "Manager");
+			rootPanel.add(notification);
 			rootPanel.add(titlePanel);
 			rootPanel.add(cardPanel);
 			rootPanel.add(buttonPanel);
@@ -191,6 +195,11 @@ public class InventoryWindow extends JFrame implements ActionListener{
 			            timer.setCoalesce(true);
 			            timer.setInitialDelay(0);
 			            timer.start();
+			        	timer_checker = new Timer(5000,this);
+			        	timer_checker.setRepeats(true);
+			        	timer_checker.setCoalesce(true);
+			        	timer_checker.setInitialDelay(0);
+			        	timer_checker.start();
 		}
 		
 		//*********************************************************
@@ -255,36 +264,90 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		
 		public void init_inventory()
 		{
-			//Need to populate the arrays before they are fed to the JTable
-			inglist = new String[IngredientHandler.IngredientList.length][2];
-			Inventory_RowData = inglist;
-			getList();
-			InventoryTable = new JTable(Inventory_RowData, Inventory_ColumnNames);
+//			//Need to populate the arrays before they are fed to the JTable
+//			inglist = new String[IngredientHandler.IngredientList.length][2];
+//			Inventory_RowData = inglist;
+//			getList();
+//			InventoryTable = new JTable(Inventory_RowData, Inventory_ColumnNames);
+//			InventoryScroller = new JScrollPane(InventoryTable);
+//			InventoryTable.setFillsViewportHeight(true);
+			
+			InventoryTable = new JTable();
+			InventoryTable.setRowSelectionAllowed(false);
+			InventoryTable.setModel(new DefaultTableModel(
+				new Object[][] {
+					{null, null},
+
+				},
+				new String[] {
+					"Ingredient", "Quantity"
+				}
+			) {
+				Class[] columnTypes = new Class[] {
+					String.class, Integer.class
+				};
+				public Class getColumnClass(int columnIndex) {
+					return columnTypes[columnIndex];
+				}
+				boolean[] columnEditables = new boolean[] {
+					false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			});
+			InventoryTable.getColumnModel().getColumn(0).setResizable(false);
+			InventoryTable.getColumnModel().getColumn(0).setPreferredWidth(120);
+			InventoryTable.getColumnModel().getColumn(1).setResizable(false);
+			InventoryTable.getColumnModel().getColumn(1).setMaxWidth(100);
 			InventoryScroller = new JScrollPane(InventoryTable);
 			InventoryTable.setFillsViewportHeight(true);
+		
 			
 		}
 		
-		// Get the list
-		public void getList()
-		{
+		/*
+		 * This function fills the Inventory in the top left ScrollView.The ScrollViews contains all the Ingredients.
+		 *  @returns nothing. 
+		 */
 
-			for(int i = 0; i < inglist.length; i++)
-			{
-				for(int j = 0; j < inglist[1].length; j++)
+		private void FillInventory() throws SQLException
+		{
+			
+			DefaultTableModel ModelInven=(DefaultTableModel) InventoryTable.getModel();
+			InventoryHandler test=new InventoryHandler();
+
+			try{
+
+			
+			String[] InventoryName=test.getInventoryName();
+			Integer[] InventoryQuant=test.getInventoryQ();
+			int rows=InventoryName.length;
+		
+				int rowtemp=0;
+				for(int i=0;i<InventoryName.length;i++)
 				{
-					if(j == 0)
+				
+					ModelInven.setValueAt(InventoryName[i],rowtemp,0);
+					ModelInven.setValueAt(InventoryQuant[i],rowtemp,1);
+					rowtemp++;
+					if(ModelInven.getRowCount()<rows)
 					{
-						inglist[i][j] = tempIngredient[i].name;
-					}
-					if(j == 1)
-					{
-						inglist[i][j] = "" + tempIngredient[i].count;
+						ModelInven.addRow(new Object[][]{
+								{null, null},});
 					}
 				}
-			}
 			
+			
+			}
+			catch (SQLException e)
+			{
+				
+			};
+
 		}
+		
+		// Get the list
 		
 		//********************************************************************************
 		//DO NOT deviate from the card layout or change the size/location of the cardPanel.
@@ -494,6 +557,16 @@ public class InventoryWindow extends JFrame implements ActionListener{
 				{
 					updateClock();
 				}
+			
+			if(a==timer_checker)
+			{
+				try {
+					FillInventory();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		}
 		
 		private void updateClock() {

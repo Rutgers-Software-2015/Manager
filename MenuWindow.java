@@ -1,6 +1,6 @@
 package Manager;
 
-import java.awt.*;  
+import java.awt.*;   
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -8,6 +8,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.Collections;
@@ -42,8 +45,9 @@ import javax.swing.table.JTableHeader;
 
 import Login.LoginWindow;
 import Manager.MenuHandler;
-import Shared.GUITemplates.MainTemplate;
+import Shared.ADT.MenuItem;
 import Shared.Gradients.*;
+import Shared.Notifications.NotificationGUI;
 
 import javax.swing.ButtonGroup;
 import javax.swing.border.LineBorder;
@@ -56,6 +60,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 
 	
 		//Parent Panels
+		private NotificationGUI notification;
 		private JPanel rootPanel,titlePanel,buttonPanel;
 		private GradientPanel backgroundPanel,buttonPanelBackground,cardPanel;
 		private GradientPanel card1,card2,card3;
@@ -76,9 +81,10 @@ public class MenuWindow extends JFrame implements ActionListener{
 		// Table that will show the data from the menu
 		private JTable MenuTable;
 		
-			
+		private MenuHandler MenuHandle = new MenuHandler();
+		
 		// String that holds the menu
-		private String[][] Menu_RowData;
+		private String[] Menu_RowData;
 		private String[] Menu_ColumnNames = {"Name", "Ingredients", "Price", "ID"};
 		
 		// Text fields for users to write name, price, ingredients, and ID
@@ -86,13 +92,13 @@ public class MenuWindow extends JFrame implements ActionListener{
 		
 		static JPanel textPanel;
 				
-		public MenuWindow()
+		public MenuWindow() throws SQLException
 		{
 			super();
 			init();
 		}
 
-		public void init()
+		public void init() throws SQLException
 		{
 			this.setTitle("Edit Menu");
 			this.setResizable(true);
@@ -118,7 +124,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 			this.setVisible(true);
 		}
 
-		public void frameManipulation()
+		public void frameManipulation() throws SQLException
 		{
 			rootPanel = new JPanel();
 			rootPanel.setLayout(null);
@@ -127,10 +133,48 @@ public class MenuWindow extends JFrame implements ActionListener{
 			setCardPanel();
 			setButtonPanel();
 			setRootPanel();
+				
+		}
+
+		
+		public static void main(String[] args) throws SQLException
+		{
+			new MenuWindow();
 		}
 		
+		
+		
+		private void makeMenu() throws SQLException {
+			// TODO Auto-generated method stub
+			
+			DefaultTableModel model = (DefaultTableModel) MenuTable.getModel();
+			MenuHandler handler = new MenuHandler();
+			String[] Menu = handler.getMenu();
+			int temprow = 0;
+			
+			for(int i=0;i< Menu.length;i++)
+			{
+
+				model.setValueAt(Menu[i], temprow, 0);
+				i++;
+				model.setValueAt(Menu[i], temprow, 1);
+				i++;
+				model.setValueAt(Menu[i], temprow, 2);
+				i++;
+				model.setValueAt(Menu[i], temprow, 3);
+				i++;
+				
+
+				model.addRow(new Object[][] {{null, null, null, null}});
+				
+			}
+			
+		}
+
 		private void setRootPanel()
 		{
+			notification = new NotificationGUI(1, "Manager");
+			rootPanel.add(notification);
 			rootPanel.add(titlePanel);
 			rootPanel.add(cardPanel);
 			rootPanel.add(buttonPanel);
@@ -244,7 +288,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 			updateItem.setFocusPainted(false);
 			
 			// Set Back Button
-			backButton = new GradientButton("BLAH");
+			backButton = new GradientButton("BACK");
 			backButton.addActionListener(this);												
 			backButton.setFont(backButton.getFont().deriveFont(16.0f));
 			backButton.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -256,18 +300,69 @@ public class MenuWindow extends JFrame implements ActionListener{
 			buttonPanel.add(backButton);
 		}
 		
-		public void init_menu()
+		public void init_menu() throws SQLException
 		{
 			//Need to populate the arrays before they are fed to the JTable
-			Menu_RowData = MenuHandler.getMenu();
-			MenuTable = new JTable(Menu_RowData, Menu_ColumnNames);
-			MenuTable.getColumnModel().getColumn(0).setPreferredWidth(130);
-			MenuTable.getColumnModel().getColumn(1).setPreferredWidth(220);
+//			Menu_RowData = MenuHandler.getMenu();
+//			MenuTable = new JTable(Menu_RowData, Menu_ColumnNames);
+			
+		//	makeMenu();
+		//	MenuTable = new JTable();
+			// MenuTable.getColumnModel().getColumn(0).setPreferredWidth(130);
+			// MenuTable.getColumnModel().getColumn(1).setPreferredWidth(220);
+			
+			MenuTable = new JTable();
+			MenuTable.setRowSelectionAllowed(false);
+			MenuTable.setModel(new DefaultTableModel(
+					new Object[][] {
+						{null, null},
+
+					},				new String[] {
+							"ID", "Name", "Price", "Cost", "Ingredients", "Description", "Section", "Valid"
+					}
+				) {
+					Class[] columnTypes = new Class[] {
+							Integer.class, String.class, Double.class, Double.class, String.class, String.class, String.class, Integer.class
+					};
+					public Class getColumnClass(int columnIndex) {
+						return columnTypes[columnIndex];
+					}
+					boolean[] columnEditables = new boolean[] {
+						false, false, false, false, false, false, false, false
+					};
+					public boolean isCellEditable(int row, int column) {
+						return columnEditables[column];
+					}
+			});
 			MenuScroller = new JScrollPane(MenuTable);
 			MenuTable.setFillsViewportHeight(true);
-			
 			textPanel.add(MenuScroller); 
 			
+		}
+		
+		public static DefaultTableModel buildTableModel(ResultSet rs) throws SQLException {
+
+		    ResultSetMetaData metaData = rs.getMetaData();
+
+		    // names of columns
+		    Vector<String> columnNames = new Vector<String>();
+		    int columnCount = metaData.getColumnCount();
+		    for (int column = 1; column <= columnCount; column++) {
+		        columnNames.add(metaData.getColumnName(column));
+		    }
+
+		    // data of the table
+		    Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+		    while (rs.next()) {
+		        Vector<Object> vector = new Vector<Object>();
+		        for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+		            vector.add(rs.getObject(columnIndex));
+		        }
+		        data.add(vector);
+		    }
+
+		    return new DefaultTableModel(data, columnNames);
+
 		}
 
 		
@@ -276,14 +371,14 @@ public class MenuWindow extends JFrame implements ActionListener{
 		//Creating and adding cards is OK
 		//********************************************************************************
 	
-		public void init_textPanel()
+		public void init_textPanel() throws SQLException
 		{
 			init_menu();
 			rootPanel.add(textPanel);
 			
 		}
 		
-		private void setCardPanel()
+		private void setCardPanel() throws SQLException
 		{
 			cardPanel = new GradientPanel();
 			cardPanel.setLayout(new CardLayout()); // How to define a Card Layout
@@ -291,10 +386,14 @@ public class MenuWindow extends JFrame implements ActionListener{
 			cardPanel.setGradient(new Color(255,255,255), new Color(255,110,110));
 			cardPanel.setBounds(273, 79, 896, 569);
 			
-			Menu_RowData = MenuHandler.getMenu();
-			MenuTable = new JTable(Menu_RowData, Menu_ColumnNames);
-			MenuTable.getColumnModel().getColumn(0).setPreferredWidth(130);
-			MenuTable.getColumnModel().getColumn(1).setPreferredWidth(220);
+			MenuTable = new JTable();
+//			ModelOrders = (DefaultTableModel)MenuOrder.getModel();
+//			Menu_RowData = MenuHandler.getMenu();
+//			MenuTable = new JTable(Menu_RowData, Menu_ColumnNames);
+			
+
+//			MenuTable.getColumnModel().getColumn(0).setPreferredWidth(130);
+//			MenuTable.getColumnModel().getColumn(1).setPreferredWidth(220);
 			MenuScroller = new JScrollPane(MenuTable);
 			MenuTable.setFillsViewportHeight(true);
 			
@@ -326,11 +425,59 @@ public class MenuWindow extends JFrame implements ActionListener{
 			*/
 		}
 		
+		private void FillMenu() throws SQLException
+		{
+			
+			DefaultTableModel ModelInven=(DefaultTableModel) MenuTable.getModel();
+			MenuHandler test = new MenuHandler();
+
+			try{
+				
+			Integer[] MenuID = test.getMenuID();	
+			String[] MenuName = test.getMenuName();
+			Double[] MenuPrice = test.getMenuPrice();
+			Double[] MenuCost = test.getMenuCost();
+			String[] Ingredients = test.getMenuIngredients();
+			String[] MenuDescription = test.getMenuDescription();
+			String[] MenuSection = test.getMenuSection();
+			Integer[] isValid = test.getMenuisValid();
+			
+			
+			int rows= MenuName.length;
+			int rowtemp=0;
+			
+				for(int i=0;i< MenuName.length;i++)
+				{
+					ModelInven.setValueAt(MenuName[i],rowtemp,0);
+					ModelInven.setValueAt(MenuName[i],rowtemp,1);
+					ModelInven.setValueAt(MenuName[i],rowtemp,2);
+					ModelInven.setValueAt(MenuName[i],rowtemp,3);
+					ModelInven.setValueAt(MenuName[i],rowtemp,4);
+					ModelInven.setValueAt(MenuName[i],rowtemp,5);
+					ModelInven.setValueAt(MenuName[i],rowtemp,6);
+					ModelInven.setValueAt(MenuName[i],rowtemp,7);
+					rowtemp++;
+					
+					if(ModelInven.getRowCount() < rows)
+					{
+						ModelInven.addRow(new Object[][]{{null, null},});
+					}
+				}
+			
+			
+			}
+			catch (SQLException e)
+			{
+				
+			};
+
+		}
+		
 		// Action Listener
 		public void actionPerformed(ActionEvent e) 
 		{
 			Object a = e.getSource();
-			
+			/*
 			MenuTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 				
 				   public void valueChanged(ListSelectionEvent event) {
@@ -364,12 +511,13 @@ public class MenuWindow extends JFrame implements ActionListener{
 							{
 								JOptionPane.showMessageDialog(null, ex);
 							}
+							
 				        }
 				    }
 				
 				   
 			
-			});	
+			});	*/
 			
 			
 			if(a == backButton)
@@ -379,13 +527,16 @@ public class MenuWindow extends JFrame implements ActionListener{
 				}
 			if(a == addItem)
 				{
-			   // c.show(cardPanel, "YES"); //Example of how to show card panel
+			   
+				
 				
 				// Retrieve data from the text fields
 				String tempName = nameField.getText();
 				String tempIngredient = ingredientField.getText();
 				String tempPrice = priceField.getText();
 				String tempID = IDField.getText();
+				
+				/*
 				
 				// Make a new temp array of size + 1 to add the new item
 				String[][] temp = new String[Menu_RowData.length + 1][4];
@@ -415,16 +566,21 @@ public class MenuWindow extends JFrame implements ActionListener{
 				
 				MenuTable.getColumnModel().getColumn(0).setPreferredWidth(130);
 				MenuTable.getColumnModel().getColumn(1).setPreferredWidth(220);
-				
+				*/
 				}
 			if(a == removeItem)
 				{
+				
+				
+				
 			   // c.show(cardPanel, "NO"); //Example of how to show card panel
 				
 
 				// User need to selects a row
 		        if (MenuTable.getSelectedRow() != -1) 
 		        {
+		        	
+		        	/*
 		        	
 		        	// Get the position of selected row
 		        	int position = MenuTable.getSelectedRow();
@@ -455,29 +611,36 @@ public class MenuWindow extends JFrame implements ActionListener{
 		        	
 		    		MenuTable.getColumnModel().getColumn(0).setPreferredWidth(130);
 		    		MenuTable.getColumnModel().getColumn(1).setPreferredWidth(220);
+		    	
+		    		*/
 		    		
 		        }
+		        
 		        
 				else 
 				{
 					JOptionPane.showMessageDialog(MenuAddingFrame, "Please select a menu item.");
 				}
 				
+				
 				}
+			
 			if(a == updateItem)
 				{
 				// c.show(cardPanel, "BLANK"); //Example of how to show card panel
 				
 				// User needs to select a row
+				
 		        if (MenuTable.getSelectedRow() != -1) 
 		        {
 				
-
 		        // Retrieve data from the text file	
 				String tempName = nameField.getText();
 				String tempIngredient = ingredientField.getText();
 				String tempPrice = priceField.getText();
 				String tempID = IDField.getText();
+				
+				/*
 				
 				// Update the table
 				MenuTable.getModel().setValueAt(tempName, MenuTable.getSelectedRow(), 0);
@@ -487,6 +650,8 @@ public class MenuWindow extends JFrame implements ActionListener{
 				
 				MenuTable.getColumnModel().getColumn(0).setPreferredWidth(130);
 				MenuTable.getColumnModel().getColumn(1).setPreferredWidth(220);
+				
+				*/
 				
 		        }
 		        
