@@ -53,7 +53,7 @@ class ChartFrame extends JFrame {
       public void run() {
     	  
           GridPane grid = new GridPane();
-          Scene scene = new Scene(grid,800, 800);
+          Scene scene = new Scene(grid,1000, 1000);
          
           
          
