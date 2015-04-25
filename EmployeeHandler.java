@@ -80,6 +80,7 @@ public class EmployeeHandler extends DatabaseCommunicator{
 							String ls = rs.getString("lastname");
 
 							String addr = rs.getString("address");
+							addr = this.decrypt(addr);
 							//end
 							String dob = rs.getString("dob");
 							String sch =  rs.getString("school");
@@ -203,7 +204,7 @@ public class EmployeeHandler extends DatabaseCommunicator{
 				String templl = E.first_name.toLowerCase();
 				String hash =  this.SHA_256_Hash(templl);
 				
-				String params = "'"+E.first_name+"'"+","+"'"+E.last_name+"'"+","+counter+","+"'"+E.address+"'"+","+"'"+E.DOB+"'"+","+"'"+E.school+"'"+","+g+","+c+","+q1+","+q2+","+q3+","+q4+","+"'"+E.position+"'"+","+sally+","+1+","+"'"+ (E.first_name.toLowerCase()) +"'"+","+"'"+ hash +"'"+","+1;
+				String params = "'"+E.first_name+"'"+","+"'"+E.last_name+"'"+","+counter+","+"'"+this.encrypt(E.address)+"'"+","+"'"+E.DOB+"'"+","+"'"+E.school+"'"+","+g+","+c+","+q1+","+q2+","+q3+","+q4+","+"'"+E.position+"'"+","+sally+","+1+","+"'"+ (E.first_name.toLowerCase()) +"'"+","+"'"+ hash +"'"+","+1;
 				String sqlComm = "INSERT INTO EmployeeList (firstname, lastname, id, address, dob, school, gpa, crimes, qone, qtwo, qthree, qfour, position, salary, visibility, username, password, avail) VALUES (" + params + " );";
 	
 				this.update(sqlComm);
