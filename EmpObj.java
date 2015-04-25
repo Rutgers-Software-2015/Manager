@@ -1,5 +1,7 @@
 package Manager;
-
+//written by: Harsh Shsh
+//tested by: Harsh Shah
+//debugged by: Harsh Shah
 public class EmpObj {
 	public String first_name, last_name;
 	public String address;

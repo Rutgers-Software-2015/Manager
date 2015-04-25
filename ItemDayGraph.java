@@ -1,5 +1,7 @@
 package Manager;
-
+//written by: Harsh Shsh
+//tested by: Harsh Shah
+//debugged by: Harsh Shah
 import javafx.application.Platform;
 import javafx.beans.property.SimpleListProperty;
 import javafx.embed.swing.JFXPanel;
