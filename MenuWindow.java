@@ -137,12 +137,6 @@ public class MenuWindow extends JFrame implements ActionListener{
 			setRootPanel();
 				
 		}
-
-		
-		public static void main(String[] args) throws SQLException
-		{
-			new MenuWindow();
-		}
 		
 		/*
 		

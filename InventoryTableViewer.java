@@ -1,6 +1,8 @@
 package Manager;
 
-import java.awt.BorderLayout;
+import javax.swing.JPanel;
+
+import java.awt.BorderLayout; 
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.sql.ResultSet;
@@ -14,16 +16,14 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-public class MenuTableViewer extends JPanel{
+public class InventoryTableViewer extends JPanel {
 	
 	public JPanel TableHolder;
-	public JTable Menu;
-	public MenuHandler MH;
+	public JTable Inventory;
+	public InventoryHandler IH;
 	public JScrollPane scroller;
 	
-	
-	
-	public MenuTableViewer()
+	public InventoryTableViewer()
 	{
 		super();
 		this.setVisible(true);
@@ -40,14 +40,14 @@ public class MenuTableViewer extends JPanel{
 		this.add(TableHolder);
 		
 		
-		gen_Menu();
+		gen_Inventory();
 	}
 	
-	public void gen_Menu()
+	public void gen_Inventory()
 	{
-		String[] Menu_ColumnNames = {"Name", "Ingredients", "Price", "ID"};
-		MH = new MenuHandler();
-		ResultSet rs = MH.getAllMenu();
+		String[] Inventory_ColumnNames = {"Ingredient", "Quantity"};
+		IH = new InventoryHandler();
+		ResultSet rs = IH.getAllInventory();
 		
 		int rowcount = 0;
 		try{
@@ -61,13 +61,10 @@ public class MenuTableViewer extends JPanel{
 			System.out.println(e);
 		}
 		
-		String[] N = new String[rowcount];
 		String[] I = new String[rowcount];
-		String[] P = new String[rowcount];
-		String[] ID = new String[rowcount];
+		String[] Q = new String[rowcount];
 		
-		try
-		{
+		try{
 			rs.beforeFirst();
 		}catch(SQLException e)
 		{
@@ -78,17 +75,12 @@ public class MenuTableViewer extends JPanel{
 		try{
 			while(rs.next() == true)
 			{
-				String tmpname = rs.getString("ITEM_NAME");
-				String tmping = rs.getString("INGREDIENTS");
-				double tmpp = rs.getDouble("PRICE");
-				String tmpprice = ""+tmpp;
-				int tmpi = rs.getInt("MENU_ID");
-				String tmpid = ""+tmpi;
+				String tmpname = rs.getString("Item_Name");
+				int tmpquantity = rs.getInt("Amount");
+				String tmpquantitystring = ""+tmpquantity;
 				
-				N[rowiterator] = tmpname;
-				I[rowiterator] = tmping;
-				P[rowiterator] = tmpprice;
-				ID[rowiterator] = tmpid;
+				I[rowiterator] = tmpname;
+				Q[rowiterator] = tmpquantitystring;
 				
 				rowiterator++;
 				
@@ -97,21 +89,19 @@ public class MenuTableViewer extends JPanel{
 		{
 			E.printStackTrace();
 		}
-		String[][] data = new String[rowcount][4];
+		String[][] data = new String[rowcount][2];
 		
 		for(int i = 0; i < rowcount; i++)
 		{
-			data[i][0] = N[i];
-			data[i][1] = I[i];
-			data[i][2] = P[i];
-			data[i][3] = ID[i];
+			data[i][0] = I[i];
+			data[i][1] = Q[i];
 		}
 		
 		System.out.println(rowcount);
 		
-		Menu = new JTable(data, Menu_ColumnNames);
-		Menu.setPreferredScrollableViewportSize(new Dimension(890, 560));
-	    Menu.setFillsViewportHeight(true);
+		Inventory = new JTable(data, Inventory_ColumnNames);
+		Inventory.setPreferredScrollableViewportSize(new Dimension(890, 560));
+	    Inventory.setFillsViewportHeight(true);
 		/*DefaultTableModel model = (DefaultTableModel) Menu.getModel();
 		for(int i = 0; i < rowcount; i++)
 		{
@@ -122,7 +112,7 @@ public class MenuTableViewer extends JPanel{
 			
 			model.addRow(new Object[][] {{null, null, null, null}});
 		}*/
-	    JScrollPane scrollPane = new JScrollPane(Menu);
+	    JScrollPane scrollPane = new JScrollPane(Inventory);
 	    
         //Add the scroll pane to this panel.
        
@@ -130,4 +120,5 @@ public class MenuTableViewer extends JPanel{
 		TableHolder.add(scrollPane);
 		
 	}
+
 }

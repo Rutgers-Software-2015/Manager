@@ -25,7 +25,7 @@ public class InventoryHandler  extends DatabaseCommunicator {
 
 	// public Ingredient IngredientList[];
 	
-	public ResultSet getAllInventory() throws SQLException
+	public ResultSet getAllInventory()
 	{	
 		
 		this.connect("admin", "gradMay17");
@@ -121,18 +121,26 @@ public class InventoryHandler  extends DatabaseCommunicator {
 	
 	}
 	
-	public void updateInventoryValue(int newQuantity, String item)
+	public void updateInventoryValue(int newQuantity, String item) throws SQLException
 	{
 		this.connect("admin", "gradMay17");
 		this.tell("use MAINDB;");
 		ResultSet rs =  this.tell("Select Amount from INVENTORY where Item_Name = '" + item + "';");
+		int curamnt = rs.getInt("Amount");
+		int newamnt =  newQuantity + curamnt;
+		this.update("UPDATE INVENTORY SET Amount = '" + newamnt + "' WHERE Item_Name = '" + item + "';");
+		this.disconnect();
+		
+		/*
+		
 		try
 		{
 			while(rs.next() == true)
 			{
-				int curamnt, newamnt = 0;
+				// int curamnt, newamnt = 0;
 				curamnt = rs.getInt("Amount");
-				newamnt =  newQuantity + curamnt;
+				System.out.println(curamnt);
+				// newamnt =  newQuantity + curamnt;
 				this.update("UPDATE INVENTORY SET Amount = '" + newamnt + "' WHERE Item_Name = '" + item + "';");
 				this.disconnect();
 			}
@@ -140,26 +148,18 @@ public class InventoryHandler  extends DatabaseCommunicator {
 		{
 			e.printStackTrace();
 			this.disconnect();
-		}
+		} 
+		*/
 	}
 	
 	public void AddInventoryItem(String Ingredient, int newQuantity) throws SQLException
 	{
 
 			this.connect("admin", "gradMay17");
-			this.tell("use MAINDB;");
-			
-			try{
+			this.tell("use MAINDB;");		
 			this.update("INSERT INTO INVENTORY (Item_Name, Amount) VALUES "+ "('" + Ingredient + "', '" + newQuantity + "');" );
 			this.disconnect();
-			}
-			
-			catch(Exception e)
-			{
-				e.printStackTrace();
-				this.disconnect();
-			}
-			
+
 	}
 	
 	public void RemoveInventoryItem(String Ingredient) throws SQLException

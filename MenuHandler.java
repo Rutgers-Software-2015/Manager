@@ -63,7 +63,7 @@ public class MenuHandler extends DatabaseCommunicator {
 		this.connect("admin", "gradMay17");
 		this.tell("use MAINDB;");
 		ResultSet rs = this.tell("select * FROM MENU;");
-		// this.disconnect();
+		this.disconnect();
 		return rs;
 	}
 
@@ -549,6 +549,7 @@ public class MenuHandler extends DatabaseCommunicator {
 			String newMenuItem = "('" + Item_Name + "', '" + price + "', '" + cost + "', '" + Ingredients + "', '" + Description + "', '" + Menu_Section + "', '" + Valid + "');";
 			
 			ResultSet rs =  this.tell("INSERT INTO MENU (ITEM_NAME, PRICE, COST, INGREDIENTS, DESCRIPTION, MENU_SECTION, VALID) VALUES " + newMenuItem);
+			this.disconnect();
 			
 	}
 
@@ -557,6 +558,7 @@ public class MenuHandler extends DatabaseCommunicator {
 			this.connect("admin", "gradMay17");
 			this.tell("use MAINDB;");
 			ResultSet rs =  this.tell("DELETE FROM MENU WHERE ITEM_NAME='" + MenuItem + "';");
+			this.disconnect();
 	}
 	
 

@@ -90,8 +90,10 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		
 		// A temporary ingredient array and double array used to hold
 		// to get the data and display it onto the table
-		Ingredient tempIngredient[] = IngredientHandler.IngredientList;
-		String[][] inglist = new String[tempIngredient.length][2];
+		// Ingredient tempIngredient[] = IngredientHandler.IngredientList;
+		// String[][] inglist = new String[tempIngredient.length][2];
+		
+		InventoryTableViewer ITV = new InventoryTableViewer();
 		
 		public InventoryWindow()
 		{
@@ -370,6 +372,11 @@ public class InventoryWindow extends JFrame implements ActionListener{
 			cardPanel.setGradient(new Color(255,255,255), new Color(255,110,110));
 			cardPanel.setBounds(273, 79, 896, 569);
 			
+			// ITV = new InventoryTableViewer();
+			// cardPanel.add(ITV, BorderLayout.CENTER);
+			
+			
+			
 			init_inventory();
 			
 			card1 = new GradientPanel();
@@ -379,6 +386,8 @@ public class InventoryWindow extends JFrame implements ActionListener{
 			cardPanel.add(card1,""); // How to add cards to a Card Layout
 			
 			cardPanel.setVisible(true); 
+			
+			FillInventory();
 			
 			/*
 			
@@ -397,13 +406,16 @@ public class InventoryWindow extends JFrame implements ActionListener{
 			cardPanel.add(card3,"BLANK");
 			
 			cardPanel.setVisible(true); 
+			
 			*/
+			
 		}
 		
 		// Action Listener
 		public void actionPerformed(ActionEvent e) 
 		{
 			Object a = e.getSource();
+			
 			
 			InventoryTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 				
@@ -430,12 +442,15 @@ public class InventoryWindow extends JFrame implements ActionListener{
 							
 							catch(Exception ex)
 							{
+								
 								JOptionPane.showMessageDialog(null, ex);
 							}
 				        }
 				    }
 				   
 			});
+			
+			
 			
 			if(a == backButton)
 				{
@@ -452,8 +467,7 @@ public class InventoryWindow extends JFrame implements ActionListener{
 				String tempQuantity = quantityField.getText();
 				int quantity;
 				
-				
-				/*
+	
 				// Make a new temp array of size + 1 to add the new item
 				String[][] temp = new String[Inventory_RowData.length + 1][2];
 				
@@ -472,15 +486,12 @@ public class InventoryWindow extends JFrame implements ActionListener{
 				Inventory_RowData = temp;
 				InventoryTable.setModel(new DefaultTableModel(Inventory_RowData, Inventory_ColumnNames));
 
-
-				*/
-				
-				
 				try {
 						
 					// Set the quantity and the name of the ingredient to the handler
 					quantity=Integer.parseInt(tempQuantity);
 					InventoryHandle.AddInventoryItem(tempNewIngredient, quantity);
+					FillInventory();
 					
 				} 
 				
@@ -503,6 +514,7 @@ public class InventoryWindow extends JFrame implements ActionListener{
 				// User need to selects a row
 		        if (InventoryTable.getSelectedRow() != -1) 
 		        {
+		        	      	
 		        	// ModelInven = (DefaultTableModel) InventoryTable.getModel();
 		        	int position = InventoryTable.getSelectedRow();
 		        	
@@ -529,9 +541,12 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		        	Inventory_RowData = temp;
 		        	InventoryTable.setModel(new DefaultTableModel(Inventory_RowData, Inventory_ColumnNames));
 					
+					
+					
 					try {
 						InventoryHandle.RemoveInventoryItem(tempNewIngredient);
-						// ModelInven.removeRow(InventoryTable.getSelectedRow());
+						FillInventory();
+						//ModelInven.removeRow(position);
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -590,7 +605,13 @@ public class InventoryWindow extends JFrame implements ActionListener{
 				{
 					
 				quantity=Integer.parseInt(tempQuantity);
-				InventoryHandle.updateInventoryValue(quantity, tempNewIngredient);	
+				try {
+					InventoryHandle.updateInventoryValue(quantity, tempNewIngredient);
+					FillInventory();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}	
 					
 					
 					/*
@@ -624,11 +645,11 @@ public class InventoryWindow extends JFrame implements ActionListener{
 				{
 					updateClock();
 				}
-			
-			if(a==timer_checker)
-			{
-				FillInventory();
-			}
+		/*	if(a == timer_checker)
+				{
+					FillInventory();
+				}
+		*/	
 		}
 		
 		private void updateClock() {
