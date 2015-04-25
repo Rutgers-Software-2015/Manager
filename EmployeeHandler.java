@@ -63,13 +63,15 @@ public class EmployeeHandler extends DatabaseCommunicator{
 					sizeRS++;
 				}
 				
+				sizeRS = sizeRS - 7;
 				rs.beforeFirst();
 				Vector<EmpObj> EmpListVector = new Vector(sizeRS);
 				try{
 					while(rs.next() == true)
 					{
 						boolean vis = rs.getBoolean("Visibility");
-						if(vis == false)
+						String tf = rs.getString("firstname");
+						if(vis == false || tf.equals("manager") || tf.equals("waiter") || tf.equals("kitchen") || tf.equals("busboy") || tf.equals("debug") || tf.equals("customer") || tf.equals("host") )
 						{
 							continue;
 						}else
