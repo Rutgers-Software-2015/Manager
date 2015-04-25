@@ -78,7 +78,9 @@ public class EmployeeHandler extends DatabaseCommunicator{
 						{
 							String fn = rs.getString("firstname");
 							String ls = rs.getString("lastname");
+
 							String addr = rs.getString("address");
+							//end
 							String dob = rs.getString("dob");
 							String sch =  rs.getString("school");
 							String gp = ""+rs.getInt("gpa");
