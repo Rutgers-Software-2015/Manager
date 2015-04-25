@@ -164,7 +164,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 				model.setValueAt(Menu[i], temprow, 3);
 				i++;
 				
-
+				
 				model.addRow(new Object[][] {{null, null, null, null}});
 				
 			}

@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -23,6 +24,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 
 //import Login.LoginWindow;
 import Shared.Gradients.*;
@@ -204,8 +206,13 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 				}
 			if(a == MenuButton)
 				{
-					new MenuWindow();
-					dispose();
+					try{
+						new MenuWindow();
+						dispose();
+					}catch(SQLException l)
+					{
+						l.printStackTrace();
+					}
 				}
 			if(a == InventoryButton)
 				{
