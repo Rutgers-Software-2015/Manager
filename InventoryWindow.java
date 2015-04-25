@@ -86,6 +86,8 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		
 		static JPanel textPanel;
 		
+		private InventoryHandler InventoryHandle = new InventoryHandler();
+		
 		// A temporary ingredient array and double array used to hold
 		// to get the data and display it onto the table
 		Ingredient tempIngredient[] = IngredientHandler.IngredientList;
@@ -311,7 +313,7 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		 *  @returns nothing. 
 		 */
 
-		private void FillInventory() throws SQLException
+		private void FillInventory()
 		{
 			
 			DefaultTableModel ModelInven=(DefaultTableModel) InventoryTable.getModel();
@@ -333,8 +335,7 @@ public class InventoryWindow extends JFrame implements ActionListener{
 					rowtemp++;
 					if(ModelInven.getRowCount()<rows)
 					{
-						ModelInven.addRow(new Object[][]{
-								{null, null},});
+						ModelInven.addRow(new Object[][]{{null, null},});
 					}
 				}
 			
@@ -443,34 +444,43 @@ public class InventoryWindow extends JFrame implements ActionListener{
 				}
 			if(a == addButton)
 				{
+				
+				
+				
 				// Retreive data from the text fields
 				String tempNewIngredient = ingredientField.getText();
 				String tempQuantity = quantityField.getText();
 				int quantity;
+				
+				
+				/*
+				// Make a new temp array of size + 1 to add the new item
+				String[][] temp = new String[Inventory_RowData.length + 1][2];
+				
+				// For loop to make the new table
+				for(int i = 0; i < Inventory_RowData.length; i++)
+				{
+					for(int j = 0; j < 2; j++)
+						temp[i][j] = Inventory_RowData[i][j];
+				}
+				
+				// Make the new rows
+				temp[Inventory_RowData.length][0] = tempNewIngredient;
+				temp[Inventory_RowData.length][1] = tempQuantity;
+				
+				// Set the new table
+				Inventory_RowData = temp;
+				InventoryTable.setModel(new DefaultTableModel(Inventory_RowData, Inventory_ColumnNames));
 
+
+				*/
+				
+				
 				try {
 						
 					// Set the quantity and the name of the ingredient to the handler
 					quantity=Integer.parseInt(tempQuantity);
-					IngredientHandler.AddIngredient(tempNewIngredient, quantity);
-					
-					// Make a new temp array of size + 1 to add the new item
-					String[][] temp = new String[Inventory_RowData.length + 1][2];
-					
-					// For loop to make the new table
-					for(int i = 0; i < Inventory_RowData.length; i++)
-					{
-						for(int j = 0; j < 2; j++)
-							temp[i][j] = Inventory_RowData[i][j];
-					}
-					
-					// Make the new rows
-					temp[Inventory_RowData.length][0] = tempNewIngredient;
-					temp[Inventory_RowData.length][1] = tempQuantity;
-					
-					// Set the new table
-					Inventory_RowData = temp;
-					InventoryTable.setModel(new DefaultTableModel(Inventory_RowData, Inventory_ColumnNames));
+					InventoryHandle.AddInventoryItem(tempNewIngredient, quantity);
 					
 				} 
 				
@@ -478,6 +488,9 @@ public class InventoryWindow extends JFrame implements ActionListener{
 				catch (NumberFormatException e1)
 				{
 					JOptionPane.showMessageDialog(InventoryAddingFrame, "Please enter a number for quantity.");
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 
 				// Return the text to asking for New Ingredient and New Quantity
@@ -486,10 +499,47 @@ public class InventoryWindow extends JFrame implements ActionListener{
 				}
 			if(a == removeButton)
 				{
-
+				String tempNewIngredient = ingredientField.getText();
 				// User need to selects a row
 		        if (InventoryTable.getSelectedRow() != -1) 
 		        {
+		        	// ModelInven = (DefaultTableModel) InventoryTable.getModel();
+		        	int position = InventoryTable.getSelectedRow();
+		        	
+		        	// Temporary array 
+		        	String[][] temp = new String[Inventory_RowData.length - 1][2];
+		        	
+		        	// The removed item removed from the handler
+		        	
+		        	
+		        	// Remake the table
+		        	for(int i = 0; i < position; i++)
+		        	{
+		        		temp[i][0] = Inventory_RowData[i][0];
+		        		temp[i][1] = Inventory_RowData[i][1];
+		        	}
+		        	
+		        	for(int i = position + 1; i < Inventory_RowData.length; i++)
+		        	{
+		        		temp[i-1][0] = Inventory_RowData[i][0];
+		        		temp[i-1][1] = Inventory_RowData[i][1];	
+		        	}
+		        	
+		        	// Make the new table
+		        	Inventory_RowData = temp;
+		        	InventoryTable.setModel(new DefaultTableModel(Inventory_RowData, Inventory_ColumnNames));
+					
+					try {
+						InventoryHandle.RemoveInventoryItem(tempNewIngredient);
+						// ModelInven.removeRow(InventoryTable.getSelectedRow());
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+		        	
+		        	
+		        	/*
+		        	
 		        	// Get the position of the selected row
 		        	int position = InventoryTable.getSelectedRow();
 		        	
@@ -516,6 +566,8 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		        	// Make the new table
 		        	Inventory_RowData = temp;
 		        	InventoryTable.setModel(new DefaultTableModel(Inventory_RowData, Inventory_ColumnNames));
+		        	
+		        	*/
 		        }
 		        
 		        
@@ -528,9 +580,20 @@ public class InventoryWindow extends JFrame implements ActionListener{
 			}
 			if(a == updateButton)
 				{
+				
+				String tempNewIngredient = ingredientField.getText();
+				String tempQuantity = quantityField.getText();
+				int quantity;
+								
 				// User needs to select a row
 				if(InventoryTable.getSelectedRow() != -1)
 				{
+					
+				quantity=Integer.parseInt(tempQuantity);
+				InventoryHandle.updateInventoryValue(quantity, tempNewIngredient);	
+					
+					
+					/*
 				// Retreive data from the text file
 				String tempNewIngredient = ingredientField.getText();
 				String tempQuantity = quantityField.getText();
@@ -543,6 +606,9 @@ public class InventoryWindow extends JFrame implements ActionListener{
 				// Update the table
 				InventoryTable.getModel().setValueAt(tempNewIngredient,InventoryTable.getSelectedRow(),0);
 				InventoryTable.getModel().setValueAt(newcount,InventoryTable.getSelectedRow(),1);
+				
+				*/
+					
 				}
 				
 				// Error message
@@ -550,6 +616,7 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		        {
 		        	JOptionPane.showMessageDialog(InventoryAddingFrame, "Please select a menu item.");
 		        }
+				
 				
 				
 				}
@@ -560,12 +627,7 @@ public class InventoryWindow extends JFrame implements ActionListener{
 			
 			if(a==timer_checker)
 			{
-				try {
-					FillInventory();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				FillInventory();
 			}
 		}
 		

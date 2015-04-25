@@ -8,11 +8,16 @@
 
 
 package Manager;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import Shared.ADT.Ingredient;
+import Shared.ADT.IngredientHandler;
 import Shared.Communicator.DatabaseCommunicator;
 
 
@@ -114,10 +119,76 @@ public class InventoryHandler  extends DatabaseCommunicator {
 	
 		return null;
 	
-		
+	}
+	
+	public void updateInventoryValue(int newQuantity, String item)
+	{
+		this.connect("admin", "gradMay17");
+		this.tell("use MAINDB;");
+		ResultSet rs =  this.tell("Select Amount from INVENTORY where Item_Name = '" + item + "';");
+		try
+		{
+			while(rs.next() == true)
+			{
+				int curamnt, newamnt = 0;
+				curamnt = rs.getInt("Amount");
+				newamnt =  newQuantity + curamnt;
+				this.update("UPDATE INVENTORY SET Amount = '" + newamnt + "' WHERE Item_Name = '" + item + "';");
+				this.disconnect();
+			}
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			this.disconnect();
+		}
+	}
+	
+	public void AddInventoryItem(String Ingredient, int newQuantity) throws SQLException
+	{
+
+			this.connect("admin", "gradMay17");
+			this.tell("use MAINDB;");
+			
+			try{
+			this.update("INSERT INTO INVENTORY (Item_Name, Amount) VALUES "+ "('" + Ingredient + "', '" + newQuantity + "');" );
+			this.disconnect();
+			}
+			
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				this.disconnect();
+			}
 			
 	}
 	
+	public void RemoveInventoryItem(String Ingredient) throws SQLException
+	{
+			this.connect("admin", "gradMay17");
+			this.tell("use MAINDB;");
+			this.update("DELETE FROM INVENTORY WHERE Item_Name='" + Ingredient + "';");
+			this.disconnect();
+	}
+	
+	public boolean isThereInternet()
+	{
+		try
+		{
+			URL yourl = new URL("http://google.com");
+			HttpURLConnection yourlConnect = (HttpURLConnection)yourl.openConnection();
+			yourlConnect.setConnectTimeout(2000);
+			
+			Object objData = yourlConnect.getContent();
+		}catch(UnknownHostException e)
+		{
+			return false;
+		}
+		catch(IOException e)
+		{
+			return false;
+		}
+		return true;
+	}
 	
 	/*
 	

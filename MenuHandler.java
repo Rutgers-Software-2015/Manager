@@ -58,12 +58,12 @@ public class MenuHandler extends DatabaseCommunicator {
 		super();
 	}
 	
-	public ResultSet getAllMenu() throws SQLException
+	public ResultSet getAllMenu()
 	{		
 		this.connect("admin", "gradMay17");
 		this.tell("use MAINDB;");
 		ResultSet rs = this.tell("select * FROM MENU;");
-		this.disconnect();
+		// this.disconnect();
 		return rs;
 	}
 
@@ -540,8 +540,29 @@ public class MenuHandler extends DatabaseCommunicator {
 		return null;
 	}
 	
+	public void AddMenuItem(String Item_Name, double price, double cost, String Ingredients, String Description, String Menu_Section, int Valid) throws SQLException
+	{
+	
+			this.connect("admin", "gradMay17");
+			this.tell("use MAINDB;");
+			
+			String newMenuItem = "('" + Item_Name + "', '" + price + "', '" + cost + "', '" + Ingredients + "', '" + Description + "', '" + Menu_Section + "', '" + Valid + "');";
+			
+			ResultSet rs =  this.tell("INSERT INTO MENU (ITEM_NAME, PRICE, COST, INGREDIENTS, DESCRIPTION, MENU_SECTION, VALID) VALUES " + newMenuItem);
+			
+	}
+
+	public void RemoveMenuItem(String MenuItem) throws SQLException
+	{
+			this.connect("admin", "gradMay17");
+			this.tell("use MAINDB;");
+			ResultSet rs =  this.tell("DELETE FROM MENU WHERE ITEM_NAME='" + MenuItem + "';");
+	}
+	
 
 }
+
+
 
 
 

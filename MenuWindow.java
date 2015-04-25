@@ -62,7 +62,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 		//Parent Panels
 		private NotificationGUI notification;
 		private JPanel rootPanel,titlePanel,buttonPanel;
-		private GradientPanel backgroundPanel,buttonPanelBackground,cardPanel;
+		private GradientPanel backgroundPanel,buttonPanelBackground,cardPanel, Menu_Card;
 		private GradientPanel card1,card2,card3;
 		//Swing Objects
 		private GradientButton addItem, removeItem, updateItem, backButton;
@@ -72,6 +72,8 @@ public class MenuWindow extends JFrame implements ActionListener{
 		private CardLayout c;
 		//Other Variables
 		private Timer timer;
+		
+		MenuTableViewer MTV = new MenuTableViewer();
 		
 		private JFrame MenuAddingFrame;
 		
@@ -119,7 +121,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 	            }
 	        });
 			
-			c = (CardLayout)(cardPanel.getLayout());
+		//	c = (CardLayout)(cardPanel.getLayout());
 			
 			this.setVisible(true);
 		}
@@ -142,9 +144,9 @@ public class MenuWindow extends JFrame implements ActionListener{
 			new MenuWindow();
 		}
 		
+		/*
 		
-		
-		private void makeMenu() throws SQLException {
+		private void makeMenu() {
 			// TODO Auto-generated method stub
 			
 			DefaultTableModel model = (DefaultTableModel) MenuTable.getModel();
@@ -171,10 +173,14 @@ public class MenuWindow extends JFrame implements ActionListener{
 			
 		}
 
+*/
+		
+		
+
 		private void setRootPanel()
 		{
-			notification = new NotificationGUI(1, "Manager");
-			rootPanel.add(notification);
+			// notification = new NotificationGUI(1, "Manager");
+			// rootPanel.add(notification);
 			rootPanel.add(titlePanel);
 			rootPanel.add(cardPanel);
 			rootPanel.add(buttonPanel);
@@ -300,7 +306,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 			buttonPanel.add(backButton);
 		}
 		
-		public void init_menu() throws SQLException
+		public void init_menu() 
 		{
 			//Need to populate the arrays before they are fed to the JTable
 //			Menu_RowData = MenuHandler.getMenu();
@@ -381,11 +387,16 @@ public class MenuWindow extends JFrame implements ActionListener{
 		private void setCardPanel() throws SQLException
 		{
 			cardPanel = new GradientPanel();
-			cardPanel.setLayout(new CardLayout()); // How to define a Card Layout
+			cardPanel.setLayout(new GridLayout()); // How to define a Card Layout
 			cardPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 			cardPanel.setGradient(new Color(255,255,255), new Color(255,110,110));
 			cardPanel.setBounds(273, 79, 896, 569);
 			
+			MTV = new MenuTableViewer();
+			cardPanel.add(MTV, BorderLayout.CENTER);
+			
+			
+			/*
 			MenuTable = new JTable();
 //			ModelOrders = (DefaultTableModel)MenuOrder.getModel();
 //			Menu_RowData = MenuHandler.getMenu();
@@ -405,6 +416,12 @@ public class MenuWindow extends JFrame implements ActionListener{
 			
 			cardPanel.setVisible(true); 
 			
+			Menu_Card = new GradientPanel();
+			Menu_Card.setLayout(new GridLayout(1,1));
+			Menu_Card.add(MenuTable);
+			cardPanel.add(Menu_Card, "MenuProcess");
+			// c.show(cardPanel, "MenuProcess");
+			*/
 			/*
 			
 			card1 = new GradientPanel(); // Create card with a button YES
@@ -477,6 +494,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 		public void actionPerformed(ActionEvent e) 
 		{
 			Object a = e.getSource();
+			
 			/*
 			MenuTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 				
@@ -515,16 +533,19 @@ public class MenuWindow extends JFrame implements ActionListener{
 				        }
 				    }
 				
-				   
+				  
 			
-			});	*/
+			});	
 			
+			 */
 			
+			//c.show(cardPanel, "MenuProcess");
 			if(a == backButton)
 				{
 					new ManagerRootWindow();
 					dispose();
 				}
+			
 			if(a == addItem)
 				{
 			   
