@@ -1,4 +1,4 @@
-package Manager;
+package Manager.ManagerGUIs;
 
 import java.awt.*;   
 import java.awt.event.ActionEvent;
@@ -44,7 +44,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import Login.LoginWindow;
-import Manager.MenuHandler;
+//import Manager.MenuHandler;
 import Shared.ADT.MenuItem;
 import Shared.Gradients.*;
 import Shared.Notifications.NotificationGUI;
@@ -53,6 +53,8 @@ import javax.swing.ButtonGroup;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import Manager.ManagerHandlers.*;
+import Manager.ManagerCommunicator.*;
 
 
 

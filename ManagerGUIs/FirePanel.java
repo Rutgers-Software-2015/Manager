@@ -1,4 +1,4 @@
-package Manager;
+package Manager.ManagerGUIs;
 //written by: Harsh Shsh
 //tested by: Harsh Shah
 //debugged by: Harsh Shah
@@ -53,7 +53,8 @@ import javax.swing.ButtonGroup;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
+import Manager.ManagerHandlers.*;
+import Manager.ManagerCommunicator.*;
 public class FirePanel extends GradientPanel{
 
 	

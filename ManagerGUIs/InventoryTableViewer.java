@@ -1,4 +1,4 @@
-package Manager;
+package Manager.ManagerGUIs;
 
 import javax.swing.JPanel;
 
@@ -15,7 +15,8 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-
+import Manager.ManagerHandlers.*;
+import Manager.ManagerCommunicator.*;
 public class InventoryTableViewer extends JPanel {
 	
 	public JPanel TableHolder;

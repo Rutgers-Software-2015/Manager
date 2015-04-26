@@ -1,4 +1,4 @@
-package Manager;
+package Manager.ManagerGUIs;
 
 import java.awt.*;   
 import java.awt.event.ActionEvent;
@@ -36,7 +36,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import Login.LoginWindow;
-import Manager.MenuHandler;
+//import Manager.MenuHandler;
 import Shared.ADT.Ingredient;
 import Shared.ADT.IngredientHandler;
 import Shared.Gradients.*;
@@ -49,6 +49,8 @@ import javax.swing.event.ListSelectionListener;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import Manager.ManagerHandlers.*;
+import Manager.ManagerCommunicator.*;
 
 
 public class InventoryWindow extends JFrame implements ActionListener{

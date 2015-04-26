@@ -1,4 +1,4 @@
-package Manager;
+package Manager.ManagerGUIs;
 //written by: Harsh Shsh
 // tested by: Harsh Shah
 // debugged by: Harsh Shah
@@ -21,7 +21,8 @@ import javax.swing.event.ListSelectionListener;
 
 import Shared.Communicator.*;
 import Shared.Gradients.*;
-
+import Manager.ManagerHandlers.*;
+import Manager.ManagerCommunicator.*;
 
 public class EmpEditPage extends GradientPanel implements ListSelectionListener{
 

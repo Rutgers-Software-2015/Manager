@@ -1,4 +1,4 @@
-package Manager;
+package Manager.ManagerHandlers;
 //written by: Harsh Shsh
 //tested by: Harsh Shah
 //debugged by: Harsh Shah
@@ -33,6 +33,8 @@ import org.apache.commons.codec.DecoderException;
 
 import Shared.Communicator.*;
 import Shared.Lib.*;
+import Manager.ManagerCommunicator.*;
+import Manager.ManagerGUIs.*;
 
 public class EmployeeHandler extends DatabaseCommunicator{
 

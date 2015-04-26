@@ -1,4 +1,4 @@
-package Manager;
+package Manager.ManagerGUIs;
 //written by: Harsh Shsh
 //tested by: Harsh Shah
 //debugged by: Harsh Shah

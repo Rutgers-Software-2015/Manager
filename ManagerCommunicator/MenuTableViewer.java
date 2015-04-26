@@ -1,4 +1,4 @@
-package Manager;
+package Manager.ManagerCommunicator;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -13,6 +13,8 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+
+import Manager.ManagerHandlers.*;
 
 public class MenuTableViewer extends JPanel{
 	

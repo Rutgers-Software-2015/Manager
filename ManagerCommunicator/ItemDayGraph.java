@@ -1,4 +1,4 @@
-package Manager;
+package Manager.ManagerCommunicator;
 //written by: Harsh Shsh
 //tested by: Harsh Shah
 //debugged by: Harsh Shah

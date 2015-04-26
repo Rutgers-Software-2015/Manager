@@ -1,4 +1,4 @@
-package Manager;
+package Manager.ManagerGUIs;
 //written by: Harsh Shsh
 //tested by: Harsh Shah
 //debugged by: Harsh Shah
@@ -32,6 +32,8 @@ import javax.swing.event.ChangeListener;
 
 import Shared.Gradients.GradientButton;
 import Shared.Gradients.GradientPanel;
+import Manager.ManagerHandlers.*;
+import Manager.ManagerCommunicator.*;
 
 
 public class FinancialFrame extends JFrame implements ActionListener{

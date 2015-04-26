@@ -1,4 +1,4 @@
-package Manager;
+package Manager.ManagerCommunicator;
 //written by: Harsh Shsh
 //tested by: Harsh Shah
 //debugged by: Harsh Shah
@@ -28,7 +28,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.AbstractTableModel;
 
 import com.sun.prism.paint.Color;
-
+import Manager.ManagerHandlers.*;
 import javafx.application.Platform;
 
 import javafx.application.Platform;

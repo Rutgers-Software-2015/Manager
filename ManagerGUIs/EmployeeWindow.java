@@ -1,4 +1,4 @@
-package Manager;
+package Manager.ManagerGUIs;
 //written by: Harsh Shsh
 //tested by: Harsh Shah
 //debugged by: Harsh Shah
@@ -45,11 +45,15 @@ import javax.swing.table.DefaultTableModel;
 
 
 
+
 //import Login.LoginWindow;
 import Shared.Gradients.*;
 
 import javax.swing.ButtonGroup;
 import javax.swing.border.LineBorder;
+
+import Manager.ManagerHandlers.*;
+import Manager.ManagerCommunicator.*;
 
 
 

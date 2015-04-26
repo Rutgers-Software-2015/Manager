@@ -1,4 +1,4 @@
-package Manager;
+package Manager.ManagerCommunicator;
 
 public class MenuObj {
 	

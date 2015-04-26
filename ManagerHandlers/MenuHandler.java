@@ -7,7 +7,7 @@
  */
 
 
-package Manager;
+package Manager.ManagerHandlers;
 
 import static org.apache.commons.codec.binary.Hex.decodeHex; 
 import static org.apache.commons.io.FileUtils.readFileToByteArray;

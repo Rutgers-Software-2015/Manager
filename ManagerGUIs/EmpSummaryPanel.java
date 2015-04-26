@@ -1,4 +1,4 @@
-package Manager;
+package Manager.ManagerGUIs;
 import java.awt.*; 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
