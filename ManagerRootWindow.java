@@ -28,8 +28,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 
+
 //import Login.LoginWindow;
 import Shared.Gradients.*;
+import Shared.Notifications.NotificationGUI;
 import Login.LoginWindow;
 
 public class ManagerRootWindow extends JFrame implements ActionListener{
@@ -50,6 +52,7 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 		private GradientButton InventoryButton;
 		private GradientButton MenuButton;
 		
+		private NotificationGUI notifications;
 		
 		public ManagerRootWindow()
 		{
@@ -93,6 +96,8 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 		
 		private void setRootPanel()
 		{
+			notifications = new NotificationGUI(5, "Manager");
+			rootPanel.add(notifications);
 			rootPanel = new JPanel();
 			rootPanel.setLayout(null);
 			rootPanel.add(titlePanel);
