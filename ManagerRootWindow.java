@@ -97,9 +97,9 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 		private void setRootPanel()
 		{
 			notifications = new NotificationGUI(5, "Manager");
-			rootPanel.add(notifications);
 			rootPanel = new JPanel();
 			rootPanel.setLayout(null);
+			rootPanel.add(notifications);
 			rootPanel.add(titlePanel);
 			rootPanel.add(buttonPanel);
 			rootPanel.add(backgroundPanel);
