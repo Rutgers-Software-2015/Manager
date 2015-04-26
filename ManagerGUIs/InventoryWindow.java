@@ -79,7 +79,7 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		private JTable InventoryTable;
 		
 		// String that holds the menu
-		private String[][] Inventory_RowData = new String[IngredientHandler.IngredientList.length][2];
+		private String[][] Inventory_RowData;
 		private String[] Inventory_ColumnNames = {"Name of Ingredient", "Quantity"};
 		
 		
@@ -278,34 +278,17 @@ public class InventoryWindow extends JFrame implements ActionListener{
 //			InventoryScroller = new JScrollPane(InventoryTable);
 //			InventoryTable.setFillsViewportHeight(true);
 			
+			String[] Inventory_ColumnNames = {"Ingredient", "Quantity"};
+			
 			InventoryTable = new JTable();
-			InventoryTable.setRowSelectionAllowed(false);
-			InventoryTable.setModel(new DefaultTableModel(
-				new Object[][] {
-					{null, null},
-
-				},
-				new String[] {
-					"Ingredient", "Quantity"
-				}
-			) {
-				Class[] columnTypes = new Class[] {
-					String.class, Integer.class
-				};
-				public Class getColumnClass(int columnIndex) {
-					return columnTypes[columnIndex];
-				}
-				boolean[] columnEditables = new boolean[] {
-					false, false
-				};
-				public boolean isCellEditable(int row, int column) {
-					return columnEditables[column];
-				}
-			});
+			InventoryTable.setRowSelectionAllowed(true);
+			InventoryTable.setModel(new DefaultTableModel(  new String[][] {{null, null},}, Inventory_ColumnNames));
+			
 			InventoryTable.getColumnModel().getColumn(0).setResizable(false);
 			InventoryTable.getColumnModel().getColumn(0).setPreferredWidth(120);
 			InventoryTable.getColumnModel().getColumn(1).setResizable(false);
 			InventoryTable.getColumnModel().getColumn(1).setMaxWidth(100);
+
 			InventoryScroller = new JScrollPane(InventoryTable);
 			InventoryTable.setFillsViewportHeight(true);
 		
@@ -320,8 +303,8 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		private void FillInventory()
 		{
 			
-			DefaultTableModel ModelInven=(DefaultTableModel) InventoryTable.getModel();
-			InventoryHandler test=new InventoryHandler();
+			DefaultTableModel ModelInven = (DefaultTableModel) InventoryTable.getModel();
+			InventoryHandler test = new InventoryHandler();
 
 			try{
 
@@ -374,11 +357,6 @@ public class InventoryWindow extends JFrame implements ActionListener{
 			cardPanel.setGradient(new Color(255,255,255), new Color(255,110,110));
 			cardPanel.setBounds(273, 79, 896, 569);
 			
-			// ITV = new InventoryTableViewer();
-			// cardPanel.add(ITV, BorderLayout.CENTER);
-			
-			
-			
 			init_inventory();
 			
 			card1 = new GradientPanel();
@@ -386,31 +364,9 @@ public class InventoryWindow extends JFrame implements ActionListener{
 			card1.setLayout(new GridLayout(1,0));
 			
 			cardPanel.add(card1,""); // How to add cards to a Card Layout
-			
 			cardPanel.setVisible(true); 
 			
 			FillInventory();
-			
-			/*
-			
-			card1 = new GradientPanel(); // Create card with a button YES
-			card1.add(new JButton("YES"));
-			card1.setLayout(new GridLayout(1,0));
-			
-			card2 = new GradientPanel(); // Create card with a button NO
-			card2.setLayout(new GridLayout(1,0));
-			card2.add(new JButton("NO"));
-			
-			card3 = new GradientPanel(); // Create blank card
-			
-			cardPanel.add(card1,"YES"); // How to add cards to a Card Layout
-			cardPanel.add(card2,"NO"); // The string can be named anything, the string is how you call the card
-			cardPanel.add(card3,"BLANK");
-			
-			cardPanel.setVisible(true); 
-			
-			*/
-			
 		}
 		
 		// Action Listener
@@ -461,38 +417,18 @@ public class InventoryWindow extends JFrame implements ActionListener{
 				}
 			if(a == addButton)
 				{
-				
-				
-				
+
 				// Retreive data from the text fields
 				String tempNewIngredient = ingredientField.getText();
 				String tempQuantity = quantityField.getText();
 				int quantity;
-				
-	
-				// Make a new temp array of size + 1 to add the new item
-				String[][] temp = new String[Inventory_RowData.length + 1][2];
-				
-				// For loop to make the new table
-				for(int i = 0; i < Inventory_RowData.length; i++)
-				{
-					for(int j = 0; j < 2; j++)
-						temp[i][j] = Inventory_RowData[i][j];
-				}
-				
-				// Make the new rows
-				temp[Inventory_RowData.length][0] = tempNewIngredient;
-				temp[Inventory_RowData.length][1] = tempQuantity;
-				
-				// Set the new table
-				Inventory_RowData = temp;
-				InventoryTable.setModel(new DefaultTableModel(Inventory_RowData, Inventory_ColumnNames));
 
 				try {
-						
 					// Set the quantity and the name of the ingredient to the handler
 					quantity=Integer.parseInt(tempQuantity);
 					InventoryHandle.AddInventoryItem(tempNewIngredient, quantity);
+					DefaultTableModel model = (DefaultTableModel) InventoryTable.getModel();
+					model.addRow(new Object[]{tempNewIngredient, quantity});
 					FillInventory();
 					
 				} 
@@ -513,82 +449,25 @@ public class InventoryWindow extends JFrame implements ActionListener{
 			if(a == removeButton)
 				{
 				String tempNewIngredient = ingredientField.getText();
+				
 				// User need to selects a row
 		        if (InventoryTable.getSelectedRow() != -1) 
 		        {
-		        	      	
-		        	// ModelInven = (DefaultTableModel) InventoryTable.getModel();
+
 		        	int position = InventoryTable.getSelectedRow();
-		        	
-		        	// Temporary array 
-		        	String[][] temp = new String[Inventory_RowData.length - 1][2];
-		        	
-		        	// The removed item removed from the handler
-		        	
-		        	
-		        	// Remake the table
-		        	for(int i = 0; i < position; i++)
-		        	{
-		        		temp[i][0] = Inventory_RowData[i][0];
-		        		temp[i][1] = Inventory_RowData[i][1];
-		        	}
-		        	
-		        	for(int i = position + 1; i < Inventory_RowData.length; i++)
-		        	{
-		        		temp[i-1][0] = Inventory_RowData[i][0];
-		        		temp[i-1][1] = Inventory_RowData[i][1];	
-		        	}
-		        	
-		        	// Make the new table
-		        	Inventory_RowData = temp;
-		        	InventoryTable.setModel(new DefaultTableModel(Inventory_RowData, Inventory_ColumnNames));
-					
-					
-					
-					try {
+
+					try 
+					{
 						InventoryHandle.RemoveInventoryItem(tempNewIngredient);
+						((DefaultTableModel)InventoryTable.getModel()).removeRow(position);
 						FillInventory();
-						//ModelInven.removeRow(position);
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 		        	
-		        	
-		        	/*
-		        	
-		        	// Get the position of the selected row
-		        	int position = InventoryTable.getSelectedRow();
-		        	
-		        	// Temporary array 
-		        	String[][] temp = new String[Inventory_RowData.length - 1][2];
-		        	
-		        	// The removed item removed from the handler
-		        	String removed=(String) InventoryTable.getValueAt(position, 0);
-		        	IngredientHandler.Remove(removed);
-		        	
-		        	// Remake the table
-		        	for(int i = 0; i < position; i++)
-		        	{
-		        		temp[i][0] = Inventory_RowData[i][0];
-		        		temp[i][1] = Inventory_RowData[i][1];
-		        	}
-		        	
-		        	for(int i = position + 1; i < Inventory_RowData.length; i++)
-		        	{
-		        		temp[i-1][0] = Inventory_RowData[i][0];
-		        		temp[i-1][1] = Inventory_RowData[i][1];	
-		        	}
-		        	
-		        	// Make the new table
-		        	Inventory_RowData = temp;
-		        	InventoryTable.setModel(new DefaultTableModel(Inventory_RowData, Inventory_ColumnNames));
-		        	
-		        	*/
 		        }
 		        
-		        
-		        // Error
 		        else
 		        {
 		        	JOptionPane.showMessageDialog(InventoryAddingFrame, "Please select a menu item.");
@@ -615,22 +494,6 @@ public class InventoryWindow extends JFrame implements ActionListener{
 					e1.printStackTrace();
 				}	
 					
-					
-					/*
-				// Retreive data from the text file
-				String tempNewIngredient = ingredientField.getText();
-				String tempQuantity = quantityField.getText();
-				// Send the data to the handler
-				int quantity=Integer.parseInt(tempQuantity);
-				Ingredient temp=(IngredientHandler.FindInventory(tempNewIngredient));
-				IngredientHandler.UpdateInventory(temp, quantity);	
-				String newcount= ""+temp.count;
-				
-				// Update the table
-				InventoryTable.getModel().setValueAt(tempNewIngredient,InventoryTable.getSelectedRow(),0);
-				InventoryTable.getModel().setValueAt(newcount,InventoryTable.getSelectedRow(),1);
-				
-				*/
 					
 				}
 				
