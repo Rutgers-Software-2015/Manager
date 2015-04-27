@@ -147,20 +147,21 @@ public class MenuHandler extends DatabaseCommunicator {
 			}
 			
 			rs.beforeFirst();
+			System.out.println(sizeRS);
 			String[] Menu = new String[sizeRS];
-			int arrayindex=0;
+			int arrayindex = 0;
 			try {
 				
 				while(rs.next() == true)
 				{
-//					boolean vis = rs.getBoolean("Visibility");
-//					if(vis == false)
-//					{
-//						continue;
-//					}
-//			
-//					else
-//					{
+					boolean vis = rs.getBoolean("Visibility");
+					if(vis == false)
+					{
+						continue;
+					}
+			
+					else
+					{
 						Menu[arrayindex]  =  rs.getString("MENU_ID");
 						arrayindex++;
 						Menu[arrayindex]  =  rs.getString("ITEM_NAME");
@@ -179,10 +180,11 @@ public class MenuHandler extends DatabaseCommunicator {
 						arrayindex++;
 				
 							
-					//}
+					}
 				}
 
-			}catch(SQLException e)
+			}
+				catch(SQLException e)
 			{
 				System.out.println("No Result Set");
 			}
@@ -190,7 +192,7 @@ public class MenuHandler extends DatabaseCommunicator {
 			
 			this.disconnect();
 			
-			// table = new JTable(buildTableModel(rs));
+			table = new JTable(buildTableModel(rs));
 			
 			return Menu;
 		
@@ -560,6 +562,7 @@ public class MenuHandler extends DatabaseCommunicator {
 			ResultSet rs =  this.tell("DELETE FROM MENU WHERE ITEM_NAME='" + MenuItem + "';");
 			this.disconnect();
 	}
+	
 	
 
 }

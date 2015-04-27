@@ -170,6 +170,19 @@ public class InventoryHandler  extends DatabaseCommunicator {
 			this.disconnect();
 	}
 	
+	/*
+	public boolean isValid() throws SQLException
+	{
+		
+		this.connect("admin", "gradMay17");
+		this.tell("use MAINDB;");			
+		ResultSet rs =  this.tell(SELECT ColumnA, case when ColumnA > 0 then 'Greater than 0' else ColumnB END AS ColumnB 
+		        FROM    table1;);
+		return true;
+	}
+	
+	*/
+	
 	public boolean isThereInternet()
 	{
 		try

@@ -315,32 +315,16 @@ public class MenuWindow extends JFrame implements ActionListener{
 			
 			MenuTable = new JTable();
 			MenuTable.setRowSelectionAllowed(false);
-			MenuTable.setModel(new DefaultTableModel(
-					new Object[][] {
-						{null, null},
-
-					},				new String[] {
-							"ID", "Name", "Price", "Cost", "Ingredients", "Description", "Section", "Valid"
-					}
-				) {
-					Class[] columnTypes = new Class[] {
-							Integer.class, String.class, Double.class, Double.class, String.class, String.class, String.class, Integer.class
-					};
-					public Class getColumnClass(int columnIndex) {
-						return columnTypes[columnIndex];
-					}
-					boolean[] columnEditables = new boolean[] {
-						false, false, false, false, false, false, false, false
-					};
-					public boolean isCellEditable(int row, int column) {
-						return columnEditables[column];
-					}
+			MenuTable.setModel(new DefaultTableModel(new Object[][] {{null, null},},
+					new String[] {"ID", "Name", "Price", "Cost", "Ingredients", "Description", "Section", "Valid"}) {
 			});
 			MenuScroller = new JScrollPane(MenuTable);
 			MenuTable.setFillsViewportHeight(true);
 			textPanel.add(MenuScroller); 
 			
 		}
+		
+		/*
 		
 		public static DefaultTableModel buildTableModel(ResultSet rs) throws SQLException {
 
@@ -367,6 +351,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 
 		}
 
+		*/
 		
 		//********************************************************************************
 		//DO NOT deviate from the card layout or change the size/location of the cardPanel.
@@ -375,7 +360,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 	
 		public void init_textPanel() throws SQLException
 		{
-			init_menu();
+			// init_menu();
 			rootPanel.add(textPanel);
 			
 		}
@@ -388,8 +373,11 @@ public class MenuWindow extends JFrame implements ActionListener{
 			cardPanel.setGradient(new Color(255,255,255), new Color(255,110,110));
 			cardPanel.setBounds(273, 79, 896, 569);
 			
+			// init_menu();
+			
 			MTV = new MenuTableViewer();
 			cardPanel.add(MTV, BorderLayout.CENTER);
+			// MenuHandle.getAllMenu();
 			
 			
 			/*
@@ -545,8 +533,6 @@ public class MenuWindow extends JFrame implements ActionListener{
 			if(a == addItem)
 				{
 			   
-				
-				
 				// Retrieve data from the text fields
 				String tempName = nameField.getText();
 				String tempIngredient = ingredientField.getText();
@@ -555,6 +541,18 @@ public class MenuWindow extends JFrame implements ActionListener{
 				
 				/*
 				
+				try
+				{
+					//MenuHandle.AddMenuItem(tempName, tempIngredient, tempPrice, tempID);
+				}
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
+				
+				*/
+				
+				/*
 				// Make a new temp array of size + 1 to add the new item
 				String[][] temp = new String[Menu_RowData.length + 1][4];
 				
@@ -581,9 +579,11 @@ public class MenuWindow extends JFrame implements ActionListener{
 				priceField.setText("New Price");
 				IDField.setText("New ID Number");
 				
-				MenuTable.getColumnModel().getColumn(0).setPreferredWidth(130);
-				MenuTable.getColumnModel().getColumn(1).setPreferredWidth(220);
 				*/
+				
+				
+				
+				
 				}
 			if(a == removeItem)
 				{

@@ -344,7 +344,7 @@ public class InventoryWindow extends JFrame implements ActionListener{
 	
 		public void init_textPanel()
 		{
-			init_inventory();
+			// init_inventory();
 			rootPanel.add(textPanel);
 			
 		}

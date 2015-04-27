@@ -70,7 +70,7 @@ public class MenuTableViewer extends JPanel{
 		
 		try
 		{
-			rs.beforeFirst();
+			rs.first();
 		}catch(SQLException e)
 		{
 			e.printStackTrace();
@@ -78,8 +78,8 @@ public class MenuTableViewer extends JPanel{
 		
 		int rowiterator = 0;
 		try{
-			while(rs.next() == true)
-			{
+		
+			do{
 				String tmpname = rs.getString("ITEM_NAME");
 				String tmping = rs.getString("INGREDIENTS");
 				double tmpp = rs.getDouble("PRICE");
@@ -93,8 +93,9 @@ public class MenuTableViewer extends JPanel{
 				ID[rowiterator] = tmpid;
 				
 				rowiterator++;
-				
 			}
+			while(rs.next() == true);
+
 		}catch(SQLException E)
 		{
 			E.printStackTrace();
