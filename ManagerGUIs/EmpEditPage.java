@@ -24,6 +24,13 @@ import Shared.Gradients.*;
 import Manager.ManagerHandlers.*;
 import Manager.ManagerCommunicator.*;
 
+/*
+ * This class is a frontend object that serves as a view to edit employee information
+ * The employees displayed for this class are for all employees past and present.
+ * The employee infromation present here s drawn from the database
+ */
+
+
 public class EmpEditPage extends GradientPanel implements ListSelectionListener{
 
 	public GradientPanel rootPanel = new GradientPanel();
@@ -50,6 +57,7 @@ public class EmpEditPage extends GradientPanel implements ListSelectionListener{
 		return;
 	}*/
 	
+	//Class constructor
 	public EmpEditPage()
 	{
 		super();
@@ -59,9 +67,10 @@ public class EmpEditPage extends GradientPanel implements ListSelectionListener{
 		rootPanel.setLayout(new BorderLayout());
 		this.setVisible(true);
 		panelManipulation();
-		System.out.println("Got Here 1 <-- EmpEditPage.java");
+		//System.out.println("Got Here 1 <-- EmpEditPage.java");
 	}
 	
+	//populate the panel
 	public void panelManipulation()
 	{
 		init_EmpListHolder();
@@ -73,6 +82,8 @@ public class EmpEditPage extends GradientPanel implements ListSelectionListener{
 		rootPanel.setVisible(true);
 	}
 	
+	
+	//initialize the employee list
 	public void init_EmpListHolder()
 	{
 		//MASTER CHECK FOR DB CONNECTION

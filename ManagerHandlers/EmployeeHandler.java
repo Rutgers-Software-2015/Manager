@@ -36,6 +36,14 @@ import Shared.Lib.*;
 import Manager.ManagerCommunicator.*;
 import Manager.ManagerGUIs.*;
 
+
+/*
+ * This class will all of the interactions with their database such as hiring, 
+ * firing, and editing the employees. The hire func will add a row to the db.
+ * The fire function will eit a param of the employee to indicate firing. The 
+ * edit function will alter some information about the employee in the db.
+ */
+
 public class EmployeeHandler extends DatabaseCommunicator{
 
 	
@@ -45,6 +53,11 @@ public class EmployeeHandler extends DatabaseCommunicator{
 		super();
 	}
 	
+	/*
+	 * Returns a vectorized list of all the employees in the 
+	 * database. Formats each row of the db into an emp obj
+	 * to be handled by higher level classes.
+	 */
 	public Vector<EmpObj> getEmployees() throws SQLException
 	{
 		//MASTER INTERNET CHECK
@@ -144,6 +157,11 @@ public class EmployeeHandler extends DatabaseCommunicator{
 				
 	}
 	
+	/*
+	 * takes in an employee object and formats
+	 * the information within into a sql statement
+	 * to be used to add a new employee.
+	 */
 	public void addEmployee(EmpObj E)
 	{
 		//MASTER INTERNET CHECK
@@ -224,6 +242,11 @@ public class EmployeeHandler extends DatabaseCommunicator{
 		}
 	}
 	
+	/*
+	 * Based on an employees name and fire reason
+	 * the employee database will be updated to 
+	 * make the employee unavailible.
+	 */
 	public void fireEmployee(String[] NameAndReason)
 	{
 		//MASTER INTERNET CHECK
@@ -249,6 +272,9 @@ public class EmployeeHandler extends DatabaseCommunicator{
 		}
 	}
 	
+	/*
+	 * Will update the specified fields of an employee
+	 */
 	public void updateEmployee(EmpObj e)
 	{
 		boolean INTERNET;

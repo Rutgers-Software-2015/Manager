@@ -48,8 +48,15 @@ import javax.swing.border.LineBorder;
 //tested by: Harsh Shah
 //debugged by: Harsh Shah
 
+/*
+ * This class is form used in the employee window for editing information
+ * and viewing the final details of a newly hired employee
+ */
+
+
 public class EmpSummaryPanel extends JPanel{
 
+	//All Class components
 	public GridLayout rootLayout = new GridLayout(12,0);
 	public JLabel namel, addrl, dobl, schl, gpal, crimesl, q1l, q2l, q3l, q4l, posl, sall;
 	public JPanel namep, addrp, dobp, schp, gpap, crimesp, q1p, q2p, q3p, q4p, posp, salp;

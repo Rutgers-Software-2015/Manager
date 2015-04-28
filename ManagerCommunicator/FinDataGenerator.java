@@ -40,8 +40,15 @@ import javafx.scene.text.Text;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-public class FinDataGenerator{
 
+/*
+ * The purpose of this class is to recieve data from the 
+ * fiancial handler and format it into arrays that facilitate
+ * the graphing functions
+ */
+
+public class FinDataGenerator{
+	//Global variables that recieve data from the financial handler
 	public static FinancialHandler FinHandle = new FinancialHandler();
 	public static String[] items = FinHandle.getItems();
 	public static int[] amounts = FinHandle.getAmounts();
@@ -50,6 +57,9 @@ public class FinDataGenerator{
 	JFXPanel chartFxPanel = new JFXPanel();
 	JFrame frame = new JFrame();
 	
+	
+	//The fields in this class will be handled by the 
+	//Graphing library
 	//Holds day items
 	public int[] Monday;
 	public int[] Tuesday;
@@ -65,6 +75,12 @@ public class FinDataGenerator{
 		organizeData();
 	}
 
+	/*
+	 * This Function will iterate through the data fed in from
+	 * the financial handler and sort it based on food type,
+	 * day eaten, and amount then place them into the corresponding arrays
+	 *
+	 */
 	public void organizeData()
 	{
 		
@@ -217,7 +233,7 @@ public class FinDataGenerator{
 	
     
 	
-	
+	// Helper function to determine proper indexings
 	public int findItemIndex(String I)
 	{
 		int x = 0;

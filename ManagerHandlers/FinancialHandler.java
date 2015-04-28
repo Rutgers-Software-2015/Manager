@@ -36,6 +36,12 @@ import Shared.Lib.*;
 import Manager.ManagerCommunicator.*;
 import Manager.ManagerGUIs.*;
 
+/*
+ * The financial handler will recieve the information from the database
+ * and format them into object that can be handled by outside classes. 
+ * It will grab the items, amounts, and days they were eaten. 
+ */
+
 public class FinancialHandler extends DatabaseCommunicator{
 
 	public FinancialHandler()

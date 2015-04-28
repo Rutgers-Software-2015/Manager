@@ -34,6 +34,13 @@ import Shared.Gradients.*;
 import Shared.Notifications.NotificationGUI;
 import Login.LoginWindow;
 
+/*
+ * This class is the highest level container for all the classes the manager will
+ * interact with. It has the 4 buttons that link to the major functionalities of the 
+ * manager within the restaurant.
+ */
+
+
 public class ManagerRootWindow extends JFrame implements ActionListener{
 
 		//Swing Variables
@@ -164,6 +171,7 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 			titlePanel.setVisible(true);
 		}
 		
+		//Major buttons on the panel listed here
 		private void setButtonPanel()
 		{
 			// Only adjust horizontal and vertical gaps for this layout

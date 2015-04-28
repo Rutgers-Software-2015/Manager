@@ -35,6 +35,12 @@ import Shared.Gradients.GradientPanel;
 import Manager.ManagerHandlers.*;
 import Manager.ManagerCommunicator.*;
 
+/*
+ * This class is a frontend implementation of the managers
+ * financial window. It will house the buttons and subwindows 
+ * neccesary to generate the graphs
+ */
+
 
 public class FinancialFrame extends JFrame implements ActionListener{
 	
@@ -281,6 +287,7 @@ public class FinancialFrame extends JFrame implements ActionListener{
 				
 			}
 			
+			//Set up all the buttons on the panel
 			public void setDayCard()
 			{
 				JLabel selday = new JLabel("Select Day");

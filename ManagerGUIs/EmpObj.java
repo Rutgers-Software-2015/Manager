@@ -2,6 +2,13 @@ package Manager.ManagerGUIs;
 //written by: Harsh Shsh
 //tested by: Harsh Shah
 //debugged by: Harsh Shah
+
+/*
+ * This class exists as an intermediary abstraction to hold the data
+ * on employees. It serves to facilitate the display of information
+ * on employees and facilitate changes to database.
+ */
+
 public class EmpObj {
 	public String first_name, last_name;
 	public String address;

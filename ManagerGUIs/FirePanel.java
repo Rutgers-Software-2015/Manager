@@ -55,16 +55,23 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import Manager.ManagerHandlers.*;
 import Manager.ManagerCommunicator.*;
+
+/*
+ * This class serves as the subwindow through which employees will
+ * be fired from. It contains a list and a textfield. These are used to specify the employee
+ * and the reason for which he was fired.
+ */
+
 public class FirePanel extends GradientPanel{
 
-	
+	// All top level containers
 	public GradientPanel EmpListHolder, Reason_Panel;
 	public Vector<EmpObj> EmpListVector;
 	public JList EmployeeList;
 	public EmployeeHandler Emp_H = new EmployeeHandler();
 	public JTextArea Reason_Area;
 	
-	
+	//Class Constructor
 	public FirePanel()
 	{
 		super();
@@ -137,6 +144,8 @@ public class FirePanel extends GradientPanel{
 		
 	}
 	
+	//Package the information from the panel and return in to
+	//whoever needs it
 	public String[] answers()
 	{
 		String[] answer = new String[2];

@@ -14,6 +14,16 @@ import javax.swing.*;
 
 import java.awt.*;
 
+
+/*
+ * This class serves to generate the graph of the financial
+ * data of the restaurant. It will recieve information from the 
+ * findatagenerator class and generate data points to be used in a graph
+ * It makes use of the javafx libraries to format and print the grpah to the
+ * screen.
+ */
+
+
 public class ItemDayGraph {
 
 	public ItemDayGraph(String d)
@@ -37,6 +47,7 @@ class ChartFrame extends JFrame {
     initFxComponents(d);
   }
 
+  //Initialize Swing Components
   private void initSwingComponents(){
     JPanel mainPanel = new JPanel(new BorderLayout());
     fxPanel = new JFXPanel();
@@ -48,6 +59,7 @@ class ChartFrame extends JFrame {
     this.setSize(800,400);
   }
 
+  //initialize the java fx components
   private void initFxComponents(String d){
 
     Platform.runLater(new Runnable() {
@@ -74,6 +86,7 @@ class ChartFrame extends JFrame {
    
           FinDataGenerator FDG = new FinDataGenerator();
           
+          //generate all the points for the graph
           XYChart.Series series1 = new XYChart.Series();
           series1.setName("Monday");       
           for(int i = 0; i < FDG.Monday.length; i++){
@@ -117,6 +130,8 @@ class ChartFrame extends JFrame {
           	series7.getData().add(getData(FDG.Sunday[i],FDG.MenuItems[i]));
           }
           
+          
+          //add the points to a graph model
           if(d.equals("Monday"))
           {
         	  bc.getData().addAll(series1);
@@ -181,6 +196,7 @@ class ChartFrame extends JFrame {
               return;
           }
           
+          //intialize the graph
           bc.getData().addAll(series1, series2, series3, series4, series5, series6, series7);
           
          
