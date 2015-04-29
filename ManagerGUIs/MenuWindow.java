@@ -696,10 +696,10 @@ public class MenuWindow extends JFrame implements ActionListener{
 			//Construct the handler object
 			///[fname, lname, address, dob, school, gpa, question]
 			///FNAME, LNAME, ADDRESS, DOB, SCHOOL, GPA, q1, q2, q3, q4, position, sal
-		//	MenuItem = new MenuObj("", S[0], S[1], S[2], S[3], S[4], S[5], "1");
-			// SummaryForm = new EmpSummaryPanel(MenuItem);
-		//	cardPanel.add(SumForm,"Summary");
-		// 	c.show(cardPanel, "Summary");
+			MenuItem = new MenuObj("", S[0], S[1], S[2], S[3], S[4], S[5], "1");
+//			 SummaryForm = new EmpSummaryPanel(MenuItem);
+//			cardPanel.add(SumForm,"Summary");
+		 	c.show(cardPanel, "Summary");
 	
 			//Clean up the form
 			form.cleanform();
