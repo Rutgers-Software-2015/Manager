@@ -563,7 +563,6 @@ public class MenuHandler extends DatabaseCommunicator {
 		}
 		
 		// String idstr = ""+maxid;
-		
 		String newMenuItem = "('" + (maxid + 1) + "', '" + E.ITEM_NAME + "', '" + E.PRICE + "', '" + E.COST + "', '" + E.INGREDIENTS + "', '" + E.DESCRIPTION + "', '" + E.SECTION + "', '" + E.VALID + "');";
 		String command = "INSERT INTO MENU (MENU_ID, ITEM_NAME, PRICE, COST, INGREDIENTS, DESCRIPTION, MENU_SECTION, VALID) VALUES " + newMenuItem;
 		this.update(command);

@@ -426,6 +426,14 @@ public class MenuWindow extends JFrame implements ActionListener{
 		
 		public boolean isThereInternet()
 		{
+			if(MenuHandle.getConnectionStatus()==0){
+				return true;
+			}
+			else{
+				return false;
+			}
+			
+			/*
 			try
 			{
 				URL yourl = new URL("http://google.com");
@@ -441,7 +449,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 			{
 				return false;
 			}
-			return true;
+			return true; */
 		}
 		
 		/*
