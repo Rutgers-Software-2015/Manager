@@ -47,6 +47,8 @@ import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 import Login.LoginWindow;
 //import Manager.MenuHandler;
@@ -473,8 +475,10 @@ public class MenuWindow extends JFrame implements ActionListener{
 		private void FillMenu()
 		{
 			
-			DefaultTableModel ModelMenu;
-			ModelMenu = (DefaultTableModel) MTV.MenuTable.getModel();
+			TableModel ModelMenu;
+			DefaultTableModel model = new DefaultTableModel();
+			TableColumnModel columns = MTV.MenuTable.getColumnModel();
+			ModelMenu = MTV.MenuTable.getModel();
 			MenuHandler test = new MenuHandler();
 
 			try{
@@ -485,14 +489,34 @@ public class MenuWindow extends JFrame implements ActionListener{
 			Double[] MenuCost = test.getMenuCost();
 			String[] MenuIngredients = test.getMenuIngredients();
 			String[] MenuDescription = test.getMenuDescription();
-			String[] MenuSection = test.getMenuDescription();
+			String[] MenuSection = test.getMenuSection();
+			Integer[] MenuValid = test.getMenuisValid();
 			
 			int rows = MenuName.length;
-		
+				Vector<Vector> data = new Vector<Vector>();
+				Vector row = new Vector();
+				Vector<String> columnvector = new Vector<String>();
 				int rowtemp=0;
+				
+				//Populate columns
+				for(int i = 0; i < columns.getColumnCount(); i++){
+					columnvector.add((String)columns.getColumn(i).getHeaderValue());
+				}
 				for(int i = 0; i < MenuName.length; i++)
 				{
-				
+					
+					row.add(MenuID[i]);
+					row.add(MenuName[i]);
+					row.add(MenuPrice[i]);
+					row.add(MenuCost[i]);
+					row.add(MenuIngredients[i]);
+					row.add(MenuDescription[i]);
+					row.add(MenuSection[i]);
+					row.add(MenuValid[i]);
+					data.add(row);
+					row = new Vector();
+					
+					/*
 					ModelMenu.setValueAt(MenuID[i],rowtemp,0);
 					ModelMenu.setValueAt(MenuName[i],rowtemp,1);
 					ModelMenu.setValueAt(MenuPrice[i],rowtemp,2);
@@ -507,7 +531,16 @@ public class MenuWindow extends JFrame implements ActionListener{
 					{
 						ModelMenu.addRow(new Object[][]{{null, null, null, null, null, null, null},});
 					}
+					*/
+					
+					
 				}
+				
+				model.setDataVector(data, columnvector);
+				MTV.MenuTable.setModel(model);
+				model.fireTableDataChanged();
+				//Don't forget your disconnect functions Ryan!
+				test.disconnect();
 			
 			
 			}
@@ -536,7 +569,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 			if(a == Done_Add)
 			{
 				getNewMenuItem();  
-				MTV.gen_Menu();
+				FillMenu();
 			}
 			
 			if(a == Done_Edit)
@@ -684,6 +717,13 @@ public class MenuWindow extends JFrame implements ActionListener{
 					}
 					if(i == 5){
 						S1flag = "Error: Enter Section";
+						Add_Error_Message = new JLabel(S1flag);
+						Add_Error_Window.add(Add_Error_Message);
+						Add_Error_Window.setVisible(true);
+						return;
+					}
+					if(i == 6){
+						S1flag = "Error: Enter Item Type";
 						Add_Error_Message = new JLabel(S1flag);
 						Add_Error_Window.add(Add_Error_Message);
 						Add_Error_Window.setVisible(true);

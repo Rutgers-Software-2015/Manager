@@ -151,6 +151,7 @@ public class MenuTableViewer extends JPanel{
 	    
         //Add the scroll pane to this panel.
        
+	    MH.disconnect();
 		TableHolder.add(scrollPane);
 		return MenuTable;
 		
