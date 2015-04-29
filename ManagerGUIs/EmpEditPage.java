@@ -1,7 +1,9 @@
 package Manager.ManagerGUIs;
-//written by: Harsh Shsh 
-// tested by: Harsh Shah
-// debugged by: Harsh Shah
+/*
+@ author Harsh Shsh 
+@ tester Harsh Shah
+@ debugger Harsh Shah
+*/
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;

@@ -12,9 +12,9 @@
 
 package Manager.ManagerGUIs;
 /*
-@author Harsh Shah 
-@tester Harsh Shah
-@debugger Harsh Shah
+@author Ryan Sanichar
+@tester Ryan Sanichar
+@debugger Ryan Sanichar
 */
 import java.awt.*;   
 import java.awt.event.ActionEvent;
