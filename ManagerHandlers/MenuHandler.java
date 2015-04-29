@@ -9,7 +9,7 @@
 
 package Manager.ManagerHandlers;
 
-import static org.apache.commons.codec.binary.Hex.decodeHex; 
+import static org.apache.commons.codec.binary.Hex.decodeHex;  
 import static org.apache.commons.io.FileUtils.readFileToByteArray;
 
 import java.io.File;
@@ -40,6 +40,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.apache.commons.codec.DecoderException;
 
+import Manager.ManagerCommunicator.MenuObj;
 import Shared.ADT.MenuItem;
 import Shared.Communicator.*;
 import Shared.Lib.*;
@@ -56,14 +57,13 @@ public class MenuHandler extends DatabaseCommunicator {
 	public MenuHandler()
 	{
 		super();
+		this.connect("admin", "gradMay17");
+		this.tell("use MAINDB;");
 	}
 	
 	public ResultSet getAllMenu()
 	{		
-		this.connect("admin", "gradMay17");
-		this.tell("use MAINDB;");
 		ResultSet rs = this.tell("select * FROM MENU;");
-		this.disconnect();
 		return rs;
 	}
 
@@ -131,8 +131,6 @@ public class MenuHandler extends DatabaseCommunicator {
 	public String[] getMenu() throws SQLException
 	{
 		
-			this.connect("admin", "gradMay17");
-			this.tell("use MAINDB;");
 			String sqlcommand = "SELECT * FROM MENU;";
 			ResultSet rs = this.tell(sqlcommand);
 			this.consolePrintTable(rs);
@@ -178,10 +176,12 @@ public class MenuHandler extends DatabaseCommunicator {
 						arrayindex++;
 						Menu[arrayindex]  =  rs.getString("VALID");
 						arrayindex++;
-				
+						
 							
 					}
 				}
+				
+				
 
 			}
 				catch(SQLException e)
@@ -190,8 +190,6 @@ public class MenuHandler extends DatabaseCommunicator {
 			}
 			
 			
-			this.disconnect();
-			
 			table = new JTable(buildTableModel(rs));
 			
 			return Menu;
@@ -199,6 +197,7 @@ public class MenuHandler extends DatabaseCommunicator {
 	}
 	
 	
+
 	
 	public static DefaultTableModel buildTableModel(ResultSet rs) throws SQLException {
 
@@ -224,11 +223,11 @@ public class MenuHandler extends DatabaseCommunicator {
 	    return new DefaultTableModel(data, columnNames);
 
 	}
+	
+	
 
 	public Integer[] getMenuID() throws SQLException {
 		
-		this.connect("admin", "gradMay17");
-		this.tell("use MAINDB;");
 		ResultSet I = this.tell("select * FROM MENU;");
 		
 		//Getting rows in result set
@@ -251,7 +250,6 @@ public class MenuHandler extends DatabaseCommunicator {
 				MenuID[arrayindex]=I.getInt(1);
 				arrayindex++;
 			}
-			this.disconnect();
 			return MenuID;
 		}
 		catch(SQLException e)
@@ -264,8 +262,6 @@ public class MenuHandler extends DatabaseCommunicator {
 
 	public String[] getMenuName() throws SQLException {
 
-		this.connect("admin", "gradMay17");
-		this.tell("use MAINDB;");
 		ResultSet I = this.tell("select * FROM MENU;");
 		
 	//Getting rows in result set
@@ -291,7 +287,7 @@ public class MenuHandler extends DatabaseCommunicator {
 		    	MenuName[arrayindex]=I.getString(2);
 				arrayindex++;
 			}
-			this.disconnect();
+			
 			return MenuName;
 		}
 		
@@ -306,8 +302,6 @@ public class MenuHandler extends DatabaseCommunicator {
 	
 	public Double[] getMenuPrice() throws SQLException {
 		
-		this.connect("admin", "gradMay17");
-		this.tell("use MAINDB;");
 		ResultSet I = this.tell("select * FROM MENU;");
 		
 		//Getting rows in result set
@@ -330,7 +324,7 @@ public class MenuHandler extends DatabaseCommunicator {
 				MenuPrice[arrayindex]=I.getDouble(3);
 				arrayindex++;
 			}
-			this.disconnect();
+			
 			return MenuPrice;
 		}
 		catch(SQLException e)
@@ -343,8 +337,7 @@ public class MenuHandler extends DatabaseCommunicator {
 	
 	public Double[] getMenuCost() throws SQLException {
 		
-		this.connect("admin", "gradMay17");
-		this.tell("use MAINDB;");
+
 		ResultSet I = this.tell("select * FROM MENU;");
 		
 		//Getting rows in result set
@@ -367,7 +360,7 @@ public class MenuHandler extends DatabaseCommunicator {
 				MenuCost[arrayindex]=I.getDouble(4);
 				arrayindex++;
 			}
-			this.disconnect();
+			
 			return MenuCost;
 		}
 		catch(SQLException e)
@@ -380,8 +373,7 @@ public class MenuHandler extends DatabaseCommunicator {
 	
 	public String[] getMenuIngredients() throws SQLException {
 
-		this.connect("admin", "gradMay17");
-		this.tell("use MAINDB;");
+
 		ResultSet I = this.tell("select * FROM MENU;");
 	
 		//Getting rows in result set
@@ -407,7 +399,7 @@ public class MenuHandler extends DatabaseCommunicator {
 				MenuIngredients[arrayindex]=I.getString(5);
 				arrayindex++;
 			}
-			this.disconnect();
+
 			return MenuIngredients;
 		}
 	
@@ -422,8 +414,6 @@ public class MenuHandler extends DatabaseCommunicator {
 
 	public String[] getMenuDescription() throws SQLException {
 
-		this.connect("admin", "gradMay17");
-		this.tell("use MAINDB;");
 		ResultSet I = this.tell("select * FROM MENU;");
 	
 //Getting rows in result set
@@ -449,7 +439,7 @@ public class MenuHandler extends DatabaseCommunicator {
 				MenuDescription[arrayindex]=I.getString(6);
 				arrayindex++;
 			}
-			this.disconnect();
+
 			return MenuDescription;
 		}
 	
@@ -465,8 +455,6 @@ public class MenuHandler extends DatabaseCommunicator {
 
 	public String[] getMenuSection() throws SQLException {
 	
-		this.connect("admin", "gradMay17");
-		this.tell("use MAINDB;");
 		ResultSet I = this.tell("select * FROM MENU;");
 		
 	//Getting rows in result set
@@ -492,7 +480,7 @@ public class MenuHandler extends DatabaseCommunicator {
 				MenuDescription[arrayindex]=I.getString(7);
 				arrayindex++;
 			}
-			this.disconnect();
+			
 			return MenuDescription;
 		}
 		
@@ -507,8 +495,6 @@ public class MenuHandler extends DatabaseCommunicator {
 	
 	public Integer[] getMenuisValid() throws SQLException {
 		
-		this.connect("admin", "gradMay17");
-		this.tell("use MAINDB;");
 		ResultSet I = this.tell("select * FROM MENU;");
 		
 		//Getting rows in result set
@@ -528,10 +514,10 @@ public class MenuHandler extends DatabaseCommunicator {
 			int arrayindex=0;
 			while(I.next())
 			{	
-				MenuID[arrayindex]=I.getInt(1);
+				MenuID[arrayindex]=I.getInt(8);
 				arrayindex++;
 			}
-			this.disconnect();
+
 			return MenuID;
 		}
 		catch(SQLException e)
@@ -542,25 +528,54 @@ public class MenuHandler extends DatabaseCommunicator {
 		return null;
 	}
 	
+	/*
+	
 	public void AddMenuItem(String Item_Name, double price, double cost, String Ingredients, String Description, String Menu_Section, int Valid) throws SQLException
 	{
-	
-			this.connect("admin", "gradMay17");
-			this.tell("use MAINDB;");
 			
 			String newMenuItem = "('" + Item_Name + "', '" + price + "', '" + cost + "', '" + Ingredients + "', '" + Description + "', '" + Menu_Section + "', '" + Valid + "');";
 			
 			ResultSet rs =  this.tell("INSERT INTO MENU (ITEM_NAME, PRICE, COST, INGREDIENTS, DESCRIPTION, MENU_SECTION, VALID) VALUES " + newMenuItem);
-			this.disconnect();
 			
+	}
+	
+	*/
+	
+	public void AddMenuItem(MenuObj E)
+	{
+		
+		ResultSet rs = this.tell("Select * from MENU;");
+		int maxid=0;
+		int counter = 0;
+		try{
+			rs.beforeFirst();
+			while(rs.next())
+			{
+				int menuid=rs.getInt("MENU_ID");
+				if(menuid>maxid)
+				{
+					maxid=menuid;
+				}
+			}
+		}catch(SQLException e)
+		{
+			System.out.println(e);
+		}
+		
+		// String idstr = ""+maxid;
+		
+		String newMenuItem = "('" + (maxid + 1) + "', '" + E.ITEM_NAME + "', '" + E.PRICE + "', '" + E.COST + "', '" + E.INGREDIENTS + "', '" + E.DESCRIPTION + "', '" + E.SECTION + "', '" + E.VALID + "');";
+		String command = "INSERT INTO MENU (MENU_ID, ITEM_NAME, PRICE, COST, INGREDIENTS, DESCRIPTION, MENU_SECTION, VALID) VALUES " + newMenuItem;
+		this.update(command);
+		
+		System.out.println("Menu Item Added!");
+	
 	}
 
 	public void RemoveMenuItem(String MenuItem) throws SQLException
 	{
-			this.connect("admin", "gradMay17");
-			this.tell("use MAINDB;");
-			ResultSet rs =  this.tell("DELETE FROM MENU WHERE ITEM_NAME='" + MenuItem + "';");
-			this.disconnect();
+			this.update("DELETE FROM MENU WHERE ITEM_NAME='" + MenuItem + "';");
+			
 	}
 	
 	
@@ -569,62 +584,3 @@ public class MenuHandler extends DatabaseCommunicator {
 
 
 
-
-
-		/*
-
-
-public void addMenuItem(MenuObj E)
-{
-	
-
-}
-
-
-
-
-	// The following commented code will be used in Demo 2
-	// Implementing a linked list
-	
-	/*
-	LinkedList<LinkedList<String>> Menu = new LinkedList<LinkedList<String>>();
-	LinkedList<String> Stuff = new LinkedList<String>();
-	
-	Stuff.add("");
-	Stuff.add("");
-	Stuff.add("$28");
-	Stuff.add("0");
-	
-	Menu.add(Stuff);
-	Stuff = new LinkedList<String>(); 
-	
-	Stuff.add("");
-	Stuff.add("");
-	Stuff.add("$28");
-	Stuff.add("0");
-	
-	Menu.add(Stuff);
-	Stuff = new LinkedList<String>(); 
-	
-	
-	// Creating the menu with the name, the ingredients, the price, and the ID
-	String[][] trendArray = 
-	{
-			
-			
-			{"Chicken Sandwich", "Chicken, Bread, Lettuce", "$5", "0"},
-			{"Spinach Alfredo", "Spinach, Pasta, White Sauce", "$8", "1"},
-			{"Canoli", "Dough, Whipped Cream", "$3", "2"},
-			{"Gulash", "Vegetables, Stock, Spices", "$5", "3"},
-			{"Salad", "Vegetables, Fruit, Dressing", "$5", "5"},
-			
-	};
-	
-	return trendArray;
-	
-	
-	// return Menu;
-}
-
-
-*/

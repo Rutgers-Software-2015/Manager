@@ -7,16 +7,16 @@ package Manager.ManagerCommunicator;
 */
 public class MenuObj {
 	
-	public int MENU_ID;
+	public String MENU_ID;
 	public String ITEM_NAME;
-	public double PRICE;
-	public double COST;
+	public String PRICE;
+	public String COST;
 	public String INGREDIENTS; 
 	public String DESCRIPTION;
-	public String MENU_SECTION;
-	public int VALID;
+	public String SECTION;
+	public String VALID;
 	
-	public MenuObj(int MENU_ID, String ITEM_NAME, double PRICE, double COST, String INGREDIENTS,  String DESCRIPTION, String MENU_SECTION, int VALID)
+	public MenuObj(String MENU_ID, String ITEM_NAME, String PRICE, String COST, String INGREDIENTS,  String DESCRIPTION, String MENU_SECTION, String VALID)
 	{
 		this.MENU_ID = MENU_ID;
 		this.ITEM_NAME = ITEM_NAME;
@@ -24,20 +24,20 @@ public class MenuObj {
 		this.COST = COST;
 		this.INGREDIENTS = INGREDIENTS;
 		this.DESCRIPTION = DESCRIPTION;
-		this.MENU_SECTION = MENU_SECTION;
+		this.SECTION = SECTION;
 		this.VALID = VALID;
 	}
 	
 	public MenuObj()
 	{
-		this.MENU_ID = 0;
+		this.MENU_ID = "";
 		this.ITEM_NAME = "";
-		this.PRICE = 0;
-		this.COST = 0;
+		this.PRICE = "";
+		this.COST = "";
 		this.INGREDIENTS = "";
 		this.DESCRIPTION = "";
-		this.MENU_SECTION = "";
-		this.VALID = 0;
+		this.SECTION = "";
+		this.VALID = "";
 	}
 
 }

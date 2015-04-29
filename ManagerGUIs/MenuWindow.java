@@ -8,6 +8,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -32,6 +36,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
@@ -53,8 +58,10 @@ import javax.swing.ButtonGroup;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import Manager.ManagerHandlers.*;
 import Manager.ManagerCommunicator.*;
+
 
 
 
@@ -67,15 +74,25 @@ public class MenuWindow extends JFrame implements ActionListener{
 		private GradientPanel backgroundPanel,buttonPanelBackground,cardPanel, Menu_Card;
 		private GradientPanel card1,card2,card3;
 		//Swing Objects
-		private GradientButton addItem, removeItem, updateItem, backButton;
+		private GradientButton addItem, removeItem, updateItem, backButton, viewButton;
 		private JButton payWithCash, payWithCard;
 		private JLabel titleLabel,dateAndTime;
 		//Swing Layouts
 		private CardLayout c;
 		//Other Variables
 		private Timer timer;
+		public GradientPanel AddMenu_Card;
+		private AddMenuItemPanel form = new AddMenuItemPanel();
+		private JTabbedPane formpane;
+		private GradientButton Done_Add, Done_Edit, Cancel;
+		
+		private JFrame Add_Error_Window;
+		private JLabel Add_Error_Message;
+		private MenuObj MenuItem;
+		private EmpSummaryPanel SummaryForm;
 		
 		MenuTableViewer MTV = new MenuTableViewer();
+		
 		
 		private JFrame MenuAddingFrame;
 		
@@ -83,7 +100,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 		private JScrollPane MenuScroller;
 		
 		// Table that will show the data from the menu
-		private JTable MenuTable;
+		JTable MenuTable;
 		
 		private MenuHandler MenuHandle = new MenuHandler();
 		
@@ -99,7 +116,63 @@ public class MenuWindow extends JFrame implements ActionListener{
 		public MenuWindow() throws SQLException
 		{
 			super();
-			init();
+			init();			
+			/*
+			
+			MenuTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+				
+				   public void valueChanged(ListSelectionEvent event) {
+				        if (MenuTable.getSelectedRow() > -1) 
+				        {
+							
+							try{
+								
+								int row = MenuTable.getSelectedRow();
+								
+								String column_name = MenuTable.getModel().getValueAt(row, 0).toString();
+								String column_ingredient = MenuTable.getModel().getValueAt(row, 1).toString();
+								String column_price = MenuTable.getModel().getValueAt(row, 2).toString();
+								String column_ID = MenuTable.getModel().getValueAt(row, 3).toString();
+								
+								nameField.setText(column_name);
+								ingredientField.setText(column_ingredient);
+								priceField.setText(column_price);
+								IDField.setText(column_ID);
+								
+								nameField.updateUI();
+								ingredientField.updateUI();
+								priceField.updateUI();
+								IDField.updateUI();
+								
+								buttonPanel.updateUI();
+								
+							}
+							
+							catch(Exception ex)
+							{
+								JOptionPane.showMessageDialog(null, ex);
+							}
+							
+				        }
+				    }
+				
+				  
+			
+			});	
+			
+			*/
+			
+			c = (CardLayout)(cardPanel.getLayout());
+			this.setVisible(true);
+			 
+		}
+		
+		private void setFormPanel()
+		{
+			formpane = new JTabbedPane();
+			formpane.setVisible(true);
+			formpane.addTab("Page 1", form);
+			AddMenu_Card.add(formpane, BorderLayout.CENTER);
 		}
 
 		public void init() throws SQLException
@@ -124,7 +197,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 	        });
 			
 		//	c = (CardLayout)(cardPanel.getLayout());
-			
+
 			this.setVisible(true);
 		}
 
@@ -140,43 +213,12 @@ public class MenuWindow extends JFrame implements ActionListener{
 				
 		}
 		
-		/*
-		
-		private void makeMenu() {
-			// TODO Auto-generated method stub
-			
-			DefaultTableModel model = (DefaultTableModel) MenuTable.getModel();
-			MenuHandler handler = new MenuHandler();
-			String[] Menu = handler.getMenu();
-			int temprow = 0;
-			
-			for(int i=0;i< Menu.length;i++)
-			{
 
-				model.setValueAt(Menu[i], temprow, 0);
-				i++;
-				model.setValueAt(Menu[i], temprow, 1);
-				i++;
-				model.setValueAt(Menu[i], temprow, 2);
-				i++;
-				model.setValueAt(Menu[i], temprow, 3);
-				i++;
-				
-				
-				model.addRow(new Object[][] {{null, null, null, null}});
-				
-			}
-			
-		}
-
-*/
-		
-		
 
 		private void setRootPanel()
 		{
-			// notification = new NotificationGUI(1, "Manager");
-			// rootPanel.add(notification);
+			notification = new NotificationGUI(1, "Manager");
+			rootPanel.add(notification);
 			rootPanel.add(titlePanel);
 			rootPanel.add(cardPanel);
 			rootPanel.add(buttonPanel);
@@ -248,25 +290,14 @@ public class MenuWindow extends JFrame implements ActionListener{
 			buttonPanel.setBounds(7, 61, 236, 604);
 			buttonPanel.setOpaque(false);
 			buttonPanel.setBorder(null);
-			buttonPanel.setLayout(new GridLayout(8, 0, 5, 5));
+			buttonPanel.setLayout(new GridLayout(5, 0, 5, 5));
 			
-			//Initialize text fields
-			nameField = new JTextField("New Name");
-			ingredientField = new JTextField("New Ingredients");
-			priceField = new JTextField("New Price");
-			IDField = new JTextField("New ID Number");
 			
-			// Make text fields editable
-			nameField.setEditable(true);
-			ingredientField.setEditable(true);
-			priceField.setEditable(true);
-			IDField.setEditable(true);
-			
-			// Add the text fields to the panel
-			buttonPanel.add(nameField);
-			buttonPanel.add(ingredientField);
-			buttonPanel.add(priceField);
-			buttonPanel.add(IDField);
+			viewButton = new GradientButton("View Menu");
+			viewButton.addActionListener(this);
+			viewButton.setFont(viewButton.getFont().deriveFont(16.0f));
+			viewButton.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+			viewButton.setFocusPainted(false);
 			
 			// Set Request Table Status Change Button
 			addItem = new GradientButton("Add Menu Item");
@@ -296,62 +327,12 @@ public class MenuWindow extends JFrame implements ActionListener{
 			backButton.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 			backButton.setFocusPainted(false);
 			
+			buttonPanel.add(viewButton);
 			buttonPanel.add(addItem);
 			buttonPanel.add(removeItem);
 			buttonPanel.add(updateItem);
 			buttonPanel.add(backButton);
 		}
-		
-		public void init_menu() 
-		{
-			//Need to populate the arrays before they are fed to the JTable
-//			Menu_RowData = MenuHandler.getMenu();
-//			MenuTable = new JTable(Menu_RowData, Menu_ColumnNames);
-			
-		//	makeMenu();
-		//	MenuTable = new JTable();
-			// MenuTable.getColumnModel().getColumn(0).setPreferredWidth(130);
-			// MenuTable.getColumnModel().getColumn(1).setPreferredWidth(220);
-			
-			MenuTable = new JTable();
-			MenuTable.setRowSelectionAllowed(false);
-			MenuTable.setModel(new DefaultTableModel(new Object[][] {{null, null},},
-					new String[] {"ID", "Name", "Price", "Cost", "Ingredients", "Description", "Section", "Valid"}) {
-			});
-			MenuScroller = new JScrollPane(MenuTable);
-			MenuTable.setFillsViewportHeight(true);
-			textPanel.add(MenuScroller); 
-			
-		}
-		
-		/*
-		
-		public static DefaultTableModel buildTableModel(ResultSet rs) throws SQLException {
-
-		    ResultSetMetaData metaData = rs.getMetaData();
-
-		    // names of columns
-		    Vector<String> columnNames = new Vector<String>();
-		    int columnCount = metaData.getColumnCount();
-		    for (int column = 1; column <= columnCount; column++) {
-		        columnNames.add(metaData.getColumnName(column));
-		    }
-
-		    // data of the table
-		    Vector<Vector<Object>> data = new Vector<Vector<Object>>();
-		    while (rs.next()) {
-		        Vector<Object> vector = new Vector<Object>();
-		        for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
-		            vector.add(rs.getObject(columnIndex));
-		        }
-		        data.add(vector);
-		    }
-
-		    return new DefaultTableModel(data, columnNames);
-
-		}
-
-		*/
 		
 		//********************************************************************************
 		//DO NOT deviate from the card layout or change the size/location of the cardPanel.
@@ -360,23 +341,33 @@ public class MenuWindow extends JFrame implements ActionListener{
 	
 		public void init_textPanel() throws SQLException
 		{
-			// init_menu();
-			rootPanel.add(textPanel);
-			
+			rootPanel.add(textPanel);	
 		}
 		
 		private void setCardPanel() throws SQLException
 		{
 			cardPanel = new GradientPanel();
-			cardPanel.setLayout(new GridLayout()); // How to define a Card Layout
+			cardPanel.setLayout(new CardLayout()); // How to define a Card Layout
 			cardPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 			cardPanel.setGradient(new Color(255,255,255), new Color(255,110,110));
 			cardPanel.setBounds(273, 79, 896, 569);
 			
+			AddMenu_Card = new GradientPanel();
+			AddMenu_Card.setLayout(new BorderLayout());
+			AddMenu_Card.setVisible(true);
+			setFormPanel();
+			setDoneAdd();
+			
 			// init_menu();
 			
+			// MenuTable = MTV.gen_Menu();
+			
 			MTV = new MenuTableViewer();
-			cardPanel.add(MTV, BorderLayout.CENTER);
+			cardPanel.add(MTV, "Menu");
+			cardPanel.add(AddMenu_Card, "AddMenuItem");
+			cardPanel.setVisible(true);
+			
+			
 			// MenuHandle.getAllMenu();
 			
 			
@@ -425,43 +416,88 @@ public class MenuWindow extends JFrame implements ActionListener{
 			cardPanel.setVisible(true); 
 			*/
 		}
+				
+		private void setDoneAdd()
+		{
+			Done_Add = new GradientButton("Done");
+			Done_Add.addActionListener(this);
+			AddMenu_Card.add(Done_Add, BorderLayout.SOUTH);
+		}
 		
-		private void FillMenu() throws SQLException
+		public boolean isThereInternet()
+		{
+			try
+			{
+				URL yourl = new URL("http://google.com");
+				HttpURLConnection yourlConnect = (HttpURLConnection)yourl.openConnection();
+				yourlConnect.setConnectTimeout(2000);
+				
+				Object objData = yourlConnect.getContent();
+			}catch(UnknownHostException e)
+			{
+				return false;
+			}
+			catch(IOException e)
+			{
+				return false;
+			}
+			return true;
+		}
+		
+		/*
+		
+		private void setEditPage()
+		{
+			EditPage_Card = new EmpEditPage();		
+			EmpEdit_Root.add(EditPage_Card, BorderLayout.CENTER);
+			EditPage_Card.setVisible(true);
+		}
+		
+		*/
+		
+		public JTable remove(JTable table, int row)
 		{
 			
-			DefaultTableModel ModelInven=(DefaultTableModel) MenuTable.getModel();
+			table.remove(row);
+			return table;
+		}
+		
+		private void FillMenu()
+		{
+			
+			DefaultTableModel ModelMenu;
+			ModelMenu = (DefaultTableModel) MTV.MenuTable.getModel();
 			MenuHandler test = new MenuHandler();
 
 			try{
-				
-			Integer[] MenuID = test.getMenuID();	
+
+			Integer[] MenuID = test.getMenuID();
 			String[] MenuName = test.getMenuName();
 			Double[] MenuPrice = test.getMenuPrice();
 			Double[] MenuCost = test.getMenuCost();
-			String[] Ingredients = test.getMenuIngredients();
+			String[] MenuIngredients = test.getMenuIngredients();
 			String[] MenuDescription = test.getMenuDescription();
-			String[] MenuSection = test.getMenuSection();
-			Integer[] isValid = test.getMenuisValid();
+			String[] MenuSection = test.getMenuDescription();
 			
-			
-			int rows= MenuName.length;
-			int rowtemp=0;
-			
-				for(int i=0;i< MenuName.length;i++)
+			int rows = MenuName.length;
+		
+				int rowtemp=0;
+				for(int i = 0; i < MenuName.length; i++)
 				{
-					ModelInven.setValueAt(MenuName[i],rowtemp,0);
-					ModelInven.setValueAt(MenuName[i],rowtemp,1);
-					ModelInven.setValueAt(MenuName[i],rowtemp,2);
-					ModelInven.setValueAt(MenuName[i],rowtemp,3);
-					ModelInven.setValueAt(MenuName[i],rowtemp,4);
-					ModelInven.setValueAt(MenuName[i],rowtemp,5);
-					ModelInven.setValueAt(MenuName[i],rowtemp,6);
-					ModelInven.setValueAt(MenuName[i],rowtemp,7);
-					rowtemp++;
+				
+					ModelMenu.setValueAt(MenuID[i],rowtemp,0);
+					ModelMenu.setValueAt(MenuName[i],rowtemp,1);
+					ModelMenu.setValueAt(MenuPrice[i],rowtemp,2);
+					ModelMenu.setValueAt(MenuCost[i],rowtemp,3);
+					ModelMenu.setValueAt(MenuIngredients[i],rowtemp,4);
+					ModelMenu.setValueAt(MenuDescription[i],rowtemp, 5);
+					ModelMenu.setValueAt(MenuSection[i],rowtemp, 6);
 					
-					if(ModelInven.getRowCount() < rows)
+				
+					rowtemp++;
+					if(ModelMenu.getRowCount()<rows)
 					{
-						ModelInven.addRow(new Object[][]{{null, null},});
+						ModelMenu.addRow(new Object[][]{{null, null, null, null, null, null, null},});
 					}
 				}
 			
@@ -479,166 +515,72 @@ public class MenuWindow extends JFrame implements ActionListener{
 		{
 			Object a = e.getSource();
 			
-			/*
-			MenuTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			if(a == viewButton)
+			{
+				c.show(cardPanel, "Menu");
+				removeItem.setVisible(true);
+				updateItem.setVisible(true);
+				backButton.setVisible(true);
 				
-				   public void valueChanged(ListSelectionEvent event) {
-				        if (MenuTable.getSelectedRow() > -1) 
-				        {
-							
-							try{
-								
-								int row = MenuTable.getSelectedRow();
-								
-								String column_name = MenuTable.getModel().getValueAt(row, 0).toString();
-								String column_ingredient = MenuTable.getModel().getValueAt(row, 1).toString();
-								String column_price = MenuTable.getModel().getValueAt(row, 2).toString();
-								String column_ID = MenuTable.getModel().getValueAt(row, 3).toString();
-								
-								nameField.setText(column_name);
-								ingredientField.setText(column_ingredient);
-								priceField.setText(column_price);
-								IDField.setText(column_ID);
-								
-								nameField.updateUI();
-								ingredientField.updateUI();
-								priceField.updateUI();
-								IDField.updateUI();
-								
-								buttonPanel.updateUI();
-								
-							}
-							
-							catch(Exception ex)
-							{
-								JOptionPane.showMessageDialog(null, ex);
-							}
-							
-				        }
-				    }
-				
-				  
+			}
 			
-			});	
+
+			if(a == Done_Add)
+			{
+				getNewMenuItem();  
+				MTV.gen_Menu();
+			}
 			
-			 */
-			
+			if(a == Done_Edit)
+			{
+				// getEditItem();
+			}
+
+						
 			//c.show(cardPanel, "MenuProcess");
 			if(a == backButton)
 				{
+					notification.close();
+					MenuHandle.disconnect();
 					new ManagerRootWindow();
 					dispose();
 				}
 			
 			if(a == addItem)
 				{
-			   
-				// Retrieve data from the text fields
-				String tempName = nameField.getText();
-				String tempIngredient = ingredientField.getText();
-				String tempPrice = priceField.getText();
-				String tempID = IDField.getText();
-				
-				/*
-				
-				try
-				{
-					//MenuHandle.AddMenuItem(tempName, tempIngredient, tempPrice, tempID);
-				}
-				catch (SQLException e1)
-				{
-					e1.printStackTrace();
-				}
-				
-				*/
-				
-				/*
-				// Make a new temp array of size + 1 to add the new item
-				String[][] temp = new String[Menu_RowData.length + 1][4];
-				
-				// For loop to make the new table
-				for(int i = 0; i < Menu_RowData.length; i++)
-				{
-					for(int j = 0; j < 4; j++)
-						temp[i][j] = Menu_RowData[i][j];
-				}
-				
-				// Make the new rows
-				temp[Menu_RowData.length][0] = tempName;
-				temp[Menu_RowData.length][1] = tempIngredient;
-				temp[Menu_RowData.length][2] = tempPrice;
-				temp[Menu_RowData.length][3] = tempID;
-				
-				// Set the new table
-				Menu_RowData = temp;
-				MenuTable.setModel(new DefaultTableModel(Menu_RowData, Menu_ColumnNames));
-				
-				// Return the text to original fields
-				nameField.setText("New Name");
-				ingredientField.setText("New Ingredients");
-				priceField.setText("New Price");
-				IDField.setText("New ID Number");
-				
-				*/
-				
-				
-				
+
+				removeItem.setVisible(false);
+				updateItem.setVisible(false);
+				backButton.setVisible(false);
+				c.show(cardPanel, "AddMenuItem");
+			
 				
 				}
 			if(a == removeItem)
 				{
 				
-				
-				
-			   // c.show(cardPanel, "NO"); //Example of how to show card panel
-				
+				   // c.show(cardPanel, "NO"); //Example of how to show card panel
+					// User need to selects a row
+			        if (MTV.MenuTable.getSelectedRow() != -1) 
+			        {
 
-				// User need to selects a row
-		        if (MenuTable.getSelectedRow() != -1) 
-		        {
-		        	
-		        	/*
-		        	
-		        	// Get the position of selected row
-		        	int position = MenuTable.getSelectedRow();
-		        	
-		        	// Temp array for table
-		        	String[][] temp = new String[Menu_RowData.length - 1][4];
-		        	
-		        	// Loop to update temp array
-		        	for(int i = 0; i < position; i++)
-		        	{
-		        		temp[i][0] = Menu_RowData[i][0];
-		        		temp[i][1] = Menu_RowData[i][1];
-		        		temp[i][2] = Menu_RowData[i][2];
-		        		temp[i][3] = Menu_RowData[i][3];
-		        	}
-		        	
-		        	for(int i = position + 1; i < Menu_RowData.length; i++)
-		        	{
-		        		temp[i-1][0] = Menu_RowData[i][0];
-		        		temp[i-1][1] = Menu_RowData[i][1];	
-		        		temp[i-1][2] = Menu_RowData[i][2];	
-		        		temp[i-1][3] = Menu_RowData[i][3];	
-		        	}
-		        	
-		        	// Update array
-		        	Menu_RowData = temp;
-		        	MenuTable.setModel(new DefaultTableModel(Menu_RowData, Menu_ColumnNames));
-		        	
-		    		MenuTable.getColumnModel().getColumn(0).setPreferredWidth(130);
-		    		MenuTable.getColumnModel().getColumn(1).setPreferredWidth(220);
-		    	
-		    		*/
-		    		
-		        }
+						try 
+						{
+				        	int position = MTV.MenuTable.getSelectedRow();
+				        	String[] names = MenuHandle.getMenuName();
+				        	String name = names[position];
+							MenuHandle.RemoveMenuItem(name);
+							remove(MTV.MenuTable, position);
+							MTV.gen_Menu();
+							
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+			        } 
 		        
-		        
-				else 
-				{
-					JOptionPane.showMessageDialog(MenuAddingFrame, "Please select a menu item.");
-				}
-				
+			        else 
+			        	JOptionPane.showMessageDialog(MenuAddingFrame, "Please select a menu item.");
 				
 				}
 			
@@ -648,48 +590,149 @@ public class MenuWindow extends JFrame implements ActionListener{
 				
 				// User needs to select a row
 				
-		        if (MenuTable.getSelectedRow() != -1) 
-		        {
-				
-		        // Retrieve data from the text file	
-				String tempName = nameField.getText();
-				String tempIngredient = ingredientField.getText();
-				String tempPrice = priceField.getText();
-				String tempID = IDField.getText();
-				
-				/*
-				
-				// Update the table
-				MenuTable.getModel().setValueAt(tempName, MenuTable.getSelectedRow(), 0);
-				MenuTable.getModel().setValueAt(tempIngredient, MenuTable.getSelectedRow(), 1);
-				MenuTable.getModel().setValueAt(tempPrice, MenuTable.getSelectedRow(), 2);
-				MenuTable.getModel().setValueAt(tempID, MenuTable.getSelectedRow(), 3);
-				
-				MenuTable.getColumnModel().getColumn(0).setPreferredWidth(130);
-				MenuTable.getColumnModel().getColumn(1).setPreferredWidth(220);
-				
-				*/
-				
-		        }
-		        
-				// Error message
-				else 
-				{
-					JOptionPane.showMessageDialog(MenuAddingFrame, "Please select a menu item.");
-				}
-				
+			        if (MTV.MenuTable.getSelectedRow()  != -1) 
+			        {
+					
+						removeItem.setVisible(false);
+						updateItem.setVisible(false);
+						backButton.setVisible(false);	
+			        	
+			        // Retrieve data from the text file	
+					String tempName = nameField.getText();
+					String tempIngredient = ingredientField.getText();
+					String tempPrice = priceField.getText();
+					String tempID = IDField.getText();
+					
+			        }
+			        
+					// Error message
+					else 
+						JOptionPane.showMessageDialog(MenuAddingFrame, "Please select a menu item.");
 				
 				}
+			
 			if(a == timer)
-				{
 					updateClock();
-				}
-		}
-		
-		
-		
+
+		}	
 		
 		private void updateClock() {
             dateAndTime.setText(DateFormat.getDateTimeInstance().format(new Date()));
         }
+		
+		
+		
+		public void getNewMenuItem()
+		{
+			Add_Error_Window = new JFrame();
+			Add_Error_Window.setSize(200, 100);
+			Add_Error_Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			
+			
+			String[] S = form.answers();
+			String S1flag;
+			
+			//Check form 1
+			for(int i = 0; i < S.length; i++)
+			{
+				//[fname, lname, address, dob, school, gpa, question]
+				if((S[i] == null) || S[i] == "")
+				{
+					
+					if(i == 0){
+						S1flag = "Error: Enter Menu Item Name";
+						Add_Error_Message = new JLabel(S1flag);
+						Add_Error_Window.add(Add_Error_Message);
+						Add_Error_Window.setVisible(true);
+						return;
+					}
+					if(i == 1){
+						S1flag = "Error: Enter Price";
+						Add_Error_Message = new JLabel(S1flag);
+						Add_Error_Window.add(Add_Error_Message);
+						Add_Error_Window.setVisible(true);
+						return;
+					}
+					if(i == 2){
+						S1flag = "Error: Enter Cost";
+						Add_Error_Message = new JLabel(S1flag);
+						Add_Error_Window.add(Add_Error_Message);
+						Add_Error_Window.setVisible(true);
+						return;
+					}
+					if(i == 3){
+						S1flag = "Error: Enter Ingredients";
+						Add_Error_Message = new JLabel(S1flag);
+						Add_Error_Window.add(Add_Error_Message);
+						Add_Error_Window.setVisible(true);
+						return;
+					}
+					if(i == 4){
+						S1flag = "Error: Enter Description";
+						Add_Error_Message = new JLabel(S1flag);
+						Add_Error_Window.add(Add_Error_Message);
+						Add_Error_Window.setVisible(true);
+						return;
+					}
+					if(i == 5){
+						S1flag = "Error: Enter Section";
+						Add_Error_Message = new JLabel(S1flag);
+						Add_Error_Window.add(Add_Error_Message);
+						Add_Error_Window.setVisible(true);
+						return;
+					}
+				}
+			}
+			
+
+			//Construct the handler object
+			///[fname, lname, address, dob, school, gpa, question]
+			///FNAME, LNAME, ADDRESS, DOB, SCHOOL, GPA, q1, q2, q3, q4, position, sal
+		//	MenuItem = new MenuObj("", S[0], S[1], S[2], S[3], S[4], S[5], "1");
+			// SummaryForm = new EmpSummaryPanel(MenuItem);
+		//	cardPanel.add(SumForm,"Summary");
+		// 	c.show(cardPanel, "Summary");
+	
+			//Clean up the form
+			form.cleanform();
+			
+			//Send the data to the database
+			Boolean INTERNET;
+			INTERNET = isThereInternet();
+			if(INTERNET == true){
+				System.out.println("Adding the New Menu Item!");
+				MenuHandle.AddMenuItem(MenuItem);
+				Add_Error_Message = new JLabel("Item Added!");
+				Add_Error_Window.add(Add_Error_Message);
+				Add_Error_Window.setVisible(true);
+				
+				/*
+				
+				//HERE
+				EmpEdit_Root = new GradientPanel();
+				EmpEdit_Root.setLayout(new BorderLayout());
+				EmpEdit_Root.setVisible(true);
+				setEditPage();
+				setEmpEditButton();
+				EmpEdit_Root.updateUI();
+				cardPanel.add(EmpEdit_Root, "EditProcess");
+				//Here
+				FireRoot_Card = new GradientPanel();
+				FireRoot_Card.setLayout(new BorderLayout());
+				FireRoot_Card.setVisible(true);
+				setFireCard();
+				cardPanel.add(FireRoot_Card, "FireProcess");
+				
+				*/
+				
+			}
+			else
+			{
+				Add_Error_Message = new JLabel("NO INTERNET CONNECTION!");
+				Add_Error_Window.add(Add_Error_Message);
+				Add_Error_Window.setVisible(true);
+			}
+		
+		}
+		
 }

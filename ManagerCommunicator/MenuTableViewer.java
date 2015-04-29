@@ -26,7 +26,7 @@ import Manager.ManagerHandlers.*;
 public class MenuTableViewer extends JPanel{
 	
 	public JPanel TableHolder;
-	public JTable Menu;
+	public JTable MenuTable;
 	public MenuHandler MH;
 	public JScrollPane scroller;
 	
@@ -52,9 +52,9 @@ public class MenuTableViewer extends JPanel{
 		gen_Menu();
 	}
 	
-	public void gen_Menu()
+	public JTable gen_Menu()
 	{
-		String[] Menu_ColumnNames = {"Name", "Ingredients", "Price", "ID"};
+		String[] Menu_ColumnNames = {"ID", "Name", "Price", "Cost", "Ingredients", "Description", "Menu Section", "Valid"};
 		MH = new MenuHandler();
 		ResultSet rs = MH.getAllMenu();
 		
@@ -70,10 +70,14 @@ public class MenuTableViewer extends JPanel{
 			System.out.println(e);
 		}
 		
-		String[] N = new String[rowcount];
-		String[] I = new String[rowcount];
-		String[] P = new String[rowcount];
 		String[] ID = new String[rowcount];
+		String[] Name = new String[rowcount];
+		String[] Price = new String[rowcount];
+		String[] Cost = new String[rowcount];
+		String[] Ingredients = new String[rowcount];
+		String[] Description = new String[rowcount];
+		String[] Section = new String[rowcount];
+		String[] Valid = new String[rowcount];
 		
 		try
 		{
@@ -87,17 +91,30 @@ public class MenuTableViewer extends JPanel{
 		try{
 		
 			do{
+				
 				String tmpname = rs.getString("ITEM_NAME");
 				String tmping = rs.getString("INGREDIENTS");
+				String tmpdesc = rs.getString("DESCRIPTION");
+				String tmpsec = rs.getString("MENU_SECTION");
+				
 				double tmpp = rs.getDouble("PRICE");
 				String tmpprice = ""+tmpp;
-				int tmpi = rs.getInt("MENU_ID");
+				double tmpc = rs.getDouble("COST");
+				String tmpcost = ""+tmpc;
+				int tmpv = rs.getInt("Valid");				
+				String tmpvalid = ""+tmpv;
+				int tmpi = rs.getInt("MENU_ID");				
 				String tmpid = ""+tmpi;
 				
-				N[rowiterator] = tmpname;
-				I[rowiterator] = tmping;
-				P[rowiterator] = tmpprice;
+				
 				ID[rowiterator] = tmpid;
+				Name[rowiterator] = tmpname;
+				Price[rowiterator] = tmpprice;
+				Cost[rowiterator] = tmpcost;
+				Ingredients[rowiterator] = tmping;
+				Description[rowiterator] = tmpdesc;
+				Section[rowiterator] = tmpsec;
+				Valid[rowiterator] = tmpvalid;
 				
 				rowiterator++;
 			}
@@ -107,37 +124,35 @@ public class MenuTableViewer extends JPanel{
 		{
 			E.printStackTrace();
 		}
-		String[][] data = new String[rowcount][4];
+		String[][] data = new String[rowcount][8];
 		
 		for(int i = 0; i < rowcount; i++)
 		{
-			data[i][0] = N[i];
-			data[i][1] = I[i];
-			data[i][2] = P[i];
-			data[i][3] = ID[i];
+			data[i][0] = ID[i];
+			data[i][1] = Name[i];
+			data[i][2] = Price[i];
+			data[i][3] = Cost[i];
+			data[i][4] = Ingredients[i];
+			data[i][5] = Description[i];
+			data[i][6] = Section[i];
+			data[i][7] = Valid[i];
 		}
 		
-		System.out.println(rowcount);
-		
-		Menu = new JTable(data, Menu_ColumnNames);
-		Menu.setPreferredScrollableViewportSize(new Dimension(890, 560));
-	    Menu.setFillsViewportHeight(true);
-		/*DefaultTableModel model = (DefaultTableModel) Menu.getModel();
-		for(int i = 0; i < rowcount; i++)
-		{
-			model.setValueAt(N[i], i, 0);
-			model.setValueAt(I[i], i, 1);
-			model.setValueAt(P[i], i, 2);
-			model.setValueAt(ID[i], i, 3);
-			
-			model.addRow(new Object[][] {{null, null, null, null}});
-		}*/
-	    JScrollPane scrollPane = new JScrollPane(Menu);
+		MenuTable = new JTable(data, Menu_ColumnNames);
+		MenuTable.getColumnModel().getColumn(0).setPreferredWidth(1);
+		MenuTable.getColumnModel().getColumn(2).setPreferredWidth(1);
+		MenuTable.getColumnModel().getColumn(3).setPreferredWidth(1);
+		MenuTable.getColumnModel().getColumn(6).setPreferredWidth(10);
+		MenuTable.getColumnModel().getColumn(7).setPreferredWidth(1);
+		MenuTable.setPreferredScrollableViewportSize(new Dimension(890, 560));
+	    MenuTable.setFillsViewportHeight(true);
+
+	    JScrollPane scrollPane = new JScrollPane(MenuTable);
 	    
         //Add the scroll pane to this panel.
        
-		
 		TableHolder.add(scrollPane);
+		return MenuTable;
 		
 	}
 }

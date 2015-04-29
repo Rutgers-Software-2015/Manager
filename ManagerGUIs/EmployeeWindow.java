@@ -275,7 +275,6 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			HireRoot_Card.setLayout(new BorderLayout());
 			HireRoot_Card.setVisible(true);
 			setFormPanel();
-			setDoneHire();
 			
 			EmpEdit_Root = new GradientPanel();
 			EmpEdit_Root.setLayout(new BorderLayout());

@@ -16,24 +16,25 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+import KitchenStaff.KitchenStaffCommunicator;
 import Shared.ADT.Ingredient;
 import Shared.ADT.IngredientHandler;
 import Shared.Communicator.DatabaseCommunicator;
 
 
 public class InventoryHandler  extends DatabaseCommunicator {
-
-	// public Ingredient IngredientList[];
+	
+	public InventoryHandler()
+	{
+		super();
+		this.connect("admin", "gradMay17");
+		this.tell("use MAINDB;");
+	}
 	
 	public ResultSet getAllInventory()
 	{	
-		
-		this.connect("admin", "gradMay17");
-		this.tell("use MAINDB;");
 		ResultSet rsI = this.tell("select * FROM INVENTORY;");
-		this.disconnect();
 		return rsI;
-		
 	}
 	
 
@@ -43,11 +44,9 @@ public class InventoryHandler  extends DatabaseCommunicator {
 	 */
 	public String[] getInventoryName() throws SQLException
 	{	
-		this.connect("admin", "gradMay17");
-		this.tell("use MAINDB;");
 		ResultSet I = this.tell("select * FROM INVENTORY;");
 		
-	//Getting rows in result set
+		
 		int rowcount=0;
 		do
 		{
@@ -55,7 +54,7 @@ public class InventoryHandler  extends DatabaseCommunicator {
 
 		}while(I.next());
 		
-		I.beforeFirst();// Reset pointer to beginning of resultset.
+		I.beforeFirst(); 
 		
 		String[] InventoryName =new String[rowcount];// Initialize
 		try{
@@ -69,7 +68,7 @@ public class InventoryHandler  extends DatabaseCommunicator {
 		    	InventoryName[arrayindex]=I.getString(1);
 				arrayindex++;
 			}
-			this.disconnect();
+
 			return InventoryName;
 		}
 		
@@ -84,8 +83,7 @@ public class InventoryHandler  extends DatabaseCommunicator {
 	}
 	public Integer[] getInventoryQ() throws SQLException
 	{	
-		this.connect("admin", "gradMay17");
-		this.tell("use MAINDB;");
+
 		ResultSet I = this.tell("select * FROM INVENTORY;");
 		
 	//Getting rows in result set
@@ -108,7 +106,7 @@ public class InventoryHandler  extends DatabaseCommunicator {
 		    	InventoryQ[arrayindex]=I.getInt(2);
 				arrayindex++;
 			}
-			this.disconnect();
+			
 			return InventoryQ;
 		}
 		
@@ -123,59 +121,37 @@ public class InventoryHandler  extends DatabaseCommunicator {
 	
 	public void updateInventoryValue(int newQuantity, String item) throws SQLException
 	{
-		this.connect("admin", "gradMay17");
-		this.tell("use MAINDB;");
+
 		ResultSet rs =  this.tell("Select Amount from INVENTORY where Item_Name = '" + item + "';");
 		int curamnt = rs.getInt("Amount");
 		int newamnt =  newQuantity + curamnt;
 		this.update("UPDATE INVENTORY SET Amount = '" + newamnt + "' WHERE Item_Name = '" + item + "';");
-		this.disconnect();
-		
-		/*
-		
-		try
-		{
-			while(rs.next() == true)
-			{
-				// int curamnt, newamnt = 0;
-				curamnt = rs.getInt("Amount");
-				System.out.println(curamnt);
-				// newamnt =  newQuantity + curamnt;
-				this.update("UPDATE INVENTORY SET Amount = '" + newamnt + "' WHERE Item_Name = '" + item + "';");
-				this.disconnect();
-			}
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-			this.disconnect();
-		} 
-		*/
+		updateMenuItems();
+
 	}
 	
 	public void AddInventoryItem(String Ingredient, int newQuantity) throws SQLException
 	{
 
-			this.connect("admin", "gradMay17");
-			this.tell("use MAINDB;");		
+		
 			this.update("INSERT INTO INVENTORY (Item_Name, Amount) VALUES "+ "('" + Ingredient + "', '" + newQuantity + "');" );
-			this.disconnect();
+			updateMenuItems();
 
 	}
 	
 	public void RemoveInventoryItem(String Ingredient) throws SQLException
 	{
-			this.connect("admin", "gradMay17");
-			this.tell("use MAINDB;");
+
 			this.update("DELETE FROM INVENTORY WHERE Item_Name='" + Ingredient + "';");
-			this.disconnect();
+			updateMenuItems();
+
 	}
 	
 	/*
 	public boolean isValid() throws SQLException
 	{
 		
-		this.connect("admin", "gradMay17");
-		this.tell("use MAINDB;");			
+		
 		ResultSet rs =  this.tell(SELECT ColumnA, case when ColumnA > 0 then 'Greater than 0' else ColumnB END AS ColumnB 
 		        FROM    table1;);
 		return true;
@@ -203,25 +179,28 @@ public class InventoryHandler  extends DatabaseCommunicator {
 		return true;
 	}
 	
-	/*
-	
-// The ingredient list
-public Ingredient IngredientList[];
-	
-	// Make the ingredients, give them a name, and a quantity
-	public Ingredient[] AllIngredient=
-		{
-			new Ingredient("Tomatoes",100),
-			new Ingredient("Lettuce",100),
-			new Ingredient("Celery",100),
-			new Ingredient("Chicken",100),
-		};
-	
-	// Query the ingredient
-	public void QueryIngredient()
+	public void updateMenuItems() throws SQLException
 	{
-		IngredientList = AllIngredient;
+		KitchenStaffCommunicator update= new KitchenStaffCommunicator();
+		
+		ResultSet rs = this.tell("SELECT *from MENU;");
+		rs.beforeFirst();
+		while(rs.next())
+		{
+			int menuid=rs.getInt("MENU_ID");
+			String ing=rs.getString("INGREDIENTS");
+			String[]  temp =update.ParseIngredients(ing);
+			
+			if(update.ingredientsExist(temp))
+			{
+				this.update("UPDATE MENU set VALID=1 where MENU_ID= "+menuid+" ;");
+			}
+			else
+			{
+				this.update("UPDATE MENU set VALID=0 where MENU_ID= "+menuid+" ;");
+			}
+		}
+		update.dis();
 	}
-*/
 
 }

@@ -25,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
@@ -49,6 +50,7 @@ import javax.swing.event.ListSelectionListener;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import Manager.ManagerHandlers.*;
 import Manager.ManagerCommunicator.*;
 
@@ -90,10 +92,6 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		
 		private InventoryHandler InventoryHandle = new InventoryHandler();
 		
-		// A temporary ingredient array and double array used to hold
-		// to get the data and display it onto the table
-		// Ingredient tempIngredient[] = IngredientHandler.IngredientList;
-		// String[][] inglist = new String[tempIngredient.length][2];
 		
 		InventoryTableViewer ITV = new InventoryTableViewer();
 		
@@ -101,6 +99,40 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		{
 			super();
 			init();
+			
+			InventoryTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+				
+				   public void valueChanged(ListSelectionEvent event) {
+				        if (InventoryTable.getSelectedRow() > -1) 
+				        {
+							
+							try{
+								
+								int row = InventoryTable.getSelectedRow();
+								
+								String column_ingredient = InventoryTable.getModel().getValueAt(row, 0).toString();
+								String column_quantity = InventoryTable.getModel().getValueAt(row, 1).toString();
+								
+								ingredientField.setText(column_ingredient);
+								quantityField.setText(column_quantity);
+								
+								ingredientField.updateUI();
+								quantityField.updateUI();
+								
+								buttonPanel.updateUI();
+								
+							}
+							
+							catch(Exception ex)
+							{
+								
+								JOptionPane.showMessageDialog(null, ex);
+							}
+				        }
+				    }
+				   
+			});
+			
 		}
 
 		public void init()
@@ -211,6 +243,8 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		//*********************************************************
 		//DO NOT change the location of the following panel
 		//*********************************************************
+	
+		
 		
 		private void setButtonPanel()
 		{
@@ -373,45 +407,11 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		public void actionPerformed(ActionEvent e) 
 		{
 			Object a = e.getSource();
-			
-			
-			InventoryTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-				
-				   public void valueChanged(ListSelectionEvent event) {
-				        if (InventoryTable.getSelectedRow() > -1) 
-				        {
-							
-							try{
-								
-								int row = InventoryTable.getSelectedRow();
-								
-								String column_ingredient = InventoryTable.getModel().getValueAt(row, 0).toString();
-								String column_quantity = InventoryTable.getModel().getValueAt(row, 1).toString();
-								
-								ingredientField.setText(column_ingredient);
-								quantityField.setText(column_quantity);
-								
-								ingredientField.updateUI();
-								quantityField.updateUI();
-								
-								buttonPanel.updateUI();
-								
-							}
-							
-							catch(Exception ex)
-							{
-								
-								JOptionPane.showMessageDialog(null, ex);
-							}
-				        }
-				    }
-				   
-			});
-			
-			
-			
+
 			if(a == backButton)
 				{
+					notification.close();
+					InventoryHandle.disconnect();
 					new ManagerRootWindow();
 					dispose();
 				}
