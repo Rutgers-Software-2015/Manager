@@ -1,7 +1,10 @@
 package Manager.ManagerCommunicator;
-//written by: Harsh Shsh
-//tested by: Harsh Shah
-//debugged by: Harsh Shah
+/*
+ * This function helps make a graph for the items.
+ @author Harsh Shsh
+ @tester Harsh Shah
+ @debugger Harsh Shah
+*/
 import javafx.application.Platform;
 import javafx.beans.property.SimpleListProperty;
 import javafx.embed.swing.JFXPanel;

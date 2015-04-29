@@ -1,5 +1,10 @@
 package Manager.ManagerCommunicator;
-
+/*
+ * This function  creates a MenuObject
+ @author Harsh Shsh
+ @tester Harsh Shah
+ @debugger Harsh Shah
+*/
 public class MenuObj {
 	
 	public int MENU_ID;

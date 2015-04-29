@@ -15,6 +15,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import Manager.ManagerHandlers.*;
+/*
+ * This function gets the MENU items.
+ 	
+ 	@author Ryan Sanichar
+ 	@tester Ryan Sanichar
+ 	@debugger Ryan Sanichar
+*/
 
 public class MenuTableViewer extends JPanel{
 	

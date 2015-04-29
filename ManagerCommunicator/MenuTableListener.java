@@ -1,5 +1,11 @@
 package Manager.ManagerCommunicator;
 
+/*
+ * This function creates a MENU table listener.
+ @author Ryan Sanichar
+ @tester Ryan Sanichar
+ @debugger Ryan Sanichar
+*/
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
