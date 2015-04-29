@@ -95,7 +95,7 @@ public class AddMenuItemPanel extends JPanel {
 	public JRadioButton n;
 	
 	public String[] AnsSet;
-	public String[] Sections = {"Select Item Type", "Appetizer", "Entree", "Drinks", "Dessert"};
+	public String[] Sections = {"Appetizer", "Entree", "Drinks", "Dessert"};
 	
 	public AddMenuItemPanel()
 	{
@@ -213,8 +213,7 @@ public class AddMenuItemPanel extends JPanel {
 		cost = MenuItemCost.getText();
 		ingredients = MenuItemIngredients.getText();
 		description = MenuItemDescription.getText();
-		section = MenuItemSection.getText();
-		System.out.println(section);
+		section = MenuItemSectionBox.getSelectedItem().toString();
 		
 		results[0] = name;
 		results[1] = price;

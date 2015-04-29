@@ -161,22 +161,13 @@ public class InventoryHandler  extends DatabaseCommunicator {
 	
 	public boolean isThereInternet()
 	{
-		try
-		{
-			URL yourl = new URL("http://google.com");
-			HttpURLConnection yourlConnect = (HttpURLConnection)yourl.openConnection();
-			yourlConnect.setConnectTimeout(2000);
-			
-			Object objData = yourlConnect.getContent();
-		}catch(UnknownHostException e)
-		{
+		if(getConnectionStatus()==0){
+			return true;
+		}
+		else{
 			return false;
 		}
-		catch(IOException e)
-		{
-			return false;
-		}
-		return true;
+		
 	}
 	
 	public void updateMenuItems() throws SQLException

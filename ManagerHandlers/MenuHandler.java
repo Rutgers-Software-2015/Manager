@@ -40,6 +40,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.apache.commons.codec.DecoderException;
 
+import KitchenStaff.KitchenStaffCommunicator;
 import Manager.ManagerCommunicator.MenuObj;
 import Shared.ADT.MenuItem;
 import Shared.Communicator.*;
@@ -566,6 +567,12 @@ public class MenuHandler extends DatabaseCommunicator {
 		String newMenuItem = "('" + (maxid + 1) + "', '" + E.ITEM_NAME + "', '" + E.PRICE + "', '" + E.COST + "', '" + E.INGREDIENTS + "', '" + E.DESCRIPTION + "', '" + E.SECTION + "', '" + E.VALID + "');";
 		String command = "INSERT INTO MENU (MENU_ID, ITEM_NAME, PRICE, COST, INGREDIENTS, DESCRIPTION, MENU_SECTION, VALID) VALUES " + newMenuItem;
 		this.update(command);
+		try {
+			updateMenuItemValidBit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		System.out.println("Menu Item Added!");
 	
@@ -577,6 +584,46 @@ public class MenuHandler extends DatabaseCommunicator {
 			
 	}
 	
+	public void updateMenuItem(MenuObj E)
+	{
+
+		// ResultSet rs =  this.tell("Select Amount from MENU where Item_Name = '" + E.ITEM_NAME + "';");
+		this.update("DELETE FROM MENU WHERE MENU_ID='" + E.MENU_ID + "';");
+		String MenuItem = "('" + E.MENU_ID + "', '" + E.ITEM_NAME + "', '" + E.PRICE + "', '" + E.COST + "', '" + E.INGREDIENTS + "', '" + E.DESCRIPTION + "', '" + E.SECTION + "', '" + E.VALID + "');";
+		String command = "INSERT INTO MENU (MENU_ID, ITEM_NAME, PRICE, COST, INGREDIENTS, DESCRIPTION, MENU_SECTION, VALID) VALUES " + MenuItem;
+		this.update(command);
+		try {
+			updateMenuItemValidBit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateMenuItemValidBit() throws SQLException
+	{
+		KitchenStaffCommunicator update= new KitchenStaffCommunicator();
+		
+		ResultSet rs = this.tell("SELECT *from MENU;");
+		rs.beforeFirst();
+		while(rs.next())
+		{
+			int menuid=rs.getInt("MENU_ID");
+			String ing=rs.getString("INGREDIENTS");
+			String[]  temp =update.ParseIngredients(ing);
+			
+			if(update.ingredientsExist(temp))
+			{
+				this.update("UPDATE MENU set VALID=1 where MENU_ID= "+menuid+" ;");
+			}
+			else
+			{
+				this.update("UPDATE MENU set VALID=0 where MENU_ID= "+menuid+" ;");
+			}
+		}
+		update.dis();
+	}
+
 	
 
 }

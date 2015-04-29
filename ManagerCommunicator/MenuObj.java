@@ -24,7 +24,7 @@ public class MenuObj {
 		this.COST = COST;
 		this.INGREDIENTS = INGREDIENTS;
 		this.DESCRIPTION = DESCRIPTION;
-		this.SECTION = SECTION;
+		this.SECTION = MENU_SECTION;
 		this.VALID = VALID;
 	}
 	

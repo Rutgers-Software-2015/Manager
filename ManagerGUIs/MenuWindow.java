@@ -83,9 +83,10 @@ public class MenuWindow extends JFrame implements ActionListener{
 		private CardLayout c;
 		//Other Variables
 		private Timer timer;
-		public GradientPanel AddMenu_Card;
-		private AddMenuItemPanel form = new AddMenuItemPanel();
-		private JTabbedPane formpane;
+		public GradientPanel AddMenu_Card, EditMenu_Card;
+		private AddMenuItemPanel form_add = new AddMenuItemPanel();
+		private EditMenuItemPanel form_edit = new EditMenuItemPanel();
+		private JTabbedPane formpane_add, formpane_edit;
 		private GradientButton Done_Add, Done_Edit, Cancel;
 		
 		private JFrame Add_Error_Window;
@@ -169,14 +170,23 @@ public class MenuWindow extends JFrame implements ActionListener{
 			 
 		}
 		
-		private void setFormPanel()
+		private void setFormAddPanel()
 		{
-			formpane = new JTabbedPane();
-			formpane.setVisible(true);
-			formpane.addTab("Page 1", form);
-			AddMenu_Card.add(formpane, BorderLayout.CENTER);
+			formpane_add = new JTabbedPane();
+			formpane_add.setVisible(true);
+			formpane_add.addTab("Add Menu Item", form_add);
+			AddMenu_Card.add(formpane_add, BorderLayout.CENTER);
+
 		}
 
+		private void setFormEditPanel()
+		{			
+			formpane_edit = new JTabbedPane();
+			formpane_edit.setVisible(true);
+			formpane_edit.addTab("Edit Menu Item", form_edit);
+			EditMenu_Card.add(formpane_edit, BorderLayout.CENTER);
+		}
+		
 		public void init() throws SQLException
 		{
 			this.setTitle("Edit Menu");
@@ -357,66 +367,22 @@ public class MenuWindow extends JFrame implements ActionListener{
 			AddMenu_Card = new GradientPanel();
 			AddMenu_Card.setLayout(new BorderLayout());
 			AddMenu_Card.setVisible(true);
-			setFormPanel();
+			setFormAddPanel();
 			setDoneAdd();
 			
-			// init_menu();
+			EditMenu_Card = new GradientPanel();
+			EditMenu_Card.setLayout(new BorderLayout());
+			EditMenu_Card.setVisible(true);
+			setFormEditPanel();
+			setDoneEdit();
 			
-			// MenuTable = MTV.gen_Menu();
 			
 			MTV = new MenuTableViewer();
 			cardPanel.add(MTV, "Menu");
 			cardPanel.add(AddMenu_Card, "AddMenuItem");
+			cardPanel.add(EditMenu_Card, "EditMenuItem");
 			cardPanel.setVisible(true);
-			
-			
-			// MenuHandle.getAllMenu();
-			
-			
-			/*
-			MenuTable = new JTable();
-//			ModelOrders = (DefaultTableModel)MenuOrder.getModel();
-//			Menu_RowData = MenuHandler.getMenu();
-//			MenuTable = new JTable(Menu_RowData, Menu_ColumnNames);
-			
-
-//			MenuTable.getColumnModel().getColumn(0).setPreferredWidth(130);
-//			MenuTable.getColumnModel().getColumn(1).setPreferredWidth(220);
-			MenuScroller = new JScrollPane(MenuTable);
-			MenuTable.setFillsViewportHeight(true);
-			
-			card1 = new GradientPanel();
-			card1.add(MenuScroller); 
-			card1.setLayout(new GridLayout(1,0));
-			
-			cardPanel.add(card1,""); // How to add cards to a Card Layout
-			
-			cardPanel.setVisible(true); 
-			
-			Menu_Card = new GradientPanel();
-			Menu_Card.setLayout(new GridLayout(1,1));
-			Menu_Card.add(MenuTable);
-			cardPanel.add(Menu_Card, "MenuProcess");
-			// c.show(cardPanel, "MenuProcess");
-			*/
-			/*
-			
-			card1 = new GradientPanel(); // Create card with a button YES
-			card1.add(new JButton("YES"));
-			card1.setLayout(new GridLayout(1,0));
-			
-			card2 = new GradientPanel(); // Create card with a button NO
-			card2.setLayout(new GridLayout(1,0));
-			card2.add(new JButton("NO"));
-			
-			card3 = new GradientPanel(); // Create blank card
-			
-			cardPanel.add(card1,"YES"); // How to add cards to a Card Layout
-			cardPanel.add(card2,"NO"); // The string can be named anything, the string is how you call the card
-			cardPanel.add(card3,"BLANK");
-			
-			cardPanel.setVisible(true); 
-			*/
+		
 		}
 				
 		private void setDoneAdd()
@@ -424,6 +390,13 @@ public class MenuWindow extends JFrame implements ActionListener{
 			Done_Add = new GradientButton("Done");
 			Done_Add.addActionListener(this);
 			AddMenu_Card.add(Done_Add, BorderLayout.SOUTH);
+		}
+		
+		private void setDoneEdit()
+		{
+			Done_Edit = new GradientButton("Done");
+			Done_Edit.addActionListener(this);
+			EditMenu_Card.add(Done_Edit, BorderLayout.SOUTH);
 		}
 		
 		public boolean isThereInternet()
@@ -435,43 +408,9 @@ public class MenuWindow extends JFrame implements ActionListener{
 				return false;
 			}
 			
-			/*
-			try
-			{
-				URL yourl = new URL("http://google.com");
-				HttpURLConnection yourlConnect = (HttpURLConnection)yourl.openConnection();
-				yourlConnect.setConnectTimeout(2000);
-				
-				Object objData = yourlConnect.getContent();
-			}catch(UnknownHostException e)
-			{
-				return false;
-			}
-			catch(IOException e)
-			{
-				return false;
-			}
-			return true; */
 		}
-		
-		/*
-		
-		private void setEditPage()
-		{
-			EditPage_Card = new EmpEditPage();		
-			EmpEdit_Root.add(EditPage_Card, BorderLayout.CENTER);
-			EditPage_Card.setVisible(true);
-		}
-		
-		*/
-		
-		public JTable remove(JTable table, int row)
-		{
 			
-			table.remove(row);
-			return table;
-		}
-		
+
 		private void FillMenu()
 		{
 			
@@ -515,25 +454,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 					row.add(MenuValid[i]);
 					data.add(row);
 					row = new Vector();
-					
-					/*
-					ModelMenu.setValueAt(MenuID[i],rowtemp,0);
-					ModelMenu.setValueAt(MenuName[i],rowtemp,1);
-					ModelMenu.setValueAt(MenuPrice[i],rowtemp,2);
-					ModelMenu.setValueAt(MenuCost[i],rowtemp,3);
-					ModelMenu.setValueAt(MenuIngredients[i],rowtemp,4);
-					ModelMenu.setValueAt(MenuDescription[i],rowtemp, 5);
-					ModelMenu.setValueAt(MenuSection[i],rowtemp, 6);
-					
-				
-					rowtemp++;
-					if(ModelMenu.getRowCount()<rows)
-					{
-						ModelMenu.addRow(new Object[][]{{null, null, null, null, null, null, null},});
-					}
-					*/
-					
-					
+								
 				}
 				
 				model.setDataVector(data, columnvector);
@@ -562,6 +483,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 				removeItem.setVisible(true);
 				updateItem.setVisible(true);
 				backButton.setVisible(true);
+				addItem.setVisible(true);
 				
 			}
 			
@@ -570,13 +492,12 @@ public class MenuWindow extends JFrame implements ActionListener{
 			{
 				getNewMenuItem();  
 				FillMenu();
+				c.show(cardPanel, "Menu");
+				removeItem.setVisible(true);
+				updateItem.setVisible(true);
+				addItem.setVisible(true);
+				backButton.setVisible(true);
 			}
-			
-			if(a == Done_Edit)
-			{
-				// getEditItem();
-			}
-
 						
 			//c.show(cardPanel, "MenuProcess");
 			if(a == backButton)
@@ -589,10 +510,12 @@ public class MenuWindow extends JFrame implements ActionListener{
 			
 			if(a == addItem)
 				{
-
+				
 				removeItem.setVisible(false);
 				updateItem.setVisible(false);
+				addItem.setVisible(false);
 				backButton.setVisible(false);
+				form_add.cleanform();
 				c.show(cardPanel, "AddMenuItem");
 			
 				
@@ -611,8 +534,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 				        	String[] names = MenuHandle.getMenuName();
 				        	String name = names[position];
 							MenuHandle.RemoveMenuItem(name);
-							remove(MTV.MenuTable, position);
-							MTV.gen_Menu();
+							FillMenu();
 							
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
@@ -627,23 +549,35 @@ public class MenuWindow extends JFrame implements ActionListener{
 			
 			if(a == updateItem)
 				{
-				// c.show(cardPanel, "BLANK"); //Example of how to show card panel
-				
-				// User needs to select a row
+
 				
 			        if (MTV.MenuTable.getSelectedRow()  != -1) 
 			        {
-					
+			        
+			        	addItem.setVisible(false);
 						removeItem.setVisible(false);
-						updateItem.setVisible(false);
-						backButton.setVisible(false);	
+						updateItem.setVisible(false);	
+						backButton.setVisible(false);
 			        	
-			        // Retrieve data from the text file	
-					String tempName = nameField.getText();
-					String tempIngredient = ingredientField.getText();
-					String tempPrice = priceField.getText();
-					String tempID = IDField.getText();
-					
+			       
+				        	c.show(cardPanel, "EditMenuItem");
+				        	int position = MTV.MenuTable.getSelectedRow();
+				        	String menu_id = MTV.MenuTable.getModel().getValueAt(position, 0).toString();
+				        	String menu_name = MTV.MenuTable.getModel().getValueAt(position, 1).toString();
+				        	String menu_price = MTV.MenuTable.getModel().getValueAt(position, 2).toString();
+				        	String menu_cost = MTV.MenuTable.getModel().getValueAt(position, 3).toString();
+				        	String menu_ing = MTV.MenuTable.getModel().getValueAt(position, 4).toString();
+				        	String menu_desc = MTV.MenuTable.getModel().getValueAt(position, 5).toString();
+				        	String menu_section = MTV.MenuTable.getModel().getValueAt(position, 6).toString();
+				        	
+				        	form_edit.MenuItemID.setText(menu_id);
+				        	form_edit.MenuItemName.setText(menu_name);
+				        	form_edit.MenuItemPrice.setText(menu_price);
+				        	form_edit.MenuItemCost.setText(menu_cost);
+				        	form_edit.MenuItemIngredients.setText(menu_ing);
+				        	form_edit.MenuItemDescription.setText(menu_desc);
+				        	form_edit.MenuItemSectionBox.setSelectedItem(menu_section);
+				
 			        }
 			        
 					// Error message
@@ -651,6 +585,17 @@ public class MenuWindow extends JFrame implements ActionListener{
 						JOptionPane.showMessageDialog(MenuAddingFrame, "Please select a menu item.");
 				
 				}
+			
+			if(a == Done_Edit)
+			{
+				updateMenuItem();  
+				FillMenu();
+				c.show(cardPanel, "Menu");
+				removeItem.setVisible(true);
+				updateItem.setVisible(true);
+				addItem.setVisible(true);
+				backButton.setVisible(true);
+			}
 			
 			if(a == timer)
 					updateClock();
@@ -670,13 +615,15 @@ public class MenuWindow extends JFrame implements ActionListener{
 			Add_Error_Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			
 			
-			String[] S = form.answers();
+			String[] S = form_add.answers();
 			String S1flag;
 			
 			//Check form 1
 			for(int i = 0; i < S.length; i++)
 			{
-				//[fname, lname, address, dob, school, gpa, question]
+				
+				System.out.println(S[i]);
+				
 				if((S[i] == null) || S[i] == "")
 				{
 					
@@ -722,13 +669,6 @@ public class MenuWindow extends JFrame implements ActionListener{
 						Add_Error_Window.setVisible(true);
 						return;
 					}
-					if(i == 6){
-						S1flag = "Error: Enter Item Type";
-						Add_Error_Message = new JLabel(S1flag);
-						Add_Error_Window.add(Add_Error_Message);
-						Add_Error_Window.setVisible(true);
-						return;
-					}
 				}
 			}
 			
@@ -742,7 +682,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 		 	c.show(cardPanel, "Summary");
 	
 			//Clean up the form
-			form.cleanform();
+			form_add.cleanform();
 			
 			//Send the data to the database
 			Boolean INTERNET;
@@ -772,6 +712,99 @@ public class MenuWindow extends JFrame implements ActionListener{
 				cardPanel.add(FireRoot_Card, "FireProcess");
 				
 				*/
+				
+			}
+			else
+			{
+				Add_Error_Message = new JLabel("NO INTERNET CONNECTION!");
+				Add_Error_Window.add(Add_Error_Message);
+				Add_Error_Window.setVisible(true);
+			}
+		
+		}
+		
+		public void updateMenuItem()
+		{
+			Add_Error_Window = new JFrame();
+			Add_Error_Window.setSize(200, 100);
+			Add_Error_Window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			
+			
+			String[] S = form_edit.answers();
+			String S1flag;
+			
+			//Check form 1
+			for(int i = 0; i < S.length; i++)
+			{
+				
+				System.out.println(S[i]);
+				
+				if((S[i] == null) || S[i] == "")
+				{
+					
+					if(i == 1){
+						S1flag = "Error: Enter Menu Item Name";
+						Add_Error_Message = new JLabel(S1flag);
+						Add_Error_Window.add(Add_Error_Message);
+						Add_Error_Window.setVisible(true);
+						return;
+					}
+					if(i == 2){
+						S1flag = "Error: Enter Price";
+						Add_Error_Message = new JLabel(S1flag);
+						Add_Error_Window.add(Add_Error_Message);
+						Add_Error_Window.setVisible(true);
+						return;
+					}
+					if(i == 3){
+						S1flag = "Error: Enter Cost";
+						Add_Error_Message = new JLabel(S1flag);
+						Add_Error_Window.add(Add_Error_Message);
+						Add_Error_Window.setVisible(true);
+						return;
+					}
+					if(i == 4){
+						S1flag = "Error: Enter Ingredients";
+						Add_Error_Message = new JLabel(S1flag);
+						Add_Error_Window.add(Add_Error_Message);
+						Add_Error_Window.setVisible(true);
+						return;
+					}
+					if(i == 5){
+						S1flag = "Error: Enter Description";
+						Add_Error_Message = new JLabel(S1flag);
+						Add_Error_Window.add(Add_Error_Message);
+						Add_Error_Window.setVisible(true);
+						return;
+					}
+					if(i == 6){
+						S1flag = "Error: Enter Section";
+						Add_Error_Message = new JLabel(S1flag);
+						Add_Error_Window.add(Add_Error_Message);
+						Add_Error_Window.setVisible(true);
+						return;
+					}
+				}
+			}
+			
+			
+			//Construct the handler object
+			///[fname, lname, address, dob, school, gpa, question]
+			///FNAME, LNAME, ADDRESS, DOB, SCHOOL, GPA, q1, q2, q3, q4, position, sal
+			MenuItem = new MenuObj(S[0], S[1], S[2], S[3], S[4], S[5], S[6], "1");
+//			 SummaryForm = new EmpSummaryPanel(MenuItem);
+//			cardPanel.add(SumForm,"Summary");
+		 	c.show(cardPanel, "Summary");
+			
+			//Send the data to the database
+			Boolean INTERNET;
+			INTERNET = isThereInternet();
+			if(INTERNET == true){
+				System.out.println("Updating the Menu Item!");
+				MenuHandle.updateMenuItem(MenuItem);
+				Add_Error_Message = new JLabel("Item Updating!");
+				Add_Error_Window.add(Add_Error_Message);
+				Add_Error_Window.setVisible(true);
 				
 			}
 			else

@@ -40,8 +40,6 @@ import javax.swing.table.DefaultTableModel;
 
 
 
-
-
 //import Login.LoginWindow;
 import Shared.Gradients.*;
 
@@ -66,23 +64,24 @@ public class EditMenuItemPanel extends JPanel {
 	public JLabel title;
 	
 	/*name_Panel Attributes*/
+	public JTextField 	MenuItemID;
 	public JTextField 	MenuItemName;
 	public JTextField 	MenuItemPrice;
 	public JTextField 	MenuItemCost;
 	public JTextField 	MenuItemIngredients;
 	public JTextField 	MenuItemDescription;
-	public JTextField 	MenuItemSection;
 	
 	public JComboBox   MenuItemSectionBox;
 	
-	
+	public JLabel 		MIID;
 	public JLabel 		MIName;
 	public JLabel 		MIPrice;
 	public JLabel 		MICost;
 	public JLabel 		MIIngredients;
 	public JLabel 		MIDescription;
 	public JLabel 		MISection;
-		
+	
+	public JPanel 		MIIDSubPanel;
 	public JPanel 		MINameSubPanel;
 	public JPanel 		MIPriceSubPanel;
 	public JPanel 		MICostSubPanel;
@@ -90,11 +89,8 @@ public class EditMenuItemPanel extends JPanel {
 	public JPanel 		MIDescriptionSubPanel;
 	public JPanel 		MISectionSubPanel;
 	
-	public JRadioButton y;
-	public JRadioButton n;
-	
 	public String[] AnsSet;
-	public String[] Sections = {"Select Item Type", "Appetizer", "Entree", "Drinks", "Dessert"};
+	public String[] Sections = {"Appetizer", "Entree", "Drinks", "Dessert"};
 	
 	public EditMenuItemPanel()
 	{
@@ -122,7 +118,7 @@ public class EditMenuItemPanel extends JPanel {
 	public void init_title_Panel()
 	{
 		/* Initialize and set up title*/
-		title = new JLabel("Add New Menu Item");
+		title = new JLabel("Edit Menu Item");
 		title.setHorizontalAlignment(JLabel.CENTER);
 		title.setFont(title.getFont().deriveFont(38f));
 		title_Panel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -137,13 +133,16 @@ public class EditMenuItemPanel extends JPanel {
 	@SuppressWarnings("unchecked")
 	public void init_name_Panel()
 	{
+		MIID = new JLabel("Menu Item ID Number");
 		MIName = new JLabel("Name of Menu Item");
 		MIPrice = new JLabel("Price of Menu Item");
 		MICost = new JLabel("Cost of Menu Item");
 		MIIngredients = new JLabel("Ingredients");
 		MIDescription = new JLabel("Description of Menu Item");
 		MISection = new JLabel("What Type of Item is the item?");
-				
+		
+		MenuItemID = new JTextField();
+		MenuItemID.setEditable(false);
 		MenuItemName = new JTextField();
 		MenuItemName.setEditable(true);
 		MenuItemPrice = new JTextField();
@@ -154,10 +153,13 @@ public class EditMenuItemPanel extends JPanel {
 		MenuItemIngredients.setEditable(true);
 		MenuItemDescription = new JTextField();
 		MenuItemDescription.setEditable(true);
-		MenuItemSection = new JTextField();
-		MenuItemSection.setEditable(true);
 		MenuItemSectionBox = new JComboBox(Sections);
 		MenuItemSectionBox.setEditable(true);
+		
+		MIIDSubPanel = new JPanel(new BorderLayout());
+		MIIDSubPanel.add(MIID, BorderLayout.WEST);
+		MIIDSubPanel.add(MenuItemID, BorderLayout.CENTER);
+		MIIDSubPanel.setVisible(false);
 		
 		MINameSubPanel = new JPanel(new BorderLayout());
 		MINameSubPanel.add(MIName, BorderLayout.WEST);
@@ -189,7 +191,7 @@ public class EditMenuItemPanel extends JPanel {
 		MISectionSubPanel.add(MenuItemSectionBox, BorderLayout.CENTER);
 		MISectionSubPanel.setVisible(true);			
 		
-		
+		// name_Panel.add(MIID);
 		name_Panel.add(MINameSubPanel);
 		name_Panel.add(MIPriceSubPanel);
 		name_Panel.add(MICostSubPanel);
@@ -202,36 +204,37 @@ public class EditMenuItemPanel extends JPanel {
 	
 	public String[] answers()
 	{
-		String[] results = new String[6];
+		String[] results = new String[7];
 		
-		String name, price, cost, ingredients, description, section;
+		String ID, name, price, cost, ingredients, description, section;
 		
-		
+		ID = MenuItemID.getText();
 		name = MenuItemName.getText();
 		price = MenuItemPrice.getText();
 		cost = MenuItemCost.getText();
 		ingredients = MenuItemIngredients.getText();
 		description = MenuItemDescription.getText();
-		section = MenuItemSection.getText();
+		section = MenuItemSectionBox.getSelectedItem().toString();
 		
-		results[0] = name;
-		results[1] = price;
-		results[2] = cost;
-		results[3] = ingredients;
-		results[4] = description;
-		results[5] = section;
+		results[0] = ID;
+		results[1] = name;
+		results[2] = price;
+		results[3] = cost;
+		results[4] = ingredients;
+		results[5] = description;
+		results[6] = section;
 		
 		return results;
 	}
 	
 	public void cleanform()
 	{
+		
 		MenuItemName.setText("");
 		MenuItemPrice.setText("");
 		MenuItemCost.setText("");
 		MenuItemIngredients.setText("");
 		MenuItemDescription.setText("");
-		MenuItemSection.setText("");
 		
 	}
 
