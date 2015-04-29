@@ -5,8 +5,8 @@
 	@debugger Ryan Sanichar
  * 
  * 
- * Form for AddMenuItemPanel
- * Generates menu items to be used as the menu. 
+ * Form for AddMenuItemPanel to 
+ * generates menu items to be used in the menu. 
  */
 
 

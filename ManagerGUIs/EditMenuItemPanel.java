@@ -1,3 +1,15 @@
+/**
+ * EditMenuItemPanel.java 
+	@author Ryan Sanichar 
+	@tester Ryan Sanichar
+	@debugger Ryan Sanichar
+ * 
+ * 
+ * Form for EditMenuItemPanel to
+ * edit menu items that are in the menu.
+ */
+
+
 package Manager.ManagerGUIs;
 
 

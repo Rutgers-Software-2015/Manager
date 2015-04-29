@@ -198,7 +198,7 @@ public class MenuHandler extends DatabaseCommunicator {
 		}
 		catch(SQLException e)
 		{
-			
+			System.out.println(e);
 		}
 	
 		return null;
@@ -237,7 +237,7 @@ public class MenuHandler extends DatabaseCommunicator {
 		
 		catch(SQLException e)
 		{
-			
+			System.out.println(e);
 		}
 		
 		
@@ -273,7 +273,7 @@ public class MenuHandler extends DatabaseCommunicator {
 		}
 		catch(SQLException e)
 		{
-			
+			System.out.println(e);
 		}
 	
 		return null;
@@ -309,7 +309,7 @@ public class MenuHandler extends DatabaseCommunicator {
 		}
 		catch(SQLException e)
 		{
-			
+			System.out.println(e);
 		}
 	
 		return null;
@@ -349,7 +349,7 @@ public class MenuHandler extends DatabaseCommunicator {
 	
 		catch(SQLException e)
 		{
-			
+			System.out.println(e);
 		}
 	
 	
@@ -389,7 +389,7 @@ public class MenuHandler extends DatabaseCommunicator {
 	
 		catch(SQLException e)
 		{
-			
+			System.out.println(e);
 		}
 	
 	
@@ -430,7 +430,7 @@ public class MenuHandler extends DatabaseCommunicator {
 		
 		catch(SQLException e)
 		{
-			
+			System.out.println(e);
 		}
 		
 		
@@ -466,7 +466,7 @@ public class MenuHandler extends DatabaseCommunicator {
 		}
 		catch(SQLException e)
 		{
-			
+			System.out.println(e);
 		}
 	
 		return null;
