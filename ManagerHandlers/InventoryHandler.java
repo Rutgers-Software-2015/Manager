@@ -24,6 +24,7 @@ import KitchenStaff.KitchenStaffCommunicator;
 import Shared.ADT.Ingredient;
 import Shared.ADT.IngredientHandler;
 import Shared.Communicator.DatabaseCommunicator;
+import Shared.Notifications.NotificationGUI;
 
 
 public class InventoryHandler  extends DatabaseCommunicator {
@@ -176,7 +177,8 @@ public class InventoryHandler  extends DatabaseCommunicator {
 	
 	public void updateMenuItems() throws SQLException
 	{
-		KitchenStaffCommunicator update= new KitchenStaffCommunicator();
+		NotificationGUI n=new NotificationGUI(100, "Manager");
+		KitchenStaffCommunicator update= new KitchenStaffCommunicator(n);
 		
 		ResultSet rs = this.tell("SELECT *from MENU;");
 		rs.beforeFirst();
@@ -195,7 +197,8 @@ public class InventoryHandler  extends DatabaseCommunicator {
 				this.update("UPDATE MENU set VALID=0 where MENU_ID= "+menuid+" ;");
 			}
 		}
-		update.dis();
+		update.disconnect();
+		n.close();
 	}
 
 }

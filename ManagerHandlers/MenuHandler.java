@@ -48,6 +48,7 @@ import Manager.ManagerCommunicator.MenuObj;
 import Shared.ADT.MenuItem;
 import Shared.Communicator.*;
 import Shared.Lib.*;
+import Shared.Notifications.NotificationGUI;
 
 import java.sql.*;  
 import java.util.LinkedList;
@@ -605,7 +606,8 @@ public class MenuHandler extends DatabaseCommunicator {
 	
 	public void updateMenuItemValidBit() throws SQLException
 	{
-		KitchenStaffCommunicator update= new KitchenStaffCommunicator();
+		NotificationGUI n=new NotificationGUI(200, "Manager");
+		KitchenStaffCommunicator update= new KitchenStaffCommunicator(n);
 		
 		ResultSet rs = this.tell("SELECT *from MENU;");
 		rs.beforeFirst();
