@@ -99,7 +99,7 @@ public class EmployeeHandler extends DatabaseCommunicator{
 							String ls = rs.getString("lastname");
 
 							String addr = rs.getString("address");
-				// 			addr = this.decrypt(addr);
+				 			addr = this.decrypt(addr);
 							//end
 							String dob = rs.getString("dob");
 							String sch =  rs.getString("school");
