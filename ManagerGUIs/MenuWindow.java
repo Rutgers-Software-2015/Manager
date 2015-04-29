@@ -1,3 +1,15 @@
+/**
+ * MenuWindow.java
+ * 
+ * This class facilitates interaction between the Manager
+ * and the Menu features of the Manager Restaurant System
+ * 
+ * @author Ryan Sanichar
+ * @tester Ryan Sanichar
+ * @debugger Ryan Sanichar
+ * 
+ */
+
 package Manager.ManagerGUIs;
 /*
 @author Harsh Shah 
@@ -69,19 +81,15 @@ import Manager.ManagerHandlers.*;
 import Manager.ManagerCommunicator.*;
 
 
-
-
 public class MenuWindow extends JFrame implements ActionListener{
 
 	
 		//Parent Panels
 		private NotificationGUI notification;
 		private JPanel rootPanel,titlePanel,buttonPanel;
-		private GradientPanel backgroundPanel,buttonPanelBackground,cardPanel, Menu_Card;
-		private GradientPanel card1,card2,card3;
+		private GradientPanel backgroundPanel,buttonPanelBackground,cardPanel;
 		//Swing Objects
 		private GradientButton addItem, removeItem, updateItem, backButton, viewButton;
-		private JButton payWithCash, payWithCard;
 		private JLabel titleLabel,dateAndTime;
 		//Swing Layouts
 		private CardLayout c;
@@ -91,89 +99,39 @@ public class MenuWindow extends JFrame implements ActionListener{
 		private AddMenuItemPanel form_add = new AddMenuItemPanel();
 		private EditMenuItemPanel form_edit = new EditMenuItemPanel();
 		private JTabbedPane formpane_add, formpane_edit;
-		private GradientButton Done_Add, Done_Edit, Cancel;
+		private GradientButton Done_Add, Done_Edit;
 		
 		private JFrame Add_Error_Window;
 		private JLabel Add_Error_Message;
 		private MenuObj MenuItem;
 		private EmpSummaryPanel SummaryForm;
 		
+		// Instance of the table viewer
 		MenuTableViewer MTV = new MenuTableViewer();
-		
 		
 		private JFrame MenuAddingFrame;
 		
 		// Scroller
-		private JScrollPane MenuScroller;
+		private JScrollPane MenuScroller;		
 		
-		// Table that will show the data from the menu
-		JTable MenuTable;
-		
+		// Instance of the Menu Handler
 		private MenuHandler MenuHandle = new MenuHandler();
 		
-		// String that holds the menu
-		private String[] Menu_RowData;
-		private String[] Menu_ColumnNames = {"Name", "Ingredients", "Price", "ID"};
+		// Text panel
+		private static JPanel textPanel;
 		
-		// Text fields for users to write name, price, ingredients, and ID
-		private JTextField nameField, priceField, ingredientField, IDField;
 		
-		static JPanel textPanel;
-				
+		// Constructor
 		public MenuWindow() throws SQLException
 		{
 			super();
 			init();			
-			/*
-			
-			MenuTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-				
-				   public void valueChanged(ListSelectionEvent event) {
-				        if (MenuTable.getSelectedRow() > -1) 
-				        {
-							
-							try{
-								
-								int row = MenuTable.getSelectedRow();
-								
-								String column_name = MenuTable.getModel().getValueAt(row, 0).toString();
-								String column_ingredient = MenuTable.getModel().getValueAt(row, 1).toString();
-								String column_price = MenuTable.getModel().getValueAt(row, 2).toString();
-								String column_ID = MenuTable.getModel().getValueAt(row, 3).toString();
-								
-								nameField.setText(column_name);
-								ingredientField.setText(column_ingredient);
-								priceField.setText(column_price);
-								IDField.setText(column_ID);
-								
-								nameField.updateUI();
-								ingredientField.updateUI();
-								priceField.updateUI();
-								IDField.updateUI();
-								
-								buttonPanel.updateUI();
-								
-							}
-							
-							catch(Exception ex)
-							{
-								JOptionPane.showMessageDialog(null, ex);
-							}
-							
-				        }
-				    }
-				
-				  
-			
-			});	
-			
-			*/
-			
 			c = (CardLayout)(cardPanel.getLayout());
 			this.setVisible(true);
 			 
 		}
 		
+		// Panel for the form to add menu items
 		private void setFormAddPanel()
 		{
 			formpane_add = new JTabbedPane();
@@ -183,6 +141,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 
 		}
 
+		// Panel for the form to edit menu items
 		private void setFormEditPanel()
 		{			
 			formpane_edit = new JTabbedPane();
@@ -191,6 +150,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 			EditMenu_Card.add(formpane_edit, BorderLayout.CENTER);
 		}
 		
+		// Initialize the GUI and the frames
 		public void init() throws SQLException
 		{
 			this.setTitle("Edit Menu");
@@ -202,11 +162,14 @@ public class MenuWindow extends JFrame implements ActionListener{
 			this.setResizable(false);
 			getContentPane().add(rootPanel);
 			
+			
 			addWindowListener(new WindowAdapter() // To open main window again if you hit the corner "X"
 	        {
 	            @Override
 	            public void windowClosing(WindowEvent e)
 	            {
+					notification.close();
+					MenuHandle.disconnect();
 	            	new ManagerRootWindow();
 	                dispose();
 	            }
@@ -217,6 +180,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 			this.setVisible(true);
 		}
 
+		// Initialize the panels
 		public void frameManipulation() throws SQLException
 		{
 			rootPanel = new JPanel();
@@ -229,8 +193,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 				
 		}
 		
-
-
+		// Set the Main Panel
 		private void setRootPanel()
 		{
 			notification = new NotificationGUI(1, "Manager");
@@ -242,6 +205,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 			rootPanel.add(backgroundPanel);
 		}
 		
+		// Set the Panel for the Background 
 		private void setBackgroundPanel()
 		{
 			// Create Button Background Panel
@@ -262,6 +226,8 @@ public class MenuWindow extends JFrame implements ActionListener{
 		//DO NOT edit the following function except for the title name
 		//************************************************************
 		
+		
+		// Set the title panel
 		private void setTitlePanel()
 		{
 			// Create Title Panel
@@ -298,6 +264,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 		//DO NOT change the location of the following panel
 		//*********************************************************
 		
+		// Button Panel
 		private void setButtonPanel()
 		{
 			
@@ -360,6 +327,8 @@ public class MenuWindow extends JFrame implements ActionListener{
 			rootPanel.add(textPanel);	
 		}
 		
+		
+		// Card Panel, which contains the JTable, and the 2 forms. 
 		private void setCardPanel() throws SQLException
 		{
 			cardPanel = new GradientPanel();
@@ -388,7 +357,8 @@ public class MenuWindow extends JFrame implements ActionListener{
 			cardPanel.setVisible(true);
 		
 		}
-				
+		
+		// Inititalize Done Button for Add 
 		private void setDoneAdd()
 		{
 			Done_Add = new GradientButton("Done");
@@ -396,6 +366,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 			AddMenu_Card.add(Done_Add, BorderLayout.SOUTH);
 		}
 		
+		// Inititalize Done Button for Edit
 		private void setDoneEdit()
 		{
 			Done_Edit = new GradientButton("Done");
@@ -403,6 +374,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 			EditMenu_Card.add(Done_Edit, BorderLayout.SOUTH);
 		}
 		
+		// Check for Internet
 		public boolean isThereInternet()
 		{
 			if(MenuHandle.getConnectionStatus()==0){
@@ -415,6 +387,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 		}
 			
 
+		// Fill the JTable with the values from the database
 		private void FillMenu()
 		{
 			
@@ -424,6 +397,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 			ModelMenu = MTV.MenuTable.getModel();
 			MenuHandler test = new MenuHandler();
 
+			// Retreive each column individually 
 			try{
 
 			Integer[] MenuID = test.getMenuID();
@@ -445,6 +419,8 @@ public class MenuWindow extends JFrame implements ActionListener{
 				for(int i = 0; i < columns.getColumnCount(); i++){
 					columnvector.add((String)columns.getColumn(i).getHeaderValue());
 				}
+				
+				// Add the values into the vector
 				for(int i = 0; i < MenuName.length; i++)
 				{
 					
@@ -461,10 +437,11 @@ public class MenuWindow extends JFrame implements ActionListener{
 								
 				}
 				
+				
 				model.setDataVector(data, columnvector);
 				MTV.MenuTable.setModel(model);
 				model.fireTableDataChanged();
-				//Don't forget your disconnect functions Ryan!
+				// Disconnect functions!
 				test.disconnect();
 			
 			

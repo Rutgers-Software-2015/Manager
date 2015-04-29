@@ -1,5 +1,5 @@
 package Manager.ManagerGUIs;
-//written by: Harsh Shsh
+//written by: Harsh Shah
 //tested by: Harsh Shah
 //debugged by: Harsh Shah
 import java.awt.*;

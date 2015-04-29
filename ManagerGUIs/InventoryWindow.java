@@ -514,11 +514,6 @@ public class InventoryWindow extends JFrame implements ActionListener{
 				{
 					updateClock();
 				}
-		/*	if(a == timer_checker)
-				{
-					FillInventory();
-				}
-		*/	
 		}
 		
 		private void updateClock() {
