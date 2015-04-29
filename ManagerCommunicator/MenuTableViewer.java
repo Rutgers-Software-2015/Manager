@@ -1,3 +1,15 @@
+/**
+ * MenuTableViewer.java 
+ * 
+@author Ryan Sanichar 
+@tester Ryan Sanichar
+@debugger Ryan Sanichar
+
+ * 
+ * Java file to to retrieve all the Menu Data from the
+ * database table and put it into a JTable 
+ */
+
 package Manager.ManagerCommunicator;
 
 import java.awt.BorderLayout;
@@ -15,13 +27,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import Manager.ManagerHandlers.*;
-/*
- * This function gets the MENU items.
- 	
- 	@author Ryan Sanichar
- 	@tester Ryan Sanichar
- 	@debugger Ryan Sanichar
-*/
 
 public class MenuTableViewer extends JPanel{
 	
@@ -52,11 +57,12 @@ public class MenuTableViewer extends JPanel{
 		gen_Menu();
 	}
 	
+	// Generate the table
 	public JTable gen_Menu()
 	{
 		String[] Menu_ColumnNames = {"ID", "Name", "Price", "Cost", "Ingredients", "Description", "Menu Section", "Valid"};
 		MH = new MenuHandler();
-		ResultSet rs = MH.getAllMenu();
+		ResultSet rs = MH.getAllMenu(); // Retreive the menu from the database
 		
 		int rowcount = 0;
 		try{
@@ -70,6 +76,7 @@ public class MenuTableViewer extends JPanel{
 			System.out.println(e);
 		}
 		
+		// Make arrays to hold each column in the databasr
 		String[] ID = new String[rowcount];
 		String[] Name = new String[rowcount];
 		String[] Price = new String[rowcount];
@@ -106,7 +113,7 @@ public class MenuTableViewer extends JPanel{
 				int tmpi = rs.getInt("MENU_ID");				
 				String tmpid = ""+tmpi;
 				
-				
+				// Put contents of database into an array
 				ID[rowiterator] = tmpid;
 				Name[rowiterator] = tmpname;
 				Price[rowiterator] = tmpprice;
@@ -126,6 +133,8 @@ public class MenuTableViewer extends JPanel{
 		}
 		String[][] data = new String[rowcount][8];
 		
+		
+		// Take all data and put it into a 2-dimnesional array
 		for(int i = 0; i < rowcount; i++)
 		{
 			data[i][0] = ID[i];
@@ -138,6 +147,7 @@ public class MenuTableViewer extends JPanel{
 			data[i][7] = Valid[i];
 		}
 		
+		// Put data into a JTable
 		MenuTable = new JTable(data, Menu_ColumnNames);
 		MenuTable.getColumnModel().getColumn(0).setPreferredWidth(1);
 		MenuTable.getColumnModel().getColumn(2).setPreferredWidth(1);

@@ -73,6 +73,7 @@ public class EditMenuItemPanel extends JPanel {
 	
 	public JComboBox   MenuItemSectionBox;
 	
+	// JLabels
 	public JLabel 		MIID;
 	public JLabel 		MIName;
 	public JLabel 		MIPrice;
@@ -81,6 +82,7 @@ public class EditMenuItemPanel extends JPanel {
 	public JLabel 		MIDescription;
 	public JLabel 		MISection;
 	
+	// JPanels
 	public JPanel 		MIIDSubPanel;
 	public JPanel 		MINameSubPanel;
 	public JPanel 		MIPriceSubPanel;
@@ -89,7 +91,6 @@ public class EditMenuItemPanel extends JPanel {
 	public JPanel 		MIDescriptionSubPanel;
 	public JPanel 		MISectionSubPanel;
 	
-	public String[] AnsSet;
 	public String[] Sections = {"Appetizer", "Entree", "Drinks", "Dessert"};
 	
 	public EditMenuItemPanel()
@@ -202,6 +203,8 @@ public class EditMenuItemPanel extends JPanel {
 		name_Panel.setVisible(true);
 	}
 	
+	// Retrieve the values from the form and put them into a String
+	// array, which will be used in the MenuObj.
 	public String[] answers()
 	{
 		String[] results = new String[7];

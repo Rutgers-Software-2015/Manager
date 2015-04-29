@@ -1,3 +1,15 @@
+/**
+ * AddMenuItemPanel.java 
+	@author Ryan Sanichar 
+	@tester Ryan Sanichar
+	@debugger Ryan Sanichar
+ * 
+ * 
+ * Form for AddMenuItemPanel
+ * Generates menu items to be used as the menu. 
+ */
+
+
 package Manager.ManagerGUIs;
 
 
@@ -73,27 +85,24 @@ public class AddMenuItemPanel extends JPanel {
 	public JTextField 	MenuItemIngredients;
 	public JTextField 	MenuItemDescription;
 	public JTextField 	MenuItemSection;
-	
 	public JComboBox   MenuItemSectionBox;
 	
-	
+	// Labels
 	public JLabel 		MIName;
 	public JLabel 		MIPrice;
 	public JLabel 		MICost;
 	public JLabel 		MIIngredients;
 	public JLabel 		MIDescription;
 	public JLabel 		MISection;
-		
+	
+	// Panels
 	public JPanel 		MINameSubPanel;
 	public JPanel 		MIPriceSubPanel;
 	public JPanel 		MICostSubPanel;
 	public JPanel 		MIIngredientsSubPanel;
 	public JPanel 		MIDescriptionSubPanel;
 	public JPanel 		MISectionSubPanel;
-	
-	public JRadioButton y;
-	public JRadioButton n;
-	
+
 	public String[] AnsSet;
 	public String[] Sections = {"Appetizer", "Entree", "Drinks", "Dessert"};
 	
@@ -134,7 +143,7 @@ public class AddMenuItemPanel extends JPanel {
 	}
 	
 	
-	
+	// Making the form
 	@SuppressWarnings("unchecked")
 	public void init_name_Panel()
 	{
@@ -201,6 +210,9 @@ public class AddMenuItemPanel extends JPanel {
 		name_Panel.setVisible(true);
 	}
 	
+	
+	// Retrieve the values from the form and put them into a String
+	// array, which will be used in the MenuObj.
 	public String[] answers()
 	{
 		String[] results = new String[6];

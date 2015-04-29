@@ -1,10 +1,17 @@
-package Manager.ManagerCommunicator;
-/*
- * This function  creates a MenuObject
- @author Harsh Shsh
- @tester Harsh Shah
- @debugger Harsh Shah
-*/
+/**
+ * MenuObj.java 
+ * 
+@author Ryan Sanichar 
+@tester Ryan Sanichar
+@debugger Ryan Sanichar
+ *
+ * Java file that makes an object for Menu items
+ */
+
+package Manager.ManagerGUIs;
+
+
+
 public class MenuObj {
 	
 	public String MENU_ID;

@@ -1,5 +1,5 @@
 /**
- * InventoryHandler.java
+ * InventoryHandler.java 
  * 
 @author Ryan Sanichar 
 @tester Ryan Sanichar
@@ -7,7 +7,8 @@
 
  * 
  * Handler for the InventoryWindow.java file
- * Generates ingredients to be used as the inventory. 
+ * Gets the ingredients from the database to be used as the inventory.
+ * Also connects to the database to add/edit/remove inventory items. 
  */
 
 

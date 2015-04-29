@@ -1,9 +1,15 @@
 package Manager.ManagerGUIs;
-/*
-@author Ryan Sanichar
+/**
+ * InventoryWindow.java 
+ * 
+@author Ryan Sanichar 
 @tester Ryan Sanichar
 @debugger Ryan Sanichar
-*/
+
+ * 
+ * Java file to run the GUI for the Inventory
+ * Generates the GUI with a JTable 
+ */
 import java.awt.*;   
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -94,11 +100,10 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		
 		static JPanel textPanel;
 		
+		// Inventory Handler
 		private InventoryHandler InventoryHandle = new InventoryHandler();
 		
-		
-		InventoryTableViewer ITV = new InventoryTableViewer();
-		
+		// Constructor
 		public InventoryWindow()
 		{
 			super();
@@ -139,6 +144,8 @@ public class InventoryWindow extends JFrame implements ActionListener{
 			
 		}
 
+		
+		// Inititalize
 		public void init()
 		{
 			this.setTitle("Edit Inventory");
@@ -306,16 +313,10 @@ public class InventoryWindow extends JFrame implements ActionListener{
 			buttonPanel.add(backButton);
 		}
 		
+		// This function initializes the table that holds all the inventory items
 		public void init_inventory()
 		{
-//			//Need to populate the arrays before they are fed to the JTable
-//			inglist = new String[IngredientHandler.IngredientList.length][2];
-//			Inventory_RowData = inglist;
-//			getList();
-//			InventoryTable = new JTable(Inventory_RowData, Inventory_ColumnNames);
-//			InventoryScroller = new JScrollPane(InventoryTable);
-//			InventoryTable.setFillsViewportHeight(true);
-			
+	
 			String[] Inventory_ColumnNames = {"Ingredient", "Quantity"};
 			
 			InventoryTable = new JTable();
@@ -329,15 +330,10 @@ public class InventoryWindow extends JFrame implements ActionListener{
 
 			InventoryScroller = new JScrollPane(InventoryTable);
 			InventoryTable.setFillsViewportHeight(true);
-		
-			
+
 		}
 		
-		/*
-		 * This function fills the Inventory in the top left ScrollView.The ScrollViews contains all the Ingredients.
-		 *  @returns nothing. 
-		 */
-
+		// This functions fills the table with the ingredients by retreving them from the handler
 		private void FillInventory()
 		{
 			
@@ -380,6 +376,7 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		//Creating and adding cards is OK
 		//********************************************************************************
 	
+		// Inititalize the text panel
 		public void init_textPanel()
 		{
 			// init_inventory();
@@ -387,6 +384,7 @@ public class InventoryWindow extends JFrame implements ActionListener{
 			
 		}
 		
+		// Inittialize the card
 		private void setCardPanel()
 		{
 			cardPanel = new GradientPanel();
@@ -412,6 +410,8 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		{
 			Object a = e.getSource();
 
+			
+			// Exit the Inventory part of the Menu class
 			if(a == backButton)
 				{
 					notification.close();
@@ -419,6 +419,8 @@ public class InventoryWindow extends JFrame implements ActionListener{
 					new ManagerRootWindow();
 					dispose();
 				}
+			
+			// Add new inventory value
 			if(a == addButton)
 				{
 
@@ -430,9 +432,13 @@ public class InventoryWindow extends JFrame implements ActionListener{
 				try {
 					// Set the quantity and the name of the ingredient to the handler
 					quantity=Integer.parseInt(tempQuantity);
+					
+					// Add it to the database
 					InventoryHandle.AddInventoryItem(tempNewIngredient, quantity);
 					DefaultTableModel model = (DefaultTableModel) InventoryTable.getModel();
 					model.addRow(new Object[]{tempNewIngredient, quantity});
+					
+					// Show the new table
 					FillInventory();
 					
 				} 
@@ -457,12 +463,15 @@ public class InventoryWindow extends JFrame implements ActionListener{
 				// User need to selects a row
 		        if (InventoryTable.getSelectedRow() != -1) 
 		        {
-
+		        	// Get the position of the row that needs to be deleted
 		        	int position = InventoryTable.getSelectedRow();
 
 					try 
 					{
+						// Remove the item from the database
 						InventoryHandle.RemoveInventoryItem(tempNewIngredient);
+						
+						// Show the new table
 						((DefaultTableModel)InventoryTable.getModel()).removeRow(position);
 						FillInventory();
 					} catch (SQLException e1) {
@@ -481,6 +490,7 @@ public class InventoryWindow extends JFrame implements ActionListener{
 			if(a == updateButton)
 				{
 				
+				// Get the textfield values
 				String tempNewIngredient = ingredientField.getText();
 				String tempQuantity = quantityField.getText();
 				int quantity;
@@ -491,7 +501,10 @@ public class InventoryWindow extends JFrame implements ActionListener{
 					
 				quantity=Integer.parseInt(tempQuantity);
 				try {
+					// Update the database
 					InventoryHandle.updateInventoryValue(quantity, tempNewIngredient);
+					
+					// Show the new table
 					FillInventory();
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
@@ -516,6 +529,7 @@ public class InventoryWindow extends JFrame implements ActionListener{
 				}
 		}
 		
+		// Clock
 		private void updateClock() {
             dateAndTime.setText(DateFormat.getDateTimeInstance().format(new Date()));
         }

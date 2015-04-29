@@ -12,7 +12,7 @@
 
 package Manager.ManagerHandlers;
 
-import static org.apache.commons.codec.binary.Hex.decodeHex;  
+import static org.apache.commons.codec.binary.Hex.decodeHex;   
 import static org.apache.commons.io.FileUtils.readFileToByteArray;
 
 import java.io.File;
@@ -44,7 +44,7 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.commons.codec.DecoderException;
 
 import KitchenStaff.KitchenStaffCommunicator;
-import Manager.ManagerCommunicator.MenuObj;
+import Manager.ManagerGUIs.MenuObj;
 import Shared.ADT.MenuItem;
 import Shared.Communicator.*;
 import Shared.Lib.*;
@@ -71,67 +71,6 @@ public class MenuHandler extends DatabaseCommunicator {
 		ResultSet rs = this.tell("select * FROM MENU;");
 		return rs;
 	}
-
-	/*	
-	public <MenuObj> getMenu() throws SQLException
-	{
-		
-			this.connect("admin", "gradMay17");
-			this.tell("use MAINDB;");
-			String sqlcommand = "SELECT * FROM MENU;";
-			ResultSet rs = this.tell(sqlcommand);
-			this.consolePrintTable(rs);
-			JTable table = new JTable(buildTableModel(rs));
-			
-			int sizeRS = 0;
-			rs.beforeFirst();
-			
-			while(rs.next() == true)
-			{
-				sizeRS++;
-			}
-			
-			rs.beforeFirst();
-			Vector<MenuObj> MenuListVector = new Vector(sizeRS);
-			
-			try {
-				
-				while(rs.next() == true)
-				{
-					boolean vis = rs.getBoolean("Visibility");
-					if(vis == false)
-					{
-						continue;
-					}
-			
-					else
-					{
-						int menu_id  = rs.getInt("MENU_ID");
-						String item = rs.getString("ITEM_NAME");
-						double price = rs.getDouble("PRICE");
-						double cost = rs.getDouble("COST");
-						String ingredient =  rs.getString("INGREDIENTS");
-						String description = rs.getString("DESCRIPTION");
-						String menu_sec = ""+rs.getString("MENU_SECTION");
-						int valid = rs.getInt("VALID");
-				
-						MenuObj temp = new MenuObj(menu_id, item, price, cost, ingredient, description, menu_sec, valid);
-						MenuListVector.add(temp);
-					}
-				}
-
-			}catch(SQLException e)
-			{
-				System.out.println("No Result Set");
-			}
-			
-			System.out.println("Obtained the Menu <-- MenuHandler.java");
-			System.out.println("There are " + MenuListVector.size() +" ready to be acted on!" );
-			this.disconnect();
-			return MenuListVector;
-		
-	}
-	*/
 	
 	public String[] getMenu() throws SQLException
 	{
