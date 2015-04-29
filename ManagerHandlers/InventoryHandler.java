@@ -1,6 +1,10 @@
 /**
  * InventoryHandler.java
- * Author: Ryan Sanichar
+ * 
+@author Ryan Sanichar 
+@tester Ryan Sanichar
+@debugger Ryan Sanichar
+
  * 
  * Handler for the InventoryWindow.java file
  * Generates ingredients to be used as the inventory. 

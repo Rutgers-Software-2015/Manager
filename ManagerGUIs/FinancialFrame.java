@@ -1,7 +1,9 @@
 package Manager.ManagerGUIs;
-//written by: Harsh Shsh
-//tested by: Harsh Shah
-//debugged by: Harsh Shah
+/*
+@author Harsh Shah 
+@tester Harsh Shah
+@debugger Harsh Shah
+*/
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

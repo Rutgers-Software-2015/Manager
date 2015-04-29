@@ -44,9 +44,11 @@ import Shared.Gradients.*;
 
 import javax.swing.ButtonGroup;
 import javax.swing.border.LineBorder;
-//written by: Harsh Shsh
-//tested by: Harsh Shah
-//debugged by: Harsh Shah
+/*
+@author Harsh Shah 
+@tester Harsh Shah
+@debugger Harsh Shah
+*/
 
 /*
  * This class is form used in the employee window for editing information

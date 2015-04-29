@@ -1,6 +1,9 @@
 /**
  * MenuHandler.java
- * Author: Ryan Sanichar
+	@author Ryan Sanichar 
+	@tester Ryan Sanichar
+	@debugger Ryan Sanichar
+ * 
  * 
  * Handler for the MenuWindow.java file
  * Generates menu items to be used as the menu. 

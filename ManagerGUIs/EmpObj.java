@@ -1,7 +1,9 @@
 package Manager.ManagerGUIs;
-//written by: Harsh Shsh
-//tested by: Harsh Shah
-//debugged by: Harsh Shah
+/*
+@author Harsh Shah 
+@tester Harsh Shah
+@debugger Harsh Shah
+*/
 
 /*
  * This class exists as an intermediary abstraction to hold the data

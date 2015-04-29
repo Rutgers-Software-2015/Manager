@@ -1,5 +1,9 @@
 package Manager.ManagerGUIs;
-
+/*
+@author Ryan Sanichar
+@tester Ryan Sanichar
+@debugger Ryan Sanichar
+*/
 import javax.swing.JPanel;
 
 import java.awt.BorderLayout; 

@@ -1,5 +1,9 @@
 package Manager.ManagerGUIs;
-
+/*
+@author Ryan Sanichar
+@tester Ryan Sanichar
+@debugger Ryan Sanichar
+*/
 import java.awt.*;   
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
