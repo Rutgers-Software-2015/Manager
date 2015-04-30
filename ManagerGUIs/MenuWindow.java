@@ -670,9 +670,9 @@ public class MenuWindow extends JFrame implements ActionListener{
 			if(INTERNET == true){
 				System.out.println("Adding the New Menu Item!");
 				MenuHandle.AddMenuItem(MenuItem);
-				Add_Error_Message = new JLabel("Item Added!");
-				Add_Error_Window.add(Add_Error_Message);
-				Add_Error_Window.setVisible(true);
+			//	Add_Error_Message = new JLabel("Item Added!");
+			//	Add_Error_Window.add(Add_Error_Message);
+			//	Add_Error_Window.setVisible(true);
 				
 				/*
 				
@@ -782,9 +782,9 @@ public class MenuWindow extends JFrame implements ActionListener{
 			if(INTERNET == true){
 				System.out.println("Updating the Menu Item!");
 				MenuHandle.updateMenuItem(MenuItem);
-				Add_Error_Message = new JLabel("Item Updating!");
-				Add_Error_Window.add(Add_Error_Message);
-				Add_Error_Window.setVisible(true);
+			//	Add_Error_Message = new JLabel("Item Updating!");
+			//	Add_Error_Window.add(Add_Error_Message);
+			//	Add_Error_Window.setVisible(true);
 				
 			}
 			else
