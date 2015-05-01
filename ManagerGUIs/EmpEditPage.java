@@ -123,6 +123,7 @@ public class EmpEditPage extends GradientPanel implements ListSelectionListener{
 				//make panel visible
 				EmpListHolder.add(EmployeeList);
 				EmpListHolder.setVisible(true);
+				Emp_H.discon();
 		}
 		else
 		{

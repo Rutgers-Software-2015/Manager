@@ -53,6 +53,8 @@ public class EmployeeHandler extends DatabaseCommunicator{
 	public EmployeeHandler()
 	{
 		super();
+		this.connect("admin", "gradMay17");
+		this.tell("use MAINDB;");
 	}
 	
 	/*
@@ -69,8 +71,7 @@ public class EmployeeHandler extends DatabaseCommunicator{
 		if(INTERNET == true)
 			{
 		
-				this.connect("admin", "gradMay17");
-				this.tell("use MAINDB;");
+				
 				ResultSet rs = this.tell("SELECT * FROM EmployeeList;");
 				//this.consolePrintTable(rs);
 				
@@ -147,7 +148,6 @@ public class EmployeeHandler extends DatabaseCommunicator{
 				
 				System.out.println("Obtained the Employees <-- EmployeeHandler.java");
 				System.out.println("There are " + EmpListVector.size() +" ready to be acted on!" );
-				this.disconnect();
 				return EmpListVector;
 			}else
 			{
@@ -171,8 +171,6 @@ public class EmployeeHandler extends DatabaseCommunicator{
 
 		if(INTERNET == true)
 			{
-				this.connect("admin", "gradMay17");
-				this.tell("use MAINDB;");
 				
 				ResultSet rs = this.tell("Select * from EmployeeList;");
 				int counter = 0;
@@ -235,7 +233,6 @@ public class EmployeeHandler extends DatabaseCommunicator{
 				
 				System.out.println("EmployeeAdded!");
 				
-				this.disconnect();
 				return;
 			}
 		else
@@ -263,11 +260,10 @@ public class EmployeeHandler extends DatabaseCommunicator{
 		
 		if(INTERNET == true)
 		{
-			this.connect("admin", "gradMay17");
-			this.tell("use MAINDB;");
+			
 			this.update("UPDATE EmployeeList SET visibility = false WHERE firstname = " + "'" + NameAndReason[0] + "'" + ";");
 			this.update("UPDATE EmployeeList SET fire_reason = "+ "'" + NameAndReason[1] + "'" + "where firstname = " + "'" + NameAndReason[0] + "'" + ";");
-			this.disconnect();
+			
 		}else
 		{
 			System.out.println("No DB Connection!");
@@ -284,11 +280,10 @@ public class EmployeeHandler extends DatabaseCommunicator{
 		
 		if(INTERNET == true)
 		{
-			this.connect("admin", "gradMay17");
-			this.tell("use MAINDB;");
+			
 			String sqlComm = "UPDATE EmployeeList SET address = " + "'" + e.address + "'" + "," +  " position = " + "'" + e.position + "'" + "," + " salary = " + e.salary + " WHERE firstname = " + "'" + e.first_name + "' " + ";";
 			this.update(sqlComm);
-			this.disconnect();
+			
 			
 		}else
 		{
@@ -297,6 +292,10 @@ public class EmployeeHandler extends DatabaseCommunicator{
 		
 	}
 	
+	public void discon()
+	{
+		this.disconnect();
+	}
 	
 	public boolean isThereInternet()
 	{

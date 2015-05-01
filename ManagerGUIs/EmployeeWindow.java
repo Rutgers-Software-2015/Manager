@@ -344,6 +344,7 @@ public class EmployeeWindow extends JFrame implements ActionListener{
 			Object a = e.getSource();
 			if(a == backButton)
 				{
+					EmpHandle.discon();
 					new ManagerRootWindow();
 					dispose();
 				}

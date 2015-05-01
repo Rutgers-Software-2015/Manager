@@ -121,7 +121,7 @@ public class FirePanel extends GradientPanel{
 			//make panel visible
 			EmpListHolder.add(EmployeeList);
 			EmpListHolder.setVisible(true);
-		
+			Emp_H.discon();
 
 	}
 	
