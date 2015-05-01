@@ -80,7 +80,7 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 			this.setResizable(false);
 			getContentPane().add(rootPanel);
 			
-			/* addWindowListener(new WindowAdapter() // To open login again if you hit the corner "X"
+			addWindowListener(new WindowAdapter() // To open login again if you hit the corner "X"
 		        {
 		            @Override
 		            public void windowClosing(WindowEvent e)
@@ -89,7 +89,7 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 		                dispose();
 		            }
 		        });
-			*/
+			
 			this.setVisible(true);
 		} 
 
