@@ -72,10 +72,9 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		//Parent Panels
 		private JPanel rootPanel,titlePanel,buttonPanel;
 		private GradientPanel backgroundPanel,buttonPanelBackground,cardPanel;
-		private GradientPanel card1,card2,card3;
+		private GradientPanel card1;
 		//Swing Objects
 		private GradientButton addButton, removeButton, updateButton, backButton;
-		private JButton payWithCash, payWithCard;
 		private JLabel titleLabel,dateAndTime;
 		//Swing Layouts
 		private CardLayout c;
@@ -88,12 +87,7 @@ public class InventoryWindow extends JFrame implements ActionListener{
 		private JScrollPane InventoryScroller;
 		
 		// Table that will show the data from the menu
-		private JTable InventoryTable;
-		
-		// String that holds the menu
-		private String[][] Inventory_RowData;
-		private String[] Inventory_ColumnNames = {"Name of Ingredient", "Quantity"};
-		
+		private JTable InventoryTable;		
 		
 		// Text fields for users to write name, price, ingredients, and ID
 		private JTextField ingredientField, quantityField;
@@ -162,6 +156,8 @@ public class InventoryWindow extends JFrame implements ActionListener{
 	            @Override
 	            public void windowClosing(WindowEvent e)
 	            {
+					notification.close();
+					InventoryHandle.disconnect();
 	                new ManagerRootWindow();
 	                dispose();
 	            }
