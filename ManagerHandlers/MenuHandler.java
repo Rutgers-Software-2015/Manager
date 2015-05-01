@@ -59,6 +59,7 @@ public class MenuHandler extends DatabaseCommunicator {
 	
 	private JTable MenuTable;
 	
+	// Constructor
 	public MenuHandler()
 	{
 		super();
@@ -66,110 +67,14 @@ public class MenuHandler extends DatabaseCommunicator {
 		this.tell("use MAINDB;");
 	}
 	
+	// Get The Menu from the Database as a ResultSet
 	public ResultSet getAllMenu()
 	{		
 		ResultSet rs = this.tell("select * FROM MENU;");
 		return rs;
 	}
 	
-	public String[] getMenu() throws SQLException
-	{
-		
-			String sqlcommand = "SELECT * FROM MENU;";
-			ResultSet rs = this.tell(sqlcommand);
-			this.consolePrintTable(rs);
-			JTable table = new JTable(buildTableModel(rs));
-			
-			int sizeRS = 0;
-			rs.beforeFirst();
-			
-			while(rs.next() == true)
-			{
-				sizeRS++;
-			}
-			
-			rs.beforeFirst();
-			System.out.println(sizeRS);
-			String[] Menu = new String[sizeRS];
-			int arrayindex = 0;
-			try {
-				
-				while(rs.next() == true)
-				{
-					boolean vis = rs.getBoolean("Visibility");
-					if(vis == false)
-					{
-						continue;
-					}
-			
-					else
-					{
-						Menu[arrayindex]  =  rs.getString("MENU_ID");
-						arrayindex++;
-						Menu[arrayindex]  =  rs.getString("ITEM_NAME");
-						arrayindex++;
-						Menu[arrayindex]  =  rs.getString("PRICE");
-						arrayindex++;
-						Menu[arrayindex]  =  rs.getString("COST");
-						arrayindex++;
-						Menu[arrayindex]  =  rs.getString("INGREDIENTS");
-						arrayindex++;
-						Menu[arrayindex]  =  rs.getString("DESCRIPTION");
-						arrayindex++;
-						Menu[arrayindex]  =  rs.getString("MENU_SECTION");
-						arrayindex++;
-						Menu[arrayindex]  =  rs.getString("VALID");
-						arrayindex++;
-						
-							
-					}
-				}
-				
-				
-
-			}
-				catch(SQLException e)
-			{
-				System.out.println("No Result Set");
-			}
-			
-			
-			table = new JTable(buildTableModel(rs));
-			
-			return Menu;
-		
-	}
-	
-	
-
-	
-	public static DefaultTableModel buildTableModel(ResultSet rs) throws SQLException {
-
-	    ResultSetMetaData metaData = rs.getMetaData();
-
-	    // names of columns
-	    Vector<String> columnNames = new Vector<String>();
-	    int columnCount = metaData.getColumnCount();
-	    for (int column = 1; column <= columnCount; column++) {
-	        columnNames.add(metaData.getColumnName(column));
-	    }
-
-	    // data of the table
-	    Vector<Vector<Object>> data = new Vector<Vector<Object>>();
-	    while (rs.next()) {
-	        Vector<Object> vector = new Vector<Object>();
-	        for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
-	            vector.add(rs.getObject(columnIndex));
-	        }
-	        data.add(vector);
-	    }
-
-	    return new DefaultTableModel(data, columnNames);
-
-	}
-	
-	
-
+	// Get the MenuID from the database and put into array
 	public Integer[] getMenuID() throws SQLException {
 		
 		ResultSet I = this.tell("select * FROM MENU;");
@@ -204,6 +109,7 @@ public class MenuHandler extends DatabaseCommunicator {
 		return null;
 	}
 
+	// Get the Menu Name from the database and put into array
 	public String[] getMenuName() throws SQLException {
 
 		ResultSet I = this.tell("select * FROM MENU;");
@@ -244,6 +150,7 @@ public class MenuHandler extends DatabaseCommunicator {
 		return null;
 	}
 	
+	// Get the Menu Price from the database and put into array
 	public Double[] getMenuPrice() throws SQLException {
 		
 		ResultSet I = this.tell("select * FROM MENU;");
@@ -279,6 +186,7 @@ public class MenuHandler extends DatabaseCommunicator {
 		return null;
 	}
 	
+	// Get the Menu Cost from the database and put into array
 	public Double[] getMenuCost() throws SQLException {
 		
 
@@ -315,6 +223,7 @@ public class MenuHandler extends DatabaseCommunicator {
 		return null;
 	}
 	
+	// Get the Menu Ingredients from the database and put into array
 	public String[] getMenuIngredients() throws SQLException {
 
 
@@ -356,6 +265,7 @@ public class MenuHandler extends DatabaseCommunicator {
 		return null;
 	}
 
+	// Get the Menu Description from the database and put into array
 	public String[] getMenuDescription() throws SQLException {
 
 		ResultSet I = this.tell("select * FROM MENU;");
@@ -396,7 +306,7 @@ public class MenuHandler extends DatabaseCommunicator {
 		return null;
 }
 
-
+	// Get the Menu Section from the database and put into array
 	public String[] getMenuSection() throws SQLException {
 	
 		ResultSet I = this.tell("select * FROM MENU;");
@@ -437,6 +347,7 @@ public class MenuHandler extends DatabaseCommunicator {
 		return null;
 	}
 	
+	// Get the Menu Valid Bit from the database and put into array
 	public Integer[] getMenuisValid() throws SQLException {
 		
 		ResultSet I = this.tell("select * FROM MENU;");
@@ -472,19 +383,7 @@ public class MenuHandler extends DatabaseCommunicator {
 		return null;
 	}
 	
-	/*
-	
-	public void AddMenuItem(String Item_Name, double price, double cost, String Ingredients, String Description, String Menu_Section, int Valid) throws SQLException
-	{
-			
-			String newMenuItem = "('" + Item_Name + "', '" + price + "', '" + cost + "', '" + Ingredients + "', '" + Description + "', '" + Menu_Section + "', '" + Valid + "');";
-			
-			ResultSet rs =  this.tell("INSERT INTO MENU (ITEM_NAME, PRICE, COST, INGREDIENTS, DESCRIPTION, MENU_SECTION, VALID) VALUES " + newMenuItem);
-			
-	}
-	
-	*/
-	
+	// Add a menu object to the menu/database
 	public void AddMenuItem(MenuObj E)
 	{
 		
@@ -506,7 +405,6 @@ public class MenuHandler extends DatabaseCommunicator {
 			System.out.println(e);
 		}
 		
-		// String idstr = ""+maxid;
 		String newMenuItem = "('" + (maxid + 1) + "', '" + E.ITEM_NAME + "', '" + E.PRICE + "', '" + E.COST + "', '" + E.INGREDIENTS + "', '" + E.DESCRIPTION + "', '" + E.SECTION + "', '" + E.VALID + "');";
 		String command = "INSERT INTO MENU (MENU_ID, ITEM_NAME, PRICE, COST, INGREDIENTS, DESCRIPTION, MENU_SECTION, VALID) VALUES " + newMenuItem;
 		this.update(command);
@@ -520,17 +418,18 @@ public class MenuHandler extends DatabaseCommunicator {
 		System.out.println("Menu Item Added!");
 	
 	}
-
+	// Remove a menu object from the menu/database
 	public void RemoveMenuItem(String MenuItem) throws SQLException
 	{
 			this.update("DELETE FROM MENU WHERE ITEM_NAME='" + MenuItem + "';");
 			
 	}
 	
+	// Update a menu object to the menu/database
 	public void updateMenuItem(MenuObj E)
 	{
 
-		// ResultSet rs =  this.tell("Select Amount from MENU where Item_Name = '" + E.ITEM_NAME + "';");
+		
 		this.update("DELETE FROM MENU WHERE MENU_ID='" + E.MENU_ID + "';");
 		String MenuItem = "('" + E.MENU_ID + "', '" + E.ITEM_NAME + "', '" + E.PRICE + "', '" + E.COST + "', '" + E.INGREDIENTS + "', '" + E.DESCRIPTION + "', '" + E.SECTION + "', '" + E.VALID + "');";
 		String command = "INSERT INTO MENU (MENU_ID, ITEM_NAME, PRICE, COST, INGREDIENTS, DESCRIPTION, MENU_SECTION, VALID) VALUES " + MenuItem;
@@ -543,6 +442,7 @@ public class MenuHandler extends DatabaseCommunicator {
 		}
 	}
 	
+	// Check to see if the menu item has enough ingredients in stock
 	public void updateMenuItemValidBit() throws SQLException
 	{
 		NotificationGUI n=new NotificationGUI(200, "Manager");
@@ -556,6 +456,7 @@ public class MenuHandler extends DatabaseCommunicator {
 			String ing=rs.getString("INGREDIENTS");
 			String[]  temp =update.ParseIngredients(ing);
 			
+			// If the ingredient exists, the valid bit is 1, else, the bit is 0
 			if(update.ingredientsExist(temp))
 			{
 				this.update("UPDATE MENU set VALID=1 where MENU_ID= "+menuid+" ;");
