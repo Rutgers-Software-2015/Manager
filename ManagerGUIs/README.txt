@@ -27,8 +27,8 @@ ________________________________________________________|_______________________
 |									|								|										|					
 |									|								|										|
 EmployeeWindow					FinancialFrame						InventoryWindow					MenuWindow
-|_________________					|								|
-|	|		|					FirePanel							InventoryTableViewer
+|_________________					|																		|
+|	|		|					FirePanel															MenuTableViewer
 |	|		|
 HirePanels	|
 	|		|
