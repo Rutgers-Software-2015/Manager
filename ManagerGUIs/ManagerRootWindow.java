@@ -213,17 +213,20 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 			if(a == EmployeeButton)
 			{
 				new  EmployeeWindow();
+				notifications.close();
 				dispose();
 			}
 			if(a == FinancialsButton)
 				{
 				 new FinancialFrame();
+				 notifications.close();
 				 dispose();
 				}
 			if(a == MenuButton)
 				{
 					try{
 						new MenuWindow();
+						notifications.close();
 						dispose();
 					}catch(SQLException l)
 					{
@@ -233,6 +236,7 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 			if(a == InventoryButton)
 				{
 				new InventoryWindow();
+				notifications.close();
 				dispose();
 				}
 			if(a == logoutButton)
