@@ -30,6 +30,7 @@ import Shared.Notifications.NotificationGUI;
 
 public class InventoryHandler  extends DatabaseCommunicator {
 	
+	// Constructor that connects to the database
 	public InventoryHandler()
 	{
 		super();
@@ -37,6 +38,7 @@ public class InventoryHandler  extends DatabaseCommunicator {
 		this.tell("use MAINDB;");
 	}
 	
+	// Get all the inventory from the database and put it into a resultset
 	public ResultSet getAllInventory()
 	{	
 		ResultSet rsI = this.tell("select * FROM INVENTORY;");
@@ -48,6 +50,8 @@ public class InventoryHandler  extends DatabaseCommunicator {
 	 * Turns Inventory Result into a Array
 	 * 
 	 */
+	
+	// Go to the inventory and get all the names and put them into an array
 	public String[] getInventoryName() throws SQLException
 	{	
 		ResultSet I = this.tell("select * FROM INVENTORY;");
@@ -87,6 +91,8 @@ public class InventoryHandler  extends DatabaseCommunicator {
 		return null;
 			
 	}
+	
+	// Go to the inventory and get all the quantities and put into an array
 	public Integer[] getInventoryQ() throws SQLException
 	{	
 
@@ -125,6 +131,7 @@ public class InventoryHandler  extends DatabaseCommunicator {
 	
 	}
 	
+	// Update the inventory quantity in the database
 	public void updateInventoryValue(int newQuantity, String item) throws SQLException
 	{
 
@@ -136,6 +143,7 @@ public class InventoryHandler  extends DatabaseCommunicator {
 
 	}
 	
+	// Add inventory item to the database
 	public void AddInventoryItem(String Ingredient, int newQuantity) throws SQLException
 	{
 
@@ -145,6 +153,7 @@ public class InventoryHandler  extends DatabaseCommunicator {
 
 	}
 	
+	// Remove an inventory item from the database
 	public void RemoveInventoryItem(String Ingredient) throws SQLException
 	{
 
@@ -165,6 +174,7 @@ public class InventoryHandler  extends DatabaseCommunicator {
 	
 	*/
 	
+	// Check if there is internet
 	public boolean isThereInternet()
 	{
 		if(getConnectionStatus()==0){
@@ -176,6 +186,7 @@ public class InventoryHandler  extends DatabaseCommunicator {
 		
 	}
 	
+	// Update the valid bit of the menu items depending on the existence of an inventory item
 	public void updateMenuItems() throws SQLException
 	{
 		NotificationGUI n=new NotificationGUI(100, "Manager");
@@ -187,8 +198,9 @@ public class InventoryHandler  extends DatabaseCommunicator {
 		{
 			int menuid=rs.getInt("MENU_ID");
 			String ing=rs.getString("INGREDIENTS");
-			String[]  temp =update.ParseIngredients(ing);
+			String[]  temp =update.ParseIngredients(ing); // Get seperate ingredients from the menu
 			
+			// If the ingredient exists, valid bit is 1, else, bit is 0
 			if(update.ingredientsExist(temp))
 			{
 				this.update("UPDATE MENU set VALID=1 where MENU_ID= "+menuid+" ;");

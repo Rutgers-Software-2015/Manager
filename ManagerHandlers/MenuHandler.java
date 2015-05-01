@@ -59,7 +59,7 @@ public class MenuHandler extends DatabaseCommunicator {
 	
 	private JTable MenuTable;
 	
-	// Constructor
+	// Constructor that connects to the database
 	public MenuHandler()
 	{
 		super();
