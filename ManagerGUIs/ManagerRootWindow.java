@@ -238,7 +238,7 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 			if(a == logoutButton)
 				{
 					new LoginWindow();
-					notification.close();
+					notifications.close();
 					dispose();
 				}
 			if(a == timer)
