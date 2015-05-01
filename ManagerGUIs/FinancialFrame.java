@@ -57,8 +57,11 @@ public class FinancialFrame extends JFrame implements ActionListener{
 			//Other Variables
 			private Timer timer;
 			
+			GradientButton RefundButton;
+			GradientPanel RefundsRoot_Card;
 			GradientPanel WeekRoot_Card;
 			GradientPanel DayRoot_Card;
+			JPanel ARP = new AuthRefPanel();
 			
 			//My Stuff
 			GradientPanel DayButtonPanel;
@@ -196,6 +199,13 @@ public class FinancialFrame extends JFrame implements ActionListener{
 				DayButton.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 				DayButton.setFocusPainted(false);
 				
+				// Set Manage Order Queue Button
+				RefundButton = new GradientButton("Refund View");
+				RefundButton.addActionListener(this);
+				RefundButton.setFont(DayButton.getFont().deriveFont(16.0f));
+				RefundButton.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+				RefundButton.setFocusPainted(false);
+				
 				
 				// Set Back Button
 				backButton = new GradientButton("BACK");
@@ -204,6 +214,7 @@ public class FinancialFrame extends JFrame implements ActionListener{
 				backButton.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 				backButton.setFocusPainted(false);
 				
+				buttonPanel.add(RefundButton);
 				buttonPanel.add(WeekButton);
 				buttonPanel.add(DayButton);
 				buttonPanel.add(backButton);
@@ -231,9 +242,23 @@ public class FinancialFrame extends JFrame implements ActionListener{
 				DayRoot_Card.setVisible(true);
 				setDayCard();
 				
+				RefundsRoot_Card = new GradientPanel();
+				RefundsRoot_Card.setLayout(new BorderLayout());
+				RefundsRoot_Card.setVisible(true);
+				setRefundsCard();
+				
+				
+				cardPanel.add(RefundsRoot_Card, "RefundsProcess");
 				cardPanel.add(DayRoot_Card, "DaySelection");
 				cardPanel.add(WeekRoot_Card, "HireProcess");
 				cardPanel.setVisible(true);
+			}
+			
+			public void setRefundsCard()
+			{
+				RefundsRoot_Card.add(ARP);
+				ARP.setVisible(true);
+				
 			}
 			
 			// Action Listener
@@ -243,6 +268,10 @@ public class FinancialFrame extends JFrame implements ActionListener{
 				if(a == WeekButton)
 				{
 					ItemDayGraph week = new ItemDayGraph("");
+				}
+				if(a == RefundButton)
+				{
+					c.show(cardPanel, "RefundsProcess");
 				}
 				if(a == DayButton)
 				{
