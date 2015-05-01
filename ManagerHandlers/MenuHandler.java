@@ -566,6 +566,7 @@ public class MenuHandler extends DatabaseCommunicator {
 			}
 		}
 		update.dis();
+		n.close();
 	}
 
 	
