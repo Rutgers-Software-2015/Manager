@@ -121,7 +121,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 		
 		
 		// Constructor
-		public MenuWindow() throws SQLException
+		public MenuWindow() 
 		{
 			super();
 			init();			
@@ -150,7 +150,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 		}
 		
 		// Initialize the GUI and the frames
-		public void init() throws SQLException
+		public void init() 
 		{
 			this.setTitle("Edit Menu");
 			this.setResizable(true);
@@ -180,7 +180,7 @@ public class MenuWindow extends JFrame implements ActionListener{
 		}
 
 		// Initialize the panels
-		public void frameManipulation() throws SQLException
+		public void frameManipulation()
 		{
 			rootPanel = new JPanel();
 			rootPanel.setLayout(null);
@@ -321,14 +321,14 @@ public class MenuWindow extends JFrame implements ActionListener{
 		//Creating and adding cards is OK
 		//********************************************************************************
 	
-		public void init_textPanel() throws SQLException
+		public void init_textPanel() 
 		{
 			rootPanel.add(textPanel);	
 		}
 		
 		
 		// Card Panel, which contains the JTable, and the 2 forms. 
-		private void setCardPanel() throws SQLException
+		private void setCardPanel()
 		{
 			cardPanel = new GradientPanel();
 			cardPanel.setLayout(new CardLayout()); // How to define a Card Layout

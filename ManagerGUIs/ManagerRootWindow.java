@@ -224,14 +224,9 @@ public class ManagerRootWindow extends JFrame implements ActionListener{
 				}
 			if(a == MenuButton)
 				{
-					try{
 						new MenuWindow();
 						notifications.close();
 						dispose();
-					}catch(SQLException l)
-					{
-						l.printStackTrace();
-					}
 				}
 			if(a == InventoryButton)
 				{
